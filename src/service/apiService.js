@@ -1,0 +1,47 @@
+import axios from "axios";
+import router from "../router/index";
+
+export const baseURL = "";
+
+export const http = axios.create({
+  baseURL: baseURL,
+});
+
+function setConfiguration(provider) {
+  provider.interceptors.request.use(
+    (config) => {
+      // if (token) {
+      //   config.headers["Authorization"] = `Bearer ${token}`;
+      //   store.dispatch("checkRefreshTime").then(() => {});
+      // }
+      config.headers["Accept"] = "application/json";
+      config.headers["Access-Control-Allow-Origin"] = "*";
+      config.headers["Content-Type"] = "application/json";
+      config.headers["Language"] = localStorage.getItem("lang");
+      return config;
+    },
+    (error) => Promise.reject(error)
+  );
+  provider.interceptors.response.use(
+    (res) => res.data,
+    (error) => {
+      if (error.response && error.response.status === 401) {
+        localStorage.clear();
+        router
+          .push({ name: "login" })
+          .then(() => {})
+          .catch(() => {
+            if (error.response.status === 401) {
+              this.errorNotification("Token is expired");
+            }
+          });
+      } else if (error.response && error.response.status === 403) {
+        router.push({ path: "/403" }).then();
+      }
+      return Promise.reject(error);
+    }
+  );
+}
+setConfiguration(http);
+
+export default http;

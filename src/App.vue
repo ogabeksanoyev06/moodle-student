@@ -1,32 +1,49 @@
 <template>
   <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view/>
+    <pre-loading v-if="isLoading" />
+    <router-view v-else />
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>
+<style lang="scss" scoped></style>
+<script>
+import PreLoading from "./components/shared-components/PreLoading.vue";
+import TokenService from "./service/TokenService";
+export default {
+  components: { PreLoading },
+  data() {
+    return {
+      isLoading: true,
+    };
+  },
+  methods: {
+    loadData() {
+      return new Promise((resolve) => {
+        console.log("hello");
+        setTimeout(() => {
+          resolve();
+        });
+      });
+    },
+    checkRefreshTime() {
+      if (TokenService.getToken()) {
+        this.$store.state.refreshTokenIntervalId = setInterval(() => {
+          console.log("refreshToken");
+          console.log(+new Date() / 1000 + TokenService.getExpiretime() - 60);
+          if (+new Date() / 1000 > TokenService.getExpiretime() - 60) {
+            this.RefreshToken();
+          }
+        }, 1000);
+      }
+    },
+  },
+  mounted() {
+    this.loadData().then(() => {
+      this.isLoading = false;
+    });
+  },
+  created() {
+    // this.checkRefreshTime();
+  },
+};
+</script>

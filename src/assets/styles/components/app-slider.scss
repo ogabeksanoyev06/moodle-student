@@ -1,0 +1,65 @@
+@import "../abstracts/variables";
+
+.app-slider {
+  position: relative;
+  width: 100%;
+
+  &__button-next,
+  &__button-previous {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &__button-previous {
+    left: -30px;
+  }
+
+  &__button-next {
+    right: -30px;
+  }
+
+  @media(max-width: $m-mobile) {
+    margin-left: -20px;
+    margin-right: -20px;
+    width: calc(100% + 40px);
+    &__button-previous {
+      left: 10px;
+    }
+    &__button-next {
+      right: 10px;
+    }
+  }
+}
+
+
+.splide__slider {
+  position: relative;
+}
+
+
+.app-slider__button-previous {
+  position: absolute;
+  top: 50%;
+  left: -60px !important;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  box-shadow: none;
+  background: #F3F9FF;
+
+  img {
+    width: 8px;
+  }
+}
+
+.app-slider__button-next {
+  position: absolute;
+  top: 50%;
+  right: -60px !important;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  box-shadow: none;
+  background: #F3F9FF;
+}

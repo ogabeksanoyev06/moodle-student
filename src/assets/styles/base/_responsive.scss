@@ -1,0 +1,26 @@
+@import "../abstracts/variables";
+
+.container {
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+  @media (max-width: $m-desktop) {
+    width: $m-desktop-medium;
+  }
+  @media (max-width: $m-desktop-medium) {
+    width: $m-desktop-small;
+  }
+
+  @media (max-width: $m-desktop-small) {
+    width: 100%;
+  }
+
+  @media (max-width: $m-mobile-medium) {
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}

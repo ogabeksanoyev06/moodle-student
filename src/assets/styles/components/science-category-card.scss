@@ -1,0 +1,64 @@
+@import "../abstracts/variables";
+.app-card {
+  $self: &;
+  $trans: .2s;
+  position: relative;
+  display: block;
+  max-width: 100%;
+
+  &:before {
+    display: block;
+    content: '';
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    bottom: -15px;
+    left: -15px;
+  }
+
+  &__photo {
+    margin-bottom: 20px;
+    border-radius: 10px;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform $trans ease-out;
+      transform-origin: 50%;
+    }
+  }
+
+  &__title {
+    margin-bottom: 20px;
+    transition: color $trans linear;
+  }
+
+  &__subtitle {
+    color: rgba(24, 24, 24, 0.4);
+  }
+  &--medium {
+    #{$self}__photo {
+      height: 250px;
+    }
+  }
+  &:hover {
+    #{$self}__title {
+      color: $color-main;
+    }
+
+    #{$self}__photo {
+      img {
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+

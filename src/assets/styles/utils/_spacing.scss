@@ -1,0 +1,98 @@
+@each $m in (5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 70, 75) {
+  .ma-#{$m} {
+    margin: #{$m}px;
+  }
+}
+@each $mb in (5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 70, 75) {
+  .mb-#{$mb} {
+    margin-bottom: #{$mb}px;
+  }
+}
+
+@each $mt in (5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 70, 75) {
+  .mt-#{$mt} {
+    margin-top: #{$mt}px;
+  }
+}
+@each $my in (5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 70, 75) {
+  .my-#{$my} {
+    margin: #{$my}px 0;
+  }
+}
+@each $mr in (5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 70, 75) {
+  .mr-#{$mr} {
+    margin-right: #{$mr}px;
+  }
+}
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mla {
+  margin-left: auto;
+}
+.mra {
+  margin-right: auto;
+}
+
+.py-5 {
+  padding: 5px 0;
+}
+
+.py-10 {
+  padding: 10px 0;
+}
+
+.py-20 {
+  padding: 20px 0;
+}
+
+.py-30 {
+  padding: 30px 0;
+}
+
+.py-40 {
+  padding: 40px 0;
+}
+
+.py-60 {
+  padding: 60px 0;
+}
+
+.pa-10 {
+  padding: 10px;
+}
+
+.pa-15 {
+  padding: 15px;
+}
+
+.pa-20 {
+  padding: 20px;
+}
+
+.pa-30 {
+  padding: 30px;
+}
+
+.pa-40 {
+  padding: 40px;
+}
+
+.pa-60 {
+  padding: 60px;
+}
+
+.pb-30 {
+  padding-bottom: 30px;
+}
+
+.pb-60 {
+  padding-bottom: 60px;
+}
+
+.px-10 {
+  padding-left: 10px;
+  padding-right: 10px;
+}

@@ -1,0 +1,92 @@
+.footer-applications {
+  position: relative;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 80px;
+  height: 600px;
+  &__background {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    overflow: hidden;
+    border-radius: 20px;
+    background-color: #fff;
+    &:before {
+      display: block;
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      border-radius: 20px;
+      filter: blur(130px);
+      opacity: 0.4;
+      //background: url('~/assets/images/layout/footer-applications-background.svg') center right/cover no-repeat;
+    }
+    &:after {
+      display: block;
+      content: '';
+      border: 1px solid rgba(24, 24, 24, 0.1);
+      border-radius: inherit;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+  }
+  &__description {
+    max-width: size(580px) !important;
+  }
+  &__apps {
+    margin-top: auto;
+  }
+  &__phones {
+    width: size(420px);
+    position: absolute;
+    right: 70px;
+    bottom: -70px;
+    filter: drop-shadow(10px 10px 60px rgba(0, 0, 0, 0.1));
+  }
+  &__note {
+    max-width: size(670px) !important;
+  }
+  @media(max-width: $m-desktop-small) {
+    &__background:before {
+      background-size: auto 70%;
+    }
+  }
+  @media(max-width: $m-mobile) {
+    padding: 20px;
+    height: auto;
+    &__background {
+      &:before {
+        background-position: center;
+      }
+    }
+    &__description {
+      margin-bottom: 80px;
+    }
+    &__note,
+    &__description {
+      max-width: none !important;
+    }
+    &__title,
+    &__note {
+      text-align: center;
+    }
+    &__phones {
+      margin-left: auto;
+      margin-right: auto;
+      position: static;
+      width: 240px;
+      max-width: 90%;
+      margin-bottom: 40px;
+    }
+  }
+}
