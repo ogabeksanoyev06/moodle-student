@@ -35,7 +35,7 @@ function setConfiguration(provider) {
           .then(() => {})
           .catch(() => {
             if (error.response.status === 401) {
-              this.errorNotification("Token is expired");
+              // this.errorNotification("Token is expired");
             }
           });
       } else if (error.response && error.response.status === 403) {

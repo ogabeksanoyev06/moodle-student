@@ -61,6 +61,7 @@
                 :sides="20"
                 :weight="500"
                 :height="40"
+                :disabled="loading"
                 class="login mb-20 w-100"
               >
                 Tizimga kirish
@@ -84,6 +85,7 @@ import BaseInput from "../../shared-components/BaseInput.vue";
 import { ValidationObserver } from "vee-validate";
 import { KinesisContainer, KinesisElement } from "vue-kinesis";
 import { mapMutations } from "vuex";
+import TokenService from "@/service/TokenService";
 export default {
   name: "AppLogin",
   components: {
@@ -102,6 +104,7 @@ export default {
       passwordField: true,
       authError: "",
       errorStatus: false,
+      loading: false,
     };
   },
   methods: {
@@ -116,7 +119,26 @@ export default {
         : "text";
     },
     loginToSystem() {
-      console.log("kkk");
+      this.loading = true;
+      this.$http
+        .post("https://student.tfi.uz/rest/v1/auth/login", this.request)
+        .then((data) => {
+          if (data.success === true) {
+            TokenService.saveToken(data.token);
+          } else {
+            this.authError = data.error;
+            this.errorNotification(data.error);
+          }
+        })
+        .catch((error) => {
+          this.errorNotification(error.response.data.error);
+          this.request.login = "";
+          this.request.password = "";
+          this.loading = false;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
   },
   mounted() {

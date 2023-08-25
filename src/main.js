@@ -16,7 +16,20 @@ Vue.config.productionTip = false;
 
 Vue.component("AppText", AppText);
 Vue.use(VueMask);
-Vue.use(Toast);
+Vue.use(Toast, {
+  position: "top-right",
+  timeout: 5000,
+  closeOnClick: true,
+  pauseOnFocusLoss: true,
+  pauseOnHover: true,
+  draggable: true,
+  draggablePercent: 0.6,
+  showCloseButtonOnHover: false,
+  hideProgressBar: false,
+  closeButton: "button",
+  icon: true,
+  rtl: false,
+});
 Vue.prototype.$http = http;
 
 new Vue({
