@@ -1,136 +1,107 @@
 <template>
   <div class="profile">
+    <app-loading v-if="loading" />
     <div class="box box__info">
       <div class="box__header">
         <h3 class="title">Mening profilim</h3>
       </div>
       <div class="box__body">
         <ValidationObserver v-slot="{ handleSubmit }">
-          <form @submit.prevent="handleSubmit(changeUser)">
+          <form @submit.prevent="handleSubmit(profileUpdate)">
             <div class="box__inner">
               <div class="box__inner-left">
-                <div class="form-group">
-                  <label class="control-label"> Ismi </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="profile.firstName"
-                    disabled
-                  />
-                </div>
-                <div class="form-group">
-                  <label class="control-label"> Familiya </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="profile.lastName"
-                    disabled
-                  />
-                </div>
-                <div class="form-group">
-                  <label class="control-label"> Login </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="profile.login"
-                    disabled
-                  />
-                </div>
-                <div class="form-group">
-                  <label class="control-label"> Pasport raqami </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="profile.passport"
-                    disabled
-                  />
-                </div>
-                <div class="form-group">
-                  <label class="control-label"> Email </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="profile.email"
-                  />
-                </div>
-                <div class="form-group">
-                  <label class="control-label"> Talaba telefoni </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="profile.telefon"
-                  />
-                </div>
+                <base-input
+                  type="text"
+                  vid="Ismi º"
+                  rules="required"
+                  label="Ismi º"
+                  placeholder="Ismi º"
+                  v-model="user.first_name"
+                  disabled
+                />
+                <base-input
+                  type="text"
+                  vid="Familiya º"
+                  rules="required"
+                  label="Familiya º"
+                  placeholder="Familiya º"
+                  v-model="user.second_name"
+                  disabled
+                />
+                <base-input
+                  type="text"
+                  vid="Login"
+                  rules="required"
+                  label="Login"
+                  placeholder="Login"
+                  v-model="user.student_id_number"
+                  disabled
+                />
+                <base-input
+                  type="text"
+                  vid="Pasport raqami"
+                  rules="required"
+                  label="Pasport raqami"
+                  placeholder="Pasport raqami"
+                  v-model="user.passport_number"
+                  disabled
+                />
+                <base-input
+                  type="text"
+                  vid="Email"
+                  rules="required|email"
+                  label="Email"
+                  placeholder="Email"
+                  v-model="user.email"
+                />
+                <base-input
+                  type="text"
+                  vid="Talaba telefoni"
+                  rules="required"
+                  label="Talaba telefoni"
+                  placeholder="Talaba telefoni"
+                  v-mask="'+998 ## ###-##-##'"
+                  v-model="user.phone"
+                />
                 <br />
                 <div class="checkbo checkbo-ready">
-                  <div class="form-group form-check">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="1"
-                      v-model="isChecked"
-                      @onchange="toggleCheckbox"
-                    />
-                    <div
-                      class="checkmaker"
-                      :style="
-                        isChecked
-                          ? 'background-color: #4BAE4F;'
-                          : 'background-color: rgba(75, 174, 79, 0.4)'
-                      "
-                    >
-                      <img src="/icons/check.svg" alt="" />
-                    </div>
-                    <label class="form-check-label" for="1">
-                      Parolni o‘zgartirish
+                  <div class="form-group mb-10" style="display: inline-block">
+                    <input type="checkbox" id="checkbox" v-model="isChecked" />
+                    <label for="checkbox" class="checkbox-label">
+                      <span
+                        class="checkbox-custom"
+                        :class="{ checked: isChecked }"
+                      >
+                        <i v-if="isChecked" class="fa fa-check"></i>
+                      </span>
+                      Parolni o'zgartirish
                     </label>
                   </div>
                   <ValidationObserver>
-                    <div class="form-group">
-                      <ValidationProvider
-                        name="Parol"
-                        :rules="isChecked ? 'required' : ''"
-                        v-slot="{ errors }"
-                        vid="profile.password"
-                      >
-                        <input
-                          type="text"
-                          class="form-control"
-                          placeholder="Yangi parol"
-                          v-model="profile.password"
-                          :disabled="!isChecked"
-                        />
-                        <span class="error" v-if="errors.length > 0">
-                          {{ errors[0] }}
-                        </span>
-                      </ValidationProvider>
-                    </div>
-                    <div class="form-group">
-                      <ValidationProvider
-                        name="Parol tasdig‘i"
-                        :rules="
-                          isChecked ? 'required|confirmed:profile.password' : ''
-                        "
-                        v-slot="{ errors }"
-                      >
-                        <input
-                          type="text"
-                          class="form-control"
-                          placeholder="Parol tasdig‘i"
-                          v-model="profile.passwordConfirmation"
-                          :disabled="!isChecked"
-                        />
-                        <span class="error" v-if="errors.length > 0">
-                          {{ errors[0] }}
-                        </span>
-                      </ValidationProvider>
-                    </div>
+                    <base-input
+                      type="text"
+                      vid="Parol"
+                      :rules="isChecked ? 'required' : ''"
+                      label="Yangi parol"
+                      placeholder="Yangi parol"
+                      v-model="password"
+                      :disabled="!isChecked"
+                    />
+                    <base-input
+                      type="text"
+                      vid="Parol tasdig‘i"
+                      :rules="isChecked ? 'required|confirmed:Parol' : ''"
+                      label="Parol tasdig‘i"
+                      placeholder="Parol tasdig‘i"
+                      v-model="confirmPassword"
+                      :disabled="!isChecked"
+                    />
                   </ValidationObserver>
                 </div>
               </div>
               <div class="box__inner-right">
                 <div class="account__photo">
-                  <img src="/images/account.png" alt="" />
+                  <img :src="user.image" alt="" />
                 </div>
               </div>
             </div>
@@ -141,6 +112,7 @@
                 :height="40"
                 :font-size="isMobileSmall ? 12 : isMobile ? 14 : 16"
                 :sides="10"
+                :disabled="btnLoading"
               >
                 O‘zgartirish
               </app-button>
@@ -152,42 +124,79 @@
   </div>
 </template>
 <script>
-import { ValidationProvider, extend, ValidationObserver } from "vee-validate";
-import { required, confirmed } from "vee-validate/dist/rules";
+import { ValidationObserver } from "vee-validate";
 import AppButton from "@/components/shared-components/AppButton.vue";
-extend("required", {
-  ...required,
-  message: "{_field_} bo'sh bo'lishi mumkin emas",
-});
-extend("confirmed", {
-  ...confirmed,
-  message: "Parollar mos tushmayabdi",
-});
+import BaseInput from "@/components/shared-components/BaseInput.vue";
+import { baseURLHemis } from "@/plugins/axios";
+import AppLoading from "@/components/shared-components/AppLoading.vue";
 export default {
   name: "StudentProfile",
-  components: { ValidationProvider, ValidationObserver, AppButton },
+  components: { ValidationObserver, AppButton, BaseInput, AppLoading },
   data() {
     return {
-      profile: {
-        lastName: "Og'abek",
-        firstName: "Sanoyev",
-        login: "23567897653989",
-        passport: "AB7405110",
+      user: {
+        first_name: "Og'abek",
+        second_name: "Sanoyev",
+        student_id_number: "23567897653989",
+        passport_number: "AB7405110",
         email: "ogabeksanoyev06@gmail.com",
-        telefon: "+998 88 890-88-15",
-        password: "",
-        passwordConfirmation: "",
+        phone: "+998 88 890-88-15",
+        image: "",
       },
+      password: "",
+      confirmPassword: "",
       isChecked: false,
+      loading: true,
+      btnLoading: false,
     };
   },
   methods: {
-    changeUser() {
-      console.log("tayyyoooooooorrrrr");
+    getUser() {
+      this.loading = true;
+      this.$http
+        .get(baseURLHemis + "account/me")
+        .then((data) => {
+          if (data.success) {
+            this.user = data.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.loading = false;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
-    toggleCheckbox() {
-      this.isChecked = !this.isChecked;
+    profileUpdate() {
+      let profile = {
+        phone: this.user.phone,
+        email: this.user.email,
+        change_contacts: true,
+      };
+      if (this.isChecked) {
+        profile.password = this.password;
+        profile.confirmation = this.confirmPassword;
+        profile.change_password = true;
+      }
+      this.btnLoading = true;
+      this.$http
+        .post(baseURLHemis + "account/update", profile)
+        .then((res) => {
+          if (res.success) {
+            this.successNotification(res.data.message);
+          }
+        })
+        .catch(() => {
+          this.btnLoading = false;
+        })
+        .finally(() => {
+          this.btnLoading = false;
+        });
     },
+  },
+  mounted() {
+    this.getUser();
   },
 };
 </script>
@@ -205,20 +214,16 @@ export default {
       padding-right: 30px;
     }
     &-right {
-      max-width: 120px;
-      max-height: 120px;
-      width: 100%;
-      height: 100%;
       overflow: hidden;
-      cursor: pointer;
-      border-radius: 50%;
       .account__photo {
+        max-width: 200px;
         width: 100%;
-        height: 100%;
+        height: auto;
+        cursor: pointer;
         img {
           width: 100%;
-          height: 100%;
-          object-fit: cover;
+          height: auto;
+          border-radius: 10px;
         }
       }
     }
@@ -241,84 +246,6 @@ export default {
   }
 }
 
-.form-group {
-  position: relative;
-  margin-bottom: 15px;
-  label {
-    display: block;
-    max-width: 100%;
-    margin-bottom: 10px;
-    font-weight: 500;
-    font-size: 14px;
-    color: #919caa;
-  }
-  .error {
-    font-size: 12px;
-    margin-top: 3px;
-    color: #c03f53;
-    font-weight: 500;
-  }
-  &.form-check {
-    display: flex;
-    align-items: center;
-    .form-check-input {
-      display: none;
-    }
-    .form-check-label {
-      font-size: 14px;
-      font-weight: 500;
-      color: #919caa;
-      cursor: pointer;
-    }
-    .checkmaker {
-      width: 15px;
-      height: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      margin-right: 7px;
-    }
-    label {
-      display: inline-block;
-      font-weight: 500;
-      font-size: 14px;
-      color: #919caa;
-      margin-bottom: 0;
-    }
-  }
-  .form-control {
-    display: block;
-    width: 100%;
-    height: 40px;
-    padding: 10px 16px;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 40px;
-    color: #031b3c;
-    background-color: #f8faff;
-    background-clip: padding-box;
-    border: 1px solid #bcd2ff;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border-radius: 10px;
-    transition: border-color 0.15s ease-in-out,
-      background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    cursor: pointer;
-    &:focus {
-      border-color: #40d88a;
-      box-shadow: 0 0 0 3px rgba(64, 216, 138, 0.25);
-      background-color: #ffffff;
-    }
-    &:disabled {
-      background-color: #f5f7fa;
-      border-color: #e4e7ed;
-      color: #c0c4cc;
-      cursor: not-allowed;
-    }
-  }
-}
 @media (max-width: 576px) {
   .box {
     max-width: 700px;

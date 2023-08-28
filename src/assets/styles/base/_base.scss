@@ -141,7 +141,7 @@
     }
     tbody {
       tr {
-        text-align: start;
+        text-align: left;
         background-color: #f5f5f7;
         vertical-align: middle;
         &:nth-child(even) {
@@ -307,6 +307,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 40px;
   padding: 10px 15px;
   background-color: white;
   color: $color-text;
@@ -315,7 +316,6 @@
   line-height: normal;
   font-weight: 500;
   transition: 0.2s;
-
   &:hover {
     background-color: #f9fafb;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);

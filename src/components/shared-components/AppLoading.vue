@@ -39,8 +39,8 @@ export default {
   height: 15px;
   margin-left: 2.5px;
   margin-right: 2.5px;
-  background-color: #00598f;
-  color: #00598f;
+  background-color: #3f8bf1;
+  color: #3f8bf1;
   -webkit-animation-duration: 4s;
   animation-duration: 4s;
   -webkit-animation-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);

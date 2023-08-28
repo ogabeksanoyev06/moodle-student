@@ -15,7 +15,6 @@ $myBezier: cubic-bezier(0.4, 0, 0.2, 1);
     min-width 0.3s $myBezier, max-width 0.3s $myBezier, transform 0.3s $myBezier,
     background-color 0.3s $myBezier;
   transform: translateX(0%);
-
   &.active {
     transform: translateX(-100%);
   }
@@ -23,28 +22,41 @@ $myBezier: cubic-bezier(0.4, 0, 0.2, 1);
 .sidebar {
   height: 100%;
   width: 100%;
-  padding: 0px 15px;
+  padding-right: 10px;
+  padding-left: 20px;
   padding-bottom: 10px;
 }
 .sidebar-humburger {
-  width: 42px;
-  height: 42px;
-  background-color: #00598f;
+  transition: color 0.3s $myBezier, right 0.3s $myBezier, left 0.3s $myBezier,
+    border-color 0.3s $myBezier, background-color 0.3s $myBezier;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  position: absolute;
-  top: 21px;
-  right: -21px;
-  cursor: pointer;
-  transition: transform 0.3s $myBezier,
-    border-bottom-right-radius 0.3s $myBezier,
-    border-top-right-radius 0.3s $myBezier;
+  font-size: 18px;
+  color: rgb(51, 54, 57);
+  border: 1px solid rgb(239, 239, 245);
+  background-color: #fff;
+  box-shadow: 0 2px 4px 0px rgba(0, 0, 0, 0.06);
+  transform: translateX(50%) translateY(-50%);
+  z-index: 1;
+  svg {
+    height: 1em;
+    width: 1em;
+    transition: transform 0.3s $myBezier;
+    transform: rotate(180deg);
+  }
   &.active {
-    transform: translateX(21px) rotate(-180deg);
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+    right: -20px;
+    svg {
+      transform: rotate(0deg);
+    }
   }
 }
 .sidebar-header {
@@ -57,10 +69,9 @@ $myBezier: cubic-bezier(0.4, 0, 0.2, 1);
   }
   span {
     width: 100%;
-    color: #031b3c;
     font-size: 24px;
     font-weight: 500;
-    line-height: normal;
+    text-align: center;
   }
 }
 .sidebar-menu {
@@ -284,15 +295,9 @@ $myBezier: cubic-bezier(0.4, 0, 0.2, 1);
     }
   }
   .sidebar-humburger {
-    transform: translateX(21px) rotate(-180deg);
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    top: 21px;
-    right: -21px;
+    right: -20px;
     &.active {
-      transform: translateX(21px) rotate(360deg);
       right: 0px;
-      border-radius: 50%;
     }
   }
 }

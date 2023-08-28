@@ -4,6 +4,7 @@ import router from "../router/index";
 // import store from "../store";
 
 export const baseURL = "http://api.fastlms.uz/api/";
+export const baseURLHemis = "https://student.tfi.uz/rest/v1/";
 
 export const http = axios.create({
   baseURL: baseURL,
@@ -31,7 +32,7 @@ function setConfiguration(provider) {
       if (error.response && error.response.status === 401) {
         localStorage.clear();
         router
-          .push({ name: "login" })
+          .push({ name: "" })
           .then(() => {})
           .catch(() => {
             if (error.response.status === 401) {

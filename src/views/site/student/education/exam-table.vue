@@ -96,7 +96,6 @@ export default {
   ul {
     & > li {
       position: relative;
-      margin-right: 10px;
       margin-bottom: 15px;
       & > span {
         font-size: 14px;
@@ -104,20 +103,18 @@ export default {
         padding: 5px;
         background-color: #fff;
         border-radius: 4px;
-        background-color: #00598f !important;
+        background-color: #3f8bf1 !important;
         color: white;
         display: inline-block;
       }
     }
     & li > {
       .timeline-item {
-        -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
         box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
         border-radius: 3px;
         background: #fff;
         color: #919caa;
         margin-left: 60px;
-        margin-right: 15px;
         position: relative;
         & > .time {
           display: flex;
@@ -143,7 +140,7 @@ export default {
         line-height: 30px;
         position: absolute;
         color: #fff;
-        background: #00598f;
+        background: #3f8bf1;
         border-radius: 50%;
         text-align: center;
         left: 18px;

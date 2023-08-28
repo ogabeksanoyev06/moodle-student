@@ -8,23 +8,29 @@ const routes = [
     path: "/landing-page",
     name: "landing-page",
     component: () => import("../components/landing-page"),
+    meta: { guestOnly: true },
   },
+
   {
-    path: "/dashboard/login",
+    path: "/login",
     name: "login",
     component: () => import("../components/layouts/auth/login.vue"),
+    meta: { guestOnly: true },
+  },
+  {
+    path: "/404",
+    name: "error-404",
+    component: () => import("../components/pages/error/404.vue"),
+    meta: { requiresAuth: true },
   },
   {
     path: "*",
-    name: "error",
-    component: () => import("../components/pages/ErrorPage.vue"),
-    meta: {
-      guest: true,
-    },
+    redirect: "/404",
   },
   {
     path: "/",
     component: () => import("../layouts/MainLayout.vue"),
+    meta: { requiresAuth: true },
     children: [
       // home
       {
@@ -166,11 +172,6 @@ const routes = [
         name: "dashboard-profile",
         component: () => import("../views/site/student/dashboard/profile.vue"),
       },
-      {
-        path: "dashboard/logins",
-        name: "dashboard-logins",
-        component: () => import("../views/site/student/dashboard/logins.vue"),
-      },
     ],
   },
 ];
@@ -184,25 +185,25 @@ router.beforeEach((to, from, next) => {
   window.scrollTo(0, 0);
   next();
 });
-router.beforeEach((to, from, next) => {
-  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-  const onlyWhenLoggedOut = to.matched.some(
-    (record) => record.meta.onlyWhenLoggedOut
-  );
-  const token = false;
-  if (requiresAuth) {
-    if (!onlyWhenLoggedOut && !token) {
-      return next({ name: "landing-page" });
-    }
-    if (requiresAuth && !token) {
-      return next({ name: "login" });
-    } else if (to.name === "login" && token) {
-      return next({ name: "home" });
-    } else {
-      return next();
-    }
-  }
-  next();
-});
+
+// router.beforeEach((to, from, next) => {
+//   const tokenExists = !!TokenService.getToken();
+
+//   if (to.matched.some((record) => record.meta.requiresAuth)) {
+//     if (!tokenExists) {
+//       next("/landing-page");
+//       return;
+//     }
+//   }
+
+//   if (to.matched.some((record) => record.meta.guestOnly)) {
+//     if (tokenExists) {
+//       next("/");
+//       return;
+//     }
+//   }
+
+//   next();
+// });
 
 export default router;

@@ -408,7 +408,7 @@ export default {
     height: 1px;
     flex-shrink: 0;
     stroke-width: 1px;
-    background: #00598f;
+    background: #3f8bf1;
   }
 
   .main__header {
@@ -466,7 +466,7 @@ export default {
         height: 1px;
         flex-shrink: 0;
         stroke-width: 1px;
-        background: #00598f;
+        background: #3f8bf1;
       }
     }
 
@@ -515,7 +515,7 @@ export default {
             font-size: 64px;
 
             span {
-              color: #00598f;
+              color: #3f8bf1;
             }
           }
 
@@ -605,7 +605,7 @@ export default {
 
         .card-title {
           .title {
-            color: #00598f;
+            color: #3f8bf1;
 
             font-size: 35px;
             font-style: normal;

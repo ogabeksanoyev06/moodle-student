@@ -3,7 +3,9 @@
     <div class="info-box box-mini">
       <div class="info-box__inner">
         <div class="info-box__left">
-          <div class="info-box-icon">A</div>
+          <div class="info-box-icon">
+            <i class="fa fa-file"></i>
+          </div>
           <div class="info-box-content">
             <span class="info-box-number"> HBA-30 </span>
           </div>

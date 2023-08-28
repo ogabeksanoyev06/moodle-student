@@ -10,20 +10,14 @@
               v-on-click-outside:excludedClass="hideLanguageDropdown"
             >
               <span>O'zbekcha</span>
-              <div class="header__dropdown-language">
-                <ul
-                  class="header__dropdown-language-wrap"
-                  :class="languageDropdown ? 'active' : ''"
-                >
-                  <li class="header__dropdown-language-item">
-                    <span> O'zbekcha </span>
-                  </li>
-                  <li class="header__dropdown-language-item">
-                    <span> Russian </span>
-                  </li>
-                  <li class="header__dropdown-language-item">
-                    <span> English </span>
-                  </li>
+              <div
+                class="dropdown-menu"
+                :class="languageDropdown ? 'active' : ''"
+              >
+                <ul class="dropdown-menu-wrap">
+                  <li class="dropdown-menu-item"><span> O'zbekcha </span></li>
+                  <li class="dropdown-menu-item"><span> Russian </span></li>
+                  <li class="dropdown-menu-item"><span> English </span></li>
                 </ul>
               </div>
             </div>
@@ -32,56 +26,40 @@
               @click="accountDropdown = !accountDropdown"
               v-on-click-outside:excludedClass="hideAccountDropdown"
             >
-              <!-- <div class="header__account-photo" v-if="user && user.photo">
-                <img :src="baseURL + user.photo" alt="" />
-              </div> -->
-              <div class="header__account-photo">
+              <div class="header__account-photo" v-if="user && user.image">
+                <img :src="user.image" alt="" />
+                <div class="d-flex flex-column">
+                  <span class="user-name">
+                    {{ user.short_name }}
+                  </span>
+                  <span class="user-role">Talaba</span>
+                </div>
+              </div>
+              <div class="header__account-photo" v-else>
                 <img src="/images/user.png" alt="" />
-                <div>
+                <div class="d-flex flex-column">
                   <span class="user-name">Anvar Egamberdiyev</span>
                   <span class="user-role">Talaba</span>
                 </div>
               </div>
-
-              <div class="header__dropdown-user">
-                <ul
-                  class="header__dropdown-user-wrap"
-                  :class="accountDropdown ? 'active' : ''"
-                >
-                  <li class="header__dropdown-user-header">
-                    Foydalanuvchi rollari
-                  </li>
-                  <li class="divider"></li>
-                  <li class="header__dropdown-user-item">
-                    <router-link to="/" class="header__dropdown-user-link">
-                      <span>Kichik Admin</span>
-                    </router-link>
-                  </li>
-                  <li class="header__dropdown-user-item">
-                    <router-link to="/" class="header__dropdown-user-link">
-                      <span>O‘qituvchi</span>
-                    </router-link>
-                  </li>
-                  <li class="header__dropdown-user-item">
-                    <router-link to="/" class="header__dropdown-user-link">
-                      <span>Talaba</span>
-                    </router-link>
-                  </li>
-
-                  <li class="header__dropdown-user-item">
-                    <router-link
-                      :to="{ name: 'dashboard-profile' }"
-                      class="header__dropdown-user-link"
-                    >
+              <div
+                class="dropdown-menu"
+                :class="accountDropdown ? 'active' : ''"
+              >
+                <ul class="dropdown-menu-wrap">
+                  <li class="dropdown-menu-item">
+                    <router-link :to="{ name: 'dashboard-profile' }">
                       <span>Profil</span>
                     </router-link>
                   </li>
-                  <li class="divider"></li>
-                  <li class="header__dropdown-user-item logout">
-                    <div class="header__dropdown-user-link">
-                      <img src="/icons/logout.svg" alt="" class="mr-10" />
-                      <span>Chiqish</span>
-                    </div>
+                  <li class="dropdown-menu-item">
+                    <router-link :to="{ name: 'student-personal-data' }">
+                      <span>Shaxsiy ma'lumotlarim</span>
+                    </router-link>
+                  </li>
+                  <li class="dropdown-menu-item">
+                    <img src="/icons/logout.svg" class="mr-10" />
+                    <span>Chiqish</span>
                   </li>
                 </ul>
               </div>
@@ -95,6 +73,7 @@
 <script>
 import "./header.scss";
 import i18n from "@/locals/i18n";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "AppHeader",
   components: {},
@@ -107,6 +86,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["getUser"]),
     hideLanguageDropdown() {
       this.languageDropdown = false;
     },
@@ -134,6 +114,12 @@ export default {
     hideLangDropdown() {
       this.langDropdown = false;
     },
+  },
+  computed: {
+    ...mapGetters(["user"]),
+  },
+  mounted() {
+    this.getUser();
   },
 };
 </script>

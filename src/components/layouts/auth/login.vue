@@ -3,7 +3,7 @@
     <div class="auth">
       <div class="auth__content">
         <div class="auth__wrap">
-          <router-link to="/">
+          <router-link :to="{ name: 'landing-page' }">
             <div class="auth__logo">
               <img src="/svg/smallLogo.svg" alt="" class="mb-5" />
             </div>
@@ -84,8 +84,9 @@ import AppButton from "../../shared-components/AppButton.vue";
 import BaseInput from "../../shared-components/BaseInput.vue";
 import { ValidationObserver } from "vee-validate";
 import { KinesisContainer, KinesisElement } from "vue-kinesis";
-import { mapMutations } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 import TokenService from "@/service/TokenService";
+import { baseURLHemis } from "@/plugins/axios";
 export default {
   name: "AppLogin",
   components: {
@@ -109,6 +110,7 @@ export default {
   },
   methods: {
     ...mapMutations(["setWindowWidth"]),
+    ...mapActions(["getUser"]),
     setWidth() {
       this.setWindowWidth(document.documentElement.clientWidth);
     },
@@ -121,10 +123,18 @@ export default {
     loginToSystem() {
       this.loading = true;
       this.$http
-        .post("https://student.tfi.uz/rest/v1/auth/login", this.request)
+        .post(baseURLHemis + "auth/login", this.request)
         .then((data) => {
-          if (data.success === true) {
-            TokenService.saveToken(data.token);
+          if (data.success) {
+            TokenService.saveToken(data.data.token);
+            this.getUser();
+            if (this.user?.educationForm?.code === 14) {
+              this.$router.push({ name: "home" });
+              this.successNotification("Tizimga muvaffaqiyatli kirildi");
+            } else {
+              this.errorNotification("Siz tizimdan foydalana olmaysiz!");
+              TokenService.removeToken();
+            }
           } else {
             this.authError = data.error;
             this.errorNotification(data.error);
@@ -140,6 +150,9 @@ export default {
           this.loading = false;
         });
     },
+  },
+  computed: {
+    ...mapGetters(["user"]),
   },
   mounted() {
     this.setWidth();
