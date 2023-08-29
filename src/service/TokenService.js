@@ -14,8 +14,8 @@ const TokenService = {
   saveRefreshToken(token) {
     localStorage.setItem(FRONT_REFRESH_TOKEN_KEY, token);
   },
-  saveExpireTime(expireTime) {
-    localStorage.setItem(FRONT_TOKEN_EXPIRE, expireTime);
+  saveExpireTime() {
+    localStorage.setItem(FRONT_TOKEN_EXPIRE, 7);
   },
   removeToken() {
     localStorage.removeItem(FRONT_TOKEN_KEY);

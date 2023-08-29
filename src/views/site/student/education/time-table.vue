@@ -1,237 +1,173 @@
 <template>
   <div class="content">
-    <div class="info-box">
-      <div class="info-box__inner">
-        <div class="info-box__left">
-          <div class="info-box-icon">A</div>
-          <div class="info-box-content">
-            <span class="info-box-number"> HBA-30 </span>
-          </div>
-        </div>
-        <div class="info-box__right">
-          <div class="info-box-content">
-            <label class="isible-xs">Semestr</label>
-            <ul class="pagination">
-              <li class="plabel"><span class="">Semestr</span></li>
-              <li class="active">
-                <span> 1 </span>
-              </li>
-              <li>
-                <span>2</span>
-              </li>
-              <li>
-                <span>3</span>
-              </li>
-              <li>
-                <span>4</span>
-              </li>
-              <li>
-                <span>5</span>
-              </li>
-              <li>
-                <span>6</span>
-              </li>
-              <li>
-                <span> 7 </span>
-              </li>
-              <li class="">
-                <span>8</span>
-              </li>
-            </ul>
-          </div>
-        </div>
+    <div class="tab__main">
+      <h3 class="title">Fanlar</h3>
+      <div class="tab mb-30">
+        <button class="tab__item active">Iqtisodiy xavfsizlik</button>
+        <button class="tab__item" v-for="item in 10" :key="item">
+          Iqtisodiy xavfsizlik
+        </button>
       </div>
-      <div class="">
-        <AppText
-          :size="isDesktopSmall ? 14 : 16"
-          :line-height="isDesktopSmall ? 20 : 24"
-          weight="700"
-          class="text-center mb-10"
-        >
-          Haftani tanlang
-        </AppText>
-        <div class="grid-block student-week-day">
-          <button class="custom__btn mla">
-            <img src="/icons/angle-left.svg" alt="" />
-          </button>
-          <base-select type="text" placeholder="Haftani tanlang" />
-          <button class="custom__btn mra">
-            <img
-              src="/icons/angle-left.svg"
-              style="transform: rotate(180deg)"
-            />
-          </button>
-        </div>
-      </div>
-      <div class="grid-block">
-        <div class="box" v-for="item in 4" :key="item">
-          <div class="box-header">
-            <h3 class="box-title">
-              Dushanba
-              <span class="text-muted"> 30 yanvar, 2023 </span>
-            </h3>
-          </div>
-          <ul class="box-footer">
-            <li class="list-group-item" v-for="item in 3" :key="item">
-              <div>
-                6. BANKLARDA BUXGALTERIYA HISOBI<br />
-                <span class="text-center text-muted">E-402</span>
-                <span class="separator">/</span>
-                <span class="text-center text-muted">Amaliyot</span>
-                <span class="separator">/</span>
-                <span class="text-center text-muted">FAYZIYEV SH. N.</span>
+      <div
+        style="background-color: rgba(29, 74, 121, 0.04); border-radius: 4px"
+        class="pa-15"
+      >
+        <h3 class="title">Darslar ro'yxati</h3>
+        <div class="tab__body">
+          <div class="box" v-for="(item, i) in 8" :key="i">
+            <div class="box-header" @click="toggleAccordion(i)">
+              <h3 class="box-title">17 October - 23 October</h3>
+              <div class="box-tools" :class="{ opened: activeIndex === i }">
+                <img src="/icons/angle-left.svg" alt="" />
               </div>
-              <span class="pull-right text-muted">13:20</span>
-            </li>
-          </ul>
+            </div>
+            <transition
+              name="accordion"
+              @enter="start"
+              @after-enter="end"
+              @before-leave="start"
+              @after-leave="end"
+            >
+              <div
+                :class="{ opened: activeIndex === i }"
+                v-show="activeIndex === i"
+              >
+                <div class="box-body">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Repellendus temporibus rerum nostrum minima, dicta vitae
+                  necessitatibus sint molestiae facere eos dolorum iste pariatur
+                  ipsum reprehenderit ab provident, quo repudiandae. Debitis.
+                </div>
+              </div>
+            </transition>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import BaseSelect from "@/components/shared-components/BaseSelect.vue";
 export default {
   name: "EducationTimeTable",
-  components: { BaseSelect },
+  components: {},
   data() {
     return {
-      value: "",
-      options: [
-        {
-          value: "Option1",
-          label: "Option1",
-        },
-        {
-          value: "Option2",
-          label: "Option2",
-        },
-        {
-          value: "Option3",
-          label: "Option3",
-        },
-        {
-          value: "Option4",
-          label: "Option4",
-        },
-        {
-          value: "Option5",
-          label: "Option5",
-        },
-      ],
-      showSelect: false,
+      activeIndex: 0,
     };
   },
-  methods: {},
+  methods: {
+    toggleAccordion(index) {
+      if (this.activeIndex === index) {
+        this.activeIndex = null;
+      } else {
+        this.activeIndex = index;
+      }
+    },
+    start(el) {
+      el.style.height = el.scrollHeight + "px";
+    },
+    end(el) {
+      el.style.height = "";
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
-.grid-block {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 30px;
-}
-.grid-block.student-week-day {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 30px;
-}
-.custom__btn {
-  min-width: 100px;
+.tab {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  &__item {
+    max-width: 280px;
+    min-height: 60px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    color: #919caa;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    &:hover {
+      background-color: #008bf8;
+      color: #fff;
+    }
+    &.active {
+      background-color: #008bf8;
+      color: #fff;
+    }
+  }
+  &__body {
+  }
 }
 .box {
-  position: relative;
-  border-radius: 3px;
-  background: #ffffff;
-  width: 100%;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease;
-  overflow: hidden;
+  border-radius: 4px;
+  border: 1px solid #eaeaeb;
+  margin: 0 0 15px;
+  transition: box-shadow 0.15s ease-in-out;
+  background-color: #fff;
+
   &:hover {
-    box-shadow: 0 0 0px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
   }
   .box-header {
-    color: #3f8bf1;
-    display: block;
-    padding: 15px 10px;
-    position: relative;
-    border-bottom: 1px solid #e8e8e8;
+    padding: 20px 25px;
+    border-radius: 4px;
+    display: flex;
+    font-size: 16px;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
     .box-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      font-size: 18px;
-      font-weight: 500;
-      margin-bottom: 0px;
-      .text-muted {
-        font-size: 16px;
-        color: #3f8bf1;
-      }
-    }
-  }
-  .box-footer {
-    padding: 0px;
-    background-color: #fff;
-
-    li {
-      position: relative;
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      padding: 10px 15px;
-      background-color: #fff;
-      border-bottom: 1px solid #ddd;
+      display: inline-block;
       font-size: 14px;
-      line-height: 1.5;
-      font-weight: 500;
-      &:last-child {
-        border-bottom: none;
+      font-weight: 600;
+      color: #919caa;
+      line-height: 24px;
+      margin-bottom: 0;
+    }
+    .box-tools {
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      img {
+        transition: transform 0.3s ease;
       }
-      .text-muted {
-        color: #777777;
-        display: inline;
-        font-size: 12px;
-        font-weight: 400;
-      }
-      .separator {
-        display: inline-block;
-        padding: 0 5px;
-        color: #e3e3e3;
-      }
-      .pull-right {
-        color: #40d88a;
-        font-weight: 500;
+      &.opened {
+        img {
+          transform: rotate(-90deg);
+        }
       }
     }
   }
-}
-
-@media (max-width: 991px) {
-  .grid-block {
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-  .grid-block.student-week-day {
-    grid-template-columns: 2fr 8fr 2fr;
-  }
-}
-@media (max-width: 768px) {
-  .grid-block {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-  .grid-block.student-week-day {
-    grid-template-columns: 1fr 10fr 1fr;
-  }
-}
-@media (max-width: 500px) {
-  .grid-block.student-week-day {
-    grid-template-columns: 1fr;
-    button {
-      display: none;
+  .box-body {
+    padding: 0px 25px;
+    padding-bottom: 10px;
+    &.opened {
     }
   }
+}
+.title {
+  font-size: 20px;
+  color: #232323;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+.accordion-enter-active,
+.accordion-leave-active {
+  will-change: height, opacity;
+  transition: height 0.3s ease, opacity 0.3s ease;
+  overflow: hidden;
+}
+.accordion-enter,
+.accordion-leave-to {
+  height: 0 !important;
 }
 </style>

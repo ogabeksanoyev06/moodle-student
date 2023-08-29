@@ -128,7 +128,7 @@ export default {
           if (data.success) {
             TokenService.saveToken(data.data.token);
             this.getUser();
-            if (this.user?.educationForm?.code === 14) {
+            if (Number(this.user?.educationForm.code) === 16) {
               this.$router.push({ name: "home" });
               this.successNotification("Tizimga muvaffaqiyatli kirildi");
             } else {
@@ -140,8 +140,7 @@ export default {
             this.errorNotification(data.error);
           }
         })
-        .catch((error) => {
-          this.errorNotification(error.response.data.error);
+        .catch(() => {
           this.request.login = "";
           this.request.password = "";
           this.loading = false;

@@ -26,19 +26,12 @@
               @click="accountDropdown = !accountDropdown"
               v-on-click-outside:excludedClass="hideAccountDropdown"
             >
-              <div class="header__account-photo" v-if="user && user.image">
+              <div class="header__account-photo">
                 <img :src="user.image" alt="" />
                 <div class="d-flex flex-column">
                   <span class="user-name">
                     {{ user.short_name }}
                   </span>
-                  <span class="user-role">Talaba</span>
-                </div>
-              </div>
-              <div class="header__account-photo" v-else>
-                <img src="/images/user.png" alt="" />
-                <div class="d-flex flex-column">
-                  <span class="user-name">Anvar Egamberdiyev</span>
                   <span class="user-role">Talaba</span>
                 </div>
               </div>
@@ -57,7 +50,7 @@
                       <span>Shaxsiy ma'lumotlarim</span>
                     </router-link>
                   </li>
-                  <li class="dropdown-menu-item">
+                  <li class="dropdown-menu-item" @click="logout">
                     <img src="/icons/logout.svg" class="mr-10" />
                     <span>Chiqish</span>
                   </li>
@@ -104,15 +97,16 @@ export default {
         this.setLang = "O'zbek";
       }
     },
-    clickMenu() {
-      this.isActive = !this.isActive;
-      this.$emit("closeNavigationDrawer");
-    },
     hideUserDropdown() {
       this.userDropdown = false;
     },
     hideLangDropdown() {
       this.langDropdown = false;
+    },
+    logout() {
+      localStorage.clear();
+      this.$router.push({ name: "landing-page" });
+      this.successNotification("Tizimdan chiqildi");
     },
   },
   computed: {

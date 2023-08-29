@@ -32,7 +32,7 @@ function setConfiguration(provider) {
       if (error.response && error.response.status === 401) {
         localStorage.clear();
         router
-          .push({ name: "" })
+          .push({ name: "login" })
           .then(() => {})
           .catch(() => {
             if (error.response.status === 401) {

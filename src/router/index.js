@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-// import TokenService from "@/service/TokenService";
+import TokenService from "@/service/TokenService";
 Vue.use(VueRouter);
 
 const routes = [
@@ -36,7 +36,7 @@ const routes = [
       {
         path: "/",
         name: "home",
-        component: () => import("../views/site/home/index.vue"),
+        component: () => import("../views/site/home"),
       },
       // education
       {
@@ -186,24 +186,24 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
-// router.beforeEach((to, from, next) => {
-//   const tokenExists = !!TokenService.getToken();
+router.beforeEach((to, from, next) => {
+  const tokenExists = !!TokenService.getToken();
 
-//   if (to.matched.some((record) => record.meta.requiresAuth)) {
-//     if (!tokenExists) {
-//       next("/landing-page");
-//       return;
-//     }
-//   }
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!tokenExists) {
+      next("/landing-page");
+      return;
+    }
+  }
 
-//   if (to.matched.some((record) => record.meta.guestOnly)) {
-//     if (tokenExists) {
-//       next("/");
-//       return;
-//     }
-//   }
+  if (to.matched.some((record) => record.meta.guestOnly)) {
+    if (tokenExists) {
+      next("/");
+      return;
+    }
+  }
 
-//   next();
-// });
+  next();
+});
 
 export default router;

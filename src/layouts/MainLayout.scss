@@ -10,7 +10,7 @@ $myBezier: cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 99;
   border-radius: 0px 40px 0px 0px;
   background: #fdfdff;
-  // box-shadow: 4px 0px 20px 0px rgba(187, 196, 206, 0.5);
+  box-shadow: 4px 0px 20px 0px rgba(187, 196, 206, 0.5);
   transition: color 0.3s $myBezier, border-color 0.3s $myBezier,
     min-width 0.3s $myBezier, max-width 0.3s $myBezier, transform 0.3s $myBezier,
     background-color 0.3s $myBezier;
@@ -163,7 +163,8 @@ $myBezier: cubic-bezier(0.4, 0, 0.2, 1);
         }
       }
     }
-    & > div {
+    & > div,
+    a {
       position: relative;
       display: flex;
       align-items: center;
@@ -270,7 +271,7 @@ $myBezier: cubic-bezier(0.4, 0, 0.2, 1);
   min-height: calc(100vh - 80px);
   margin-left: 270px;
   transition: margin-left 0.3s $myBezier, transform 0.3s $myBezier;
-  background-color: #f2f3f8;
+  // background-color: #f2f3f8;
   overflow-x: hidden;
   &.isactive {
     transform: translateX(0px);
