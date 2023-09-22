@@ -20,10 +20,10 @@ const mutations = {
   setIsLoggedOn: (state, data) => (state.isLoggedOn = data),
 };
 const actions = {
-  async getUser({ commit }) {
+  getUser({ commit }) {
     try {
       commit("setLoading", true);
-      await this._vm.$http
+      this._vm.$http
         .get(baseURLHemis + "account/me")
         .then((res) => {
           if (res.success) {

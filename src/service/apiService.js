@@ -10,10 +10,9 @@ export const http = axios.create({
 function setConfiguration(provider) {
   provider.interceptors.request.use(
     (config) => {
-      // if (token) {
-      //   config.headers["Authorization"] = `Bearer ${token}`;
-      //   store.dispatch("checkRefreshTime").then(() => {});
-      // }
+      if (token) {
+        config.headers["Authorization"] = `Bearer ${token}`;
+      }
       config.headers["Accept"] = "application/json";
       config.headers["Access-Control-Allow-Origin"] = "*";
       config.headers["Content-Type"] = "application/json";

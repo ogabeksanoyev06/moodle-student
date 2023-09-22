@@ -1,18 +1,16 @@
 <template>
   <div id="home__container">
-    <app-button @click="$router.push({ name: 'login' })">
-      Tizmiga kirish
-    </app-button>
+    <LandingHeader />
+
+    <footer />
   </div>
 </template>
 <script>
-import AppButton from "@/components/shared-components/AppButton.vue";
+import LandingHeader from "./header/landing-header.vue";
 
 export default {
   name: "LandingPage",
-  components: {
-    AppButton,
-  },
+  components: { LandingHeader },
   data() {
     return {};
   },

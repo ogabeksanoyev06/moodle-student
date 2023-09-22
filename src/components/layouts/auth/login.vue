@@ -24,7 +24,7 @@
                   placeholder="Talaba ID"
                   v-model="request.login"
                 >
-                  <template slot="append">
+                  <template #append>
                     <img src="/icons/account.svg" alt="" />
                   </template>
                 </base-input>
@@ -110,7 +110,7 @@ export default {
   },
   methods: {
     ...mapMutations(["setWindowWidth"]),
-    ...mapActions(["getUser"]),
+    ...mapActions([]),
     setWidth() {
       this.setWindowWidth(document.documentElement.clientWidth);
     },
@@ -120,30 +120,31 @@ export default {
         ? "password"
         : "text";
     },
-    loginToSystem() {
+    async loginToSystem() {
       this.loading = true;
       this.$http
         .post(baseURLHemis + "auth/login", this.request)
         .then((data) => {
           if (data.success) {
             TokenService.saveToken(data.data.token);
-            this.getUser();
-            if (Number(this.user?.educationForm.code) === 16) {
-              this.$router.push({ name: "home" });
-              this.successNotification("Tizimga muvaffaqiyatli kirildi");
-            } else {
-              this.errorNotification("Siz tizimdan foydalana olmaysiz!");
-              TokenService.removeToken();
-            }
-          } else {
-            this.authError = data.error;
-            this.errorNotification(data.error);
+            const headers = {
+              Authorization: "Bearer " + data.data.token,
+            };
+            this.$http.get(baseURLHemis + "account/me", headers).then((res) => {
+              if (Number(res.data.educationForm.code) === 16) {
+                this.$router.push({ name: "home" });
+                this.successNotification("Tizimga muvaffaqiyatli kirildi");
+              } else {
+                this.errorNotification("Siz tizimdan foydalana olmaysiz!");
+              }
+            });
           }
         })
-        .catch(() => {
+        .catch((error) => {
           this.request.login = "";
           this.request.password = "";
           this.loading = false;
+          this.errorNotification(error.response.data.error);
         })
         .finally(() => {
           this.loading = false;
@@ -151,7 +152,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["user"]),
+    ...mapGetters([]),
   },
   mounted() {
     this.setWidth();

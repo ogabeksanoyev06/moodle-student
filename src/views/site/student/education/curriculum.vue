@@ -178,7 +178,8 @@ export default {
 <style lang="scss" scoped>
 .box {
   position: relative;
-  border-radius: 8px;
+  border-top: 3px solid #40d88a;
+  border-radius: 4px;
   background: #ffffff;
   margin-bottom: 20px;
   width: 100%;

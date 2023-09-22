@@ -1,46 +1,43 @@
 <template>
   <div class="content">
     <div class="tab__main">
-      <h3 class="title">Fanlar</h3>
-      <div class="tab mb-30">
-        <button class="tab__item active">Iqtisodiy xavfsizlik</button>
-        <button class="tab__item" v-for="item in 10" :key="item">
-          Iqtisodiy xavfsizlik
-        </button>
+      <div class="tab">
+        <h3 class="title">Fanlar</h3>
+        <div class="mb-30">
+          <button class="tab__item active">Iqtisodiy xavfsizlik</button>
+          <button class="tab__item" v-for="item in 10" :key="item">
+            Iqtisodiy xavfsizlik
+          </button>
+        </div>
       </div>
-      <div
-        style="background-color: rgba(29, 74, 121, 0.04); border-radius: 4px"
-        class="pa-15"
-      >
+      <div class="tab__body">
         <h3 class="title">Darslar ro'yxati</h3>
-        <div class="tab__body">
-          <div class="box" v-for="(item, i) in 8" :key="i">
-            <div class="box-header" @click="toggleAccordion(i)">
-              <h3 class="box-title">17 October - 23 October</h3>
-              <div class="box-tools" :class="{ opened: activeIndex === i }">
-                <img src="/icons/angle-left.svg" alt="" />
+        <div class="box" v-for="(item, i) in 8" :key="i">
+          <div class="box-header" @click="toggleAccordion(i)">
+            <h3 class="box-title">17 October - 23 October</h3>
+            <div class="box-tools" :class="{ opened: activeIndex === i }">
+              <img src="/icons/angle-left.svg" alt="" />
+            </div>
+          </div>
+          <transition
+            name="accordion"
+            @enter="start"
+            @after-enter="end"
+            @before-leave="start"
+            @after-leave="end"
+          >
+            <div
+              :class="{ opened: activeIndex === i }"
+              v-show="activeIndex === i"
+            >
+              <div class="box-body">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Repellendus temporibus rerum nostrum minima, dicta vitae
+                necessitatibus sint molestiae facere eos dolorum iste pariatur
+                ipsum reprehenderit ab provident, quo repudiandae. Debitis.
               </div>
             </div>
-            <transition
-              name="accordion"
-              @enter="start"
-              @after-enter="end"
-              @before-leave="start"
-              @after-leave="end"
-            >
-              <div
-                :class="{ opened: activeIndex === i }"
-                v-show="activeIndex === i"
-              >
-                <div class="box-body">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Repellendus temporibus rerum nostrum minima, dicta vitae
-                  necessitatibus sint molestiae facere eos dolorum iste pariatur
-                  ipsum reprehenderit ab provident, quo repudiandae. Debitis.
-                </div>
-              </div>
-            </transition>
-          </div>
+          </transition>
         </div>
       </div>
     </div>
@@ -74,17 +71,19 @@ export default {
 </script>
 <style lang="scss" scoped>
 .tab {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
+  &__main {
+    display: grid;
+    grid-template-columns: 3fr 9fr;
+    gap: 40px;
+  }
   &__item {
-    max-width: 280px;
     min-height: 60px;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #fff;
+    margin-bottom: 10px;
     color: #919caa;
     font-size: 15px;
     font-weight: 500;
@@ -102,6 +101,7 @@ export default {
     }
   }
   &__body {
+    flex: 1;
   }
 }
 .box {
@@ -169,5 +169,12 @@ export default {
 .accordion-enter,
 .accordion-leave-to {
   height: 0 !important;
+}
+@media (max-width: 768px) {
+  .tab {
+    &__main {
+      grid-template-columns: 1fr;
+    }
+  }
 }
 </style>

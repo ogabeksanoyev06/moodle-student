@@ -18,8 +18,26 @@
           @click="dropdownVisible = !dropdownVisible"
           v-on-click-outside:excludedClass="hideSelectDropdown"
         >
-          <div class="input__block-append hide-password">
-            <i class="fa fa-angle-down"></i>
+          <div
+            class="input__block-append"
+            :class="dropdownVisible ? 'active' : ''"
+          >
+            <svg
+              class="Dropdown_self__FtxaI"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              style="height: 1rem; width: 1rem"
+            >
+              <path
+                d="M13.2797 5.9668L8.93306 10.3135C8.41973 10.8268 7.57973 10.8268 7.06639 10.3135L2.71973 5.9668"
+                stroke="rgb(51, 54, 57)"
+                stroke-width="1.5"
+                stroke-miterlimit="10"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+            </svg>
           </div>
           <input
             ref="input"
@@ -168,6 +186,16 @@ export default {
   transition: visibility 0s linear 0.2s, opacity 0.2s, transform 0.2s;
   visibility: hidden;
   z-index: 9999;
+  height: 180px;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #d9d9da;
+    border-radius: 5px;
+  }
   &.active {
     opacity: 1;
     -webkit-transform: translateY(0);

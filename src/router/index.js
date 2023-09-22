@@ -32,6 +32,11 @@ const routes = [
     component: () => import("../layouts/MainLayout.vue"),
     meta: { requiresAuth: true },
     children: [
+      {
+        path: "",
+        name: "FaceControl",
+        component: () => import("../views/site/face-control"),
+      },
       // home
       {
         path: "/",
