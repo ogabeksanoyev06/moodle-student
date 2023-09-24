@@ -1,7 +1,6 @@
 <template>
   <div id="home__container">
     <LandingHeader />
-
     <footer />
   </div>
 </template>

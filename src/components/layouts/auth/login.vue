@@ -15,7 +15,10 @@
             Moodle OTM axborot tizimi
           </AppText>
           <ValidationObserver v-slot="{ handleSubmit }" class="w-100">
-            <form @submit.prevent="handleSubmit(loginToSystem)">
+            <form
+              @submit.prevent="handleSubmit(loginToSystem)"
+              v-if="!faceForm"
+            >
               <div class="form-group">
                 <base-input
                   type="text"
@@ -67,6 +70,56 @@
                 Tizimga kirish
               </AppButton>
             </form>
+            <form @submit.prevent="handleSubmit(loginToSystem)" v-if="faceForm">
+              <div class="form-group">
+                <base-input
+                  type="text"
+                  vid="ID"
+                  rules="required"
+                  placeholder="Talaba ID"
+                  v-model="request.login"
+                >
+                  <template #append>
+                    <img src="/icons/account.svg" alt="" />
+                  </template>
+                </base-input>
+              </div>
+              <div
+                class="form-group"
+                style="display: flex; justify-content: end"
+              >
+                <AppButton
+                  theme="secondary"
+                  type="submit"
+                  :font-size="14"
+                  :sides="20"
+                  :weight="500"
+                  :height="40"
+                  class="mb-20"
+                >
+                  Rasmga olish
+                </AppButton>
+              </div>
+              <AppButton
+                theme="main"
+                type="submit"
+                :font-size="14"
+                :sides="20"
+                :weight="500"
+                :height="40"
+                :disabled="loading"
+                class="login mb-20 w-100"
+              >
+                Tizimga kirish
+              </AppButton>
+            </form>
+            <button class="face__btn" @click="faceForm = !faceForm">
+              <span v-if="!faceForm" class="d-flex align-center">
+                FACE orqali tizimga kirish
+                <img src="/icons/camera.svg" alt="" style="max-width: 20px" />
+              </span>
+              <span v-else>Parol orqali tizimga kirish</span>
+            </button>
           </ValidationObserver>
         </div>
       </div>
@@ -102,6 +155,7 @@ export default {
         login: "",
         password: "",
       },
+      faceForm: false,
       passwordField: true,
       authError: "",
       errorStatus: false,
@@ -208,6 +262,17 @@ export default {
       filter: blur(2px);
       backdrop-filter: blur(10.5px);
     }
+  }
+}
+.face__btn {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: inherit;
+
+  img {
+    margin-left: 5px;
   }
 }
 @media (max-width: 1040px) {

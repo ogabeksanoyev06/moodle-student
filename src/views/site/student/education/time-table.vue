@@ -1,44 +1,42 @@
 <template>
-  <div class="content">
-    <div class="tab__main">
-      <div class="tab">
-        <h3 class="title">Fanlar</h3>
-        <div class="mb-30">
-          <button class="tab__item active">Iqtisodiy xavfsizlik</button>
-          <button class="tab__item" v-for="item in 10" :key="item">
-            Iqtisodiy xavfsizlik
-          </button>
-        </div>
+  <div class="tab__main">
+    <div class="tab sticky">
+      <h3 class="title">Fanlar</h3>
+      <div class="mb-30">
+        <button class="tab__item active">Iqtisodiy xavfsizlik</button>
+        <button class="tab__item" v-for="item in 6" :key="item">
+          Iqtisodiy xavfsizlik
+        </button>
       </div>
-      <div class="tab__body">
-        <h3 class="title">Darslar ro'yxati</h3>
-        <div class="box" v-for="(item, i) in 8" :key="i">
-          <div class="box-header" @click="toggleAccordion(i)">
-            <h3 class="box-title">17 October - 23 October</h3>
-            <div class="box-tools" :class="{ opened: activeIndex === i }">
-              <img src="/icons/angle-left.svg" alt="" />
+    </div>
+    <div class="tab__body">
+      <h3 class="title">Darslar ro'yxati</h3>
+      <div class="box" v-for="(item, i) in 8" :key="i">
+        <div class="box-header" @click="toggleAccordion(i)">
+          <h3 class="box-title">17 October - 23 October</h3>
+          <div class="box-tools" :class="{ opened: activeIndex === i }">
+            <img src="/icons/angle-left.svg" alt="" />
+          </div>
+        </div>
+        <transition
+          name="accordion"
+          @enter="start"
+          @after-enter="end"
+          @before-leave="start"
+          @after-leave="end"
+        >
+          <div
+            :class="{ opened: activeIndex === i }"
+            v-show="activeIndex === i"
+          >
+            <div class="box-body">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Repellendus temporibus rerum nostrum minima, dicta vitae
+              necessitatibus sint molestiae facere eos dolorum iste pariatur
+              ipsum reprehenderit ab provident, quo repudiandae. Debitis.
             </div>
           </div>
-          <transition
-            name="accordion"
-            @enter="start"
-            @after-enter="end"
-            @before-leave="start"
-            @after-leave="end"
-          >
-            <div
-              :class="{ opened: activeIndex === i }"
-              v-show="activeIndex === i"
-            >
-              <div class="box-body">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Repellendus temporibus rerum nostrum minima, dicta vitae
-                necessitatibus sint molestiae facere eos dolorum iste pariatur
-                ipsum reprehenderit ab provident, quo repudiandae. Debitis.
-              </div>
-            </div>
-          </transition>
-        </div>
+        </transition>
       </div>
     </div>
   </div>
