@@ -105,7 +105,7 @@ export default {
     },
     async captureAndDisplayImage() {
       try {
-        const videoContainer = this.$refs.videoContainer;
+        // const videoContainer = this.$refs.videoContainer;
         const detections = await faceapi.detectAllFaces(this.$refs.video);
         if (detections.length) {
           this.faceBox = detections[0].box;

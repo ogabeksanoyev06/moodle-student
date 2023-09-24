@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkmoodle_student"]=self["webpackChunkmoodle_student"]||[]).push([[502],{9502:function(e,n,u){u.r(n),u.d(n,{default:function(){return d}});var t=function(){var e=this,n=e._self._c;return n("div")},l=[],s={name:"AppCompose"},o=s,r=u(1001),c=(0,r.Z)(o,t,l,!1,null,null,null),d=c.exports}}]);
+//# sourceMappingURL=502.3aefe65a.js.map
