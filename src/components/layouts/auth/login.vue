@@ -70,7 +70,7 @@
                 Tizimga kirish
               </AppButton>
             </form>
-            <form @submit.prevent="handleSubmit(loginToSystem)" v-if="faceForm">
+            <form @submit.prevent="handleSubmit(getUserImage)" v-if="faceForm">
               <div class="form-group">
                 <base-input
                   type="text"
@@ -88,17 +88,6 @@
                 class="form-group"
                 style="display: flex; justify-content: end"
               >
-                <AppButton
-                  theme="secondary"
-                  type="submit"
-                  :font-size="14"
-                  :sides="20"
-                  :weight="500"
-                  :height="40"
-                  class="mb-20"
-                >
-                  Rasmga olish
-                </AppButton>
               </div>
               <AppButton
                 theme="main"
@@ -110,11 +99,17 @@
                 :disabled="loading"
                 class="login mb-20 w-100"
               >
-                Tizimga kirish
+                Face id orqali  kirish
               </AppButton>
             </form>
-            <button class="face__btn" @click="faceForm = !faceForm">
-              <span v-if="!faceForm" class="d-flex align-center">
+            <AppModal @close="closeModal" :class="{ visible: showModal }" :width="700">
+              <template #modalHeader> Face Id </template>
+              <template #modalBody>
+                <FaceId @face-match-result="handleFaceMatchResult" :is-open-camera="showModal"  :image="image"/>
+              </template>
+            </AppModal>
+            <button class="face__btn" @click="faceForm=!faceForm">
+              <span v-if="!faceForm"  class="d-flex align-center">
                 FACE orqali tizimga kirish
                 <img src="/icons/camera.svg" alt="" style="max-width: 20px" />
               </span>
@@ -140,14 +135,18 @@ import { KinesisContainer, KinesisElement } from "vue-kinesis";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import TokenService from "@/service/TokenService";
 import { baseURLHemis } from "@/plugins/axios";
+import FaceId from "@/components/shared-components/FaceId.vue";
+import AppModal from "@/components/shared-components/AppModal.vue";
 export default {
   name: "AppLogin",
   components: {
+    AppModal,
     "kinesis-container": KinesisContainer,
     "kinesis-element": KinesisElement,
     AppButton,
     BaseInput,
     ValidationObserver,
+    FaceId
   },
   data() {
     return {
@@ -160,55 +159,107 @@ export default {
       authError: "",
       errorStatus: false,
       loading: false,
+      showModal: false,
+      image:'',
+      facesMatched:null
     };
   },
   methods: {
     ...mapMutations(["setWindowWidth"]),
     ...mapActions([]),
+
+    handleFaceMatchResult(result) {
+      this.facesMatched = result;
+      if(result===false){
+        console.log(result)
+        this.closeModal()
+        this.errorNotification("Yuzlar mos kelmaydi!");
+      }
+      if(result===true){
+        this.closeModal()
+        this.successNotification("Yuzlar mos keladi!");
+      }
+    },
     setWidth() {
       this.setWindowWidth(document.documentElement.clientWidth);
     },
     confirmationSee() {
       this.passwordField = !this.passwordField;
       document.getElementById("password").type = this.passwordField
-        ? "password"
-        : "text";
+          ? "password"
+          : "text";
     },
     async loginToSystem() {
       this.loading = true;
       this.$http
-        .post(baseURLHemis + "auth/login", this.request)
-        .then((data) => {
-          if (data.success) {
-            TokenService.saveToken(data.data.token);
-            const headers = {
-              Authorization: "Bearer " + data.data.token,
-            };
-            this.$http.get(baseURLHemis + "account/me", headers).then((res) => {
-              if (Number(res.data.educationForm.code) === 16) {
-                this.$router.push({ name: "home" });
-                this.successNotification("Tizimga muvaffaqiyatli kirildi");
-              } else {
-                this.errorNotification("Siz tizimdan foydalana olmaysiz!");
-              }
-            });
-          }
-        })
-        .catch((error) => {
-          this.request.login = "";
-          this.request.password = "";
-          this.loading = false;
-          this.errorNotification(error.response.data.error);
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+          .post(baseURLHemis + "auth/login", this.request)
+          .then((data) => {
+            if (data.success) {
+              TokenService.saveToken(data.data.token);
+              const headers = {
+                Authorization: "Bearer " + data.data.token,
+              };
+              this.$http.get(baseURLHemis + "account/me", headers).then((res) => {
+                if (Number(res.data.educationForm.code) === 16) {
+                  this.$router.push({name: "home"});
+                  this.successNotification("Tizimga muvaffaqiyatli kirildi");
+                } else {
+                  this.errorNotification("Siz tizimdan foydalana olmaysiz!");
+                }
+              });
+            }
+          })
+          .catch((error) => {
+            this.request.login = "";
+            this.request.password = "";
+            this.loading = false;
+            this.errorNotification(error.response.data.error);
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+    },
+    async getUserImage() {
+      console.log(this.request.login)
+      this.$http
+          .get(`https://student.tfi.uz/rest/v1/data/student-list?_education_form=16&search=${this.request.login}`, {
+            headers: {
+              Authorization: 'Bearer A9I0QP-QHygPDTyotnmoSfykIO0ZmAlQ'
+            }
+          })
+          .then((data) => {
+            this.image=data?.data.items[0].image
+            this.showModalClick()
+           console.log(data)
+          })
+          .catch((error) => {
+            this.request.login = "";
+            this.request.password = "";
+            this.loading = false;
+            console.log(error)
+            this.errorNotification(error.response.data.error);
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+    },
+
+    closeModal() {
+      this.showModal = false;
+      document.body.style.overflowY = "scroll";
+    },
+    showModalClick() {
+      this.showModal = true;
+      document.body.style.overflowY = "hidden";
     },
   },
   computed: {
     ...mapGetters([]),
   },
   mounted() {
+    if(this.facesMatched===false){
+      this.showModal===false
+    }
     this.setWidth();
     window.addEventListener("resize", this.setWidth);
   },
