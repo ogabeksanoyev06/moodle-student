@@ -88,17 +88,6 @@
                 class="form-group"
                 style="display: flex; justify-content: end"
               >
-                <AppButton
-                  theme="secondary"
-                  type="submit"
-                  :font-size="14"
-                  :sides="20"
-                  :weight="500"
-                  :height="40"
-                  class="mb-20"
-                >
-                  Rasmga olish
-                </AppButton>
               </div>
               <AppButton
                 theme="main"
@@ -110,7 +99,7 @@
                 :disabled="loading"
                 class="login mb-20 w-100"
               >
-                Tizimga kirish
+                Face id orqali  kirish
               </AppButton>
             </form>
             <AppModal @close="closeModal" :class="{ visible: showModal }" :width="700">
@@ -231,6 +220,7 @@ export default {
           });
     },
     async getUserImage() {
+      console.log(this.request.login)
       this.$http
           .get(`https://student.tfi.uz/rest/v1/data/student-list?_education_form=16&search=${this.request.login}`, {
             headers: {
@@ -238,7 +228,7 @@ export default {
             }
           })
           .then((data) => {
-            this.image=data.data.items[0].image
+            this.image=data?.data.items[0].image
             this.showModalClick()
            console.log(data)
           })
@@ -246,6 +236,7 @@ export default {
             this.request.login = "";
             this.request.password = "";
             this.loading = false;
+            console.log(error)
             this.errorNotification(error.response.data.error);
           })
           .finally(() => {
