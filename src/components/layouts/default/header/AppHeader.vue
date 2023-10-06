@@ -41,12 +41,18 @@
               >
                 <ul class="dropdown-menu-wrap">
                   <li class="dropdown-menu-item">
-                    <router-link :to="{ name: 'dashboard-profile' }">
+                    <router-link
+                      :to="{ name: 'dashboard-profile' }"
+                      class="w-100"
+                    >
                       <span>Profil</span>
                     </router-link>
                   </li>
                   <li class="dropdown-menu-item">
-                    <router-link :to="{ name: 'student-personal-data' }">
+                    <router-link
+                      :to="{ name: 'student-personal-data' }"
+                      class="w-100"
+                    >
                       <span>Shaxsiy ma'lumotlarim</span>
                     </router-link>
                   </li>

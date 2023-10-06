@@ -28,7 +28,6 @@
       ("orange", #f2994a),
       ("yellow", #f2c94c),
       ("green", #219653),
-      ("green-2", #2a9134),
       ("blue", #2f80ed),
       ("violet", #9b51e0),
       ("green-1", #6fcf97),
@@ -37,12 +36,14 @@
       ("gray", #738699),
       ("yellow-1", #fadd56),
       ("blue-2", #2063f0),
-      ("text-grey", #545454),
-      ("black", #000)
+      ("white", #fff)
     )
 {
   .color-#{$name} {
     color: #{$color};
+  }
+  .bg-#{$name} {
+    background-color: #{$color};
   }
 }
 .nowrap {

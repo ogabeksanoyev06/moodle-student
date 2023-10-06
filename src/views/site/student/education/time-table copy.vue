@@ -1,46 +1,7 @@
 <template>
   <div class="content">
     <div class="info-box">
-      <div class="info-box__inner">
-        <div class="info-box__left">
-          <div class="info-box-icon">A</div>
-          <div class="info-box-content">
-            <span class="info-box-number"> HBA-30 </span>
-          </div>
-        </div>
-        <div class="info-box__right">
-          <div class="info-box-content">
-            <label class="isible-xs">Semestr</label>
-            <ul class="pagination">
-              <li class="plabel"><span class="">Semestr</span></li>
-              <li class="active">
-                <span> 1 </span>
-              </li>
-              <li>
-                <span>2</span>
-              </li>
-              <li>
-                <span>3</span>
-              </li>
-              <li>
-                <span>4</span>
-              </li>
-              <li>
-                <span>5</span>
-              </li>
-              <li>
-                <span>6</span>
-              </li>
-              <li>
-                <span> 7 </span>
-              </li>
-              <li class="">
-                <span>8</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      <semestr-pagination />
       <div class="">
         <AppText
           :size="isDesktopSmall ? 14 : 16"
@@ -91,9 +52,10 @@
 </template>
 <script>
 import BaseSelect from "@/components/shared-components/BaseSelect.vue";
+import SemestrPagination from "@/components/shared-components/SemestrPagination.vue";
 export default {
   name: "EducationTimeTable",
-  components: { BaseSelect },
+  components: { BaseSelect, SemestrPagination },
   data() {
     return {
       value: "",

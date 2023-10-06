@@ -1,49 +1,6 @@
 <template>
   <div class="content">
-    <div class="info-box box-mini">
-      <div class="info-box__inner">
-        <div class="info-box__left">
-          <div class="info-box-icon">
-            <i class="fa fa-file"></i>
-          </div>
-          <div class="info-box-content">
-            <span class="info-box-number"> HBA-30 </span>
-          </div>
-        </div>
-        <div class="info-box__right">
-          <div class="info-box-content">
-            <label class="isible-xs">Semestr</label>
-            <ul class="pagination">
-              <li class="plabel"><span class="">Semestr</span></li>
-              <li class="active">
-                <span> 1 </span>
-              </li>
-              <li>
-                <span>2</span>
-              </li>
-              <li>
-                <span>3</span>
-              </li>
-              <li>
-                <span>4</span>
-              </li>
-              <li>
-                <span>5</span>
-              </li>
-              <li>
-                <span>6</span>
-              </li>
-              <li>
-                <span> 7 </span>
-              </li>
-              <li class="">
-                <span>8</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
+    <semestr-pagination />
     <div class="box">
       <div class="box-header">
         <div class="grid-block-4 mla">
@@ -94,8 +51,9 @@
 <script>
 import BaseSelect from "@/components/shared-components/BaseSelect.vue";
 import BaseInput from "@/components/shared-components/BaseInput.vue";
+import SemestrPagination from '@/components/shared-components/SemestrPagination.vue';
 export default {
-  components: { BaseSelect, BaseInput },
+  components: { BaseSelect, BaseInput, SemestrPagination },
   name: "EducationAttendance",
 };
 </script>

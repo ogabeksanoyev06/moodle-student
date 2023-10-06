@@ -32,11 +32,6 @@ const routes = [
     component: () => import("../layouts/MainLayout.vue"),
     meta: { requiresAuth: true },
     children: [
-      {
-        path: "",
-        name: "FaceControl",
-        component: () => import("../views/site/face-control"),
-      },
       // home
       {
         path: "/",
@@ -196,7 +191,7 @@ router.beforeEach((to, from, next) => {
 
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!tokenExists) {
-      next("/landing-page");
+      next({ name: "landing-page" });
       return;
     }
   }

@@ -1,7 +1,7 @@
 <template>
-  <div class="header">
+  <div class="Lheader" :class="scrolled ? 'fixed' : ''">
     <div class="container">
-      <div class="header__inner">
+      <div class="Lheader__inner">
         <router-link to="/" class="d-flex align-center">
           <div>
             <div class="logo">
@@ -12,26 +12,26 @@
               />
             </div>
           </div>
-          <p class="logo__title">Moodle</p>
+          <p class="logo__title">LMS</p>
         </router-link>
-        <ul class="header__menu">
+        <ul class="Lheader__menu">
           <li
-            class="header__menu-item"
+            class="Lheader__menu-item"
             @click="systemDropdown = !systemDropdown"
             v-on-click-outside:excludedClass="hideSystemDropdown"
           >
             <span>Tizim haqida</span>
             <svg
-              width="25"
-              height="24"
-              fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              class=""
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
             >
               <path
-                d="M9.119 9l3.88 3.88L16.879 9a.996.996 0 111.41 1.41L13.699 15a.996.996 0 01-1.41 0l-4.59-4.59a.996.996 0 010-1.41c.39-.38 1.03-.39 1.42 0z"
-                fill="#000"
-              ></path>
+                d="M9.99974 10.9762L14.1246 6.85141L15.3031 8.02992L9.99974 13.3333L4.69644 8.02992L5.87496 6.85141L9.99974 10.9762Z"
+                fill="white"
+              />
             </svg>
             <div class="dropdown-menu" :class="systemDropdown ? 'active' : ''">
               <ul class="dropdown-menu-wrap">
@@ -48,56 +48,73 @@
               </ul>
             </div>
           </li>
-          <li class="header__menu-item">
+          <li class="Lheader__menu-item">
             <span>Tizim imkoniyatlari</span>
           </li>
-          <li class="header__menu-item">
+          <li class="Lheader__menu-item">
             <span>Integratsiya</span>
           </li>
-          <li class="header__menu-item">
+          <li class="Lheader__menu-item">
             <span>FAQS</span>
           </li>
         </ul>
-        <AppButton
-          theme="main"
-          :font-size="isMobileSmall ? 14 : isMobile ? 16 : 18"
-          :sides="isMobileSmall ? 10 : isMobile ? 20 : 30"
-          class="header__login"
-          :radius="10"
-          @click="$router.push({ path: '/login' })"
-        >
+        <div class="Lheader__login" @click="$router.push({ path: '/login' })">
           Tizimga kirish
-        </AppButton>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import AppButton from "@/components/shared-components/AppButton.vue";
 export default {
   name: "LandingHeader",
-  components: { AppButton },
+  components: {},
   data() {
     return {
       systemDropdown: false,
+      scrolled: false,
     };
   },
   methods: {
     hideSystemDropdown() {
       this.systemDropdown = false;
     },
+    handleScroll() {
+      if (window.scrollY > 0) {
+        this.scrolled = true;
+      } else {
+        this.scrolled = false;
+      }
+    },
+  },
+  mounted() {
+    window.addEventListener("scroll", this.handleScroll);
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.handleScroll);
   },
 };
 </script>
 <style scoped lang="scss">
-.header {
-  border-bottom: 1px solid #e4e4e4;
-  position: relative;
+.Lheader {
+  background-color: #0152da;
+  box-shadow: 0px 2px 10px 0px rgba(2, 64, 168, 0.5);
+  &.fixed {
+    position: sticky;
+    top: 0px;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    .Lheader__inner {
+      padding: 20px 0;
+    }
+  }
   &__inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1.5rem 0;
+    padding: 30px 0;
+    transition: padding 0.3s ease-in-out;
   }
   &__menu {
     display: flex;
@@ -105,18 +122,35 @@ export default {
       display: flex;
       align-items: center;
       margin-right: 40px;
-      font-weight: 600;
-      line-height: 26px;
       position: relative;
       transition: 0.3s;
       cursor: pointer;
+      span {
+        font-size: 14px;
+        font-weight: 600;
+        line-height: normal;
+        letter-spacing: -0.28px;
+        color: #fff;
+      }
     }
+  }
+  &__login {
+    display: inline-flex;
+    padding: 8px 30px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    color: #fff;
+    border: 1px solid #fff;
+    cursor: pointer;
   }
 }
 
 .logo {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 45px;
+  height: 45px;
+  margin-right: 5px;
+
   img {
     max-width: 100%;
     height: 100%;
@@ -124,9 +158,11 @@ export default {
   }
 }
 .logo__title {
-  font-size: 1.5rem;
+  font-size: 24px;
   font-weight: 600;
-  margin-left: 0.75rem;
+  letter-spacing: 0.48px;
+  line-height: normal;
+  color: #fff;
 }
 
 .dropdown-menu {
