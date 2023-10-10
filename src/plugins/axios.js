@@ -3,7 +3,7 @@ import TokenService from "../service/TokenService";
 import router from "../router/index";
 // import store from "../store";
 
-export const baseURL = "http://api.fastlms.uz/api/";
+export const baseURL = "https://api.fastlms.uz/api/";
 export const baseURLHemis = "https://student.tfi.uz/rest/v1/";
 
 export const http = axios.create({

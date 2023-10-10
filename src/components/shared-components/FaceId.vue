@@ -279,7 +279,7 @@
       </div>
     </div>
     <video ref="video" width="100%" height="100%" autoplay playsinline></video>
-    <img crossOrigin="anonymous" ref="inputImage" src="http://api.bek-baraka.uz/media/products/image_hkkrej4.png" alt="img" v-show="false" />
+    <img crossorigin="anonymous"  ref="inputImage" src="https://api.fastlms.uz/media/students/320__90_2357640696.jpg" alt="img" v-show="false" />
   </div>
 </template>
 
@@ -344,7 +344,6 @@ export default {
       const stream = await navigator.mediaDevices.getUserMedia({ video: {} });
       video.srcObject = stream;
       video.onplaying = () => {
-        console.log('aa')
         this.countdown=4
         let interval = setInterval(() => {
           if (this.countdown === 0) {

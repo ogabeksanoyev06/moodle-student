@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import TokenService from "@/service/TokenService";
 Vue.use(VueRouter);
 
 const routes = [
