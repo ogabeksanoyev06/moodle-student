@@ -143,6 +143,7 @@ import { KinesisContainer, KinesisElement } from "vue-kinesis";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import FaceId from "@/components/shared-components/FaceId.vue";
 import AppModal from "@/components/shared-components/AppModal.vue";
+import { baseURL } from "@/plugins/axios";
 export default {
   name: "AppLogin",
   components: {
@@ -219,7 +220,7 @@ export default {
           this.request.login = "";
           this.request.password = "";
           this.loading = false;
-          this.errorNotification(error.response.data.error);
+          this.errorNotification(error.response.message);
         })
         .finally(() => {
           this.loading = false;
@@ -228,12 +229,7 @@ export default {
     async getUserImage() {
       console.log(this.request.login);
       this.$http
-        .get(
-          "https://api.fastlms.uz/api/" +
-            "get/student/" +
-            this.request.login +
-            "/"
-        )
+        .get(baseURL + "get/student/" + this.request.login + "/")
         .then((data) => {
           console.log(data);
           localStorage.setItem("studentId", this.request.login);
