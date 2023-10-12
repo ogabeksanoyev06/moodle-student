@@ -6,7 +6,10 @@ Vue.mixin({
     return {};
   },
   computed: {
-    ...mapGetters([]),
+    ...mapGetters(["isLoggedOn"]),
+    userIsLoggedOn() {
+      return this.isLoggedOn;
+    },
   },
   methods: {
     successNotification(message) {

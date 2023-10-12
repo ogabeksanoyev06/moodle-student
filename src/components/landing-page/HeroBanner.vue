@@ -130,6 +130,7 @@ export default {
       height: auto;
       object-fit: contain;
       border-radius: 20px;
+      box-shadow: 0px 5px 20px 0px rgba(203, 203, 203, 0.5);
     }
   }
 

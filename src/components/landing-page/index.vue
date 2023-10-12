@@ -2,6 +2,59 @@
   <div id="home__container">
     <LandingHeader />
     <HeroBanner />
+    <div class="container mb-20 mt-20">
+      <div
+        style="border-radius: 20px; background: #0152da"
+        :style="isDesktopSmall ? 'margin-top: 60px' : 'margin-top: 180px'"
+        :class="isMobileMedium ? 'pa-20' : isDesktopSmall ? 'pa-20' : 'pa-40'"
+      >
+        <div
+          class="d-flex justify-space-between"
+          :class="isDesktopSmall ? 'flex-wrap justify-content-center' : ''"
+        >
+          <div class="counts" :class="isDesktopSmall ? 'mb-30' : ''">
+            <img src="/images/Group 14.png" alt="" />
+          </div>
+          <div class="d-flex flex-column">
+            <AppText
+              :size="isMobileSmall ? 16 : isMobile ? 32 : 42"
+              :line-height="isMobileSmall ? 24 : isMobile ? 40 : 56"
+              :class="isMobileSmall ? 'mb-20' : isMobile ? 'mb-30' : 'mb-50'"
+              max-width="545"
+              weight="600"
+              class="color-white text-center mb-10"
+            >
+              Talabalar va O’qituvchilar munosabati
+            </AppText>
+            <AppText
+              :size="isMobileSmall ? 14 : isMobile ? 16 : 20"
+              :line-height="isMobileSmall ? 22 : isMobile ? 24 : 32"
+              :class="isMobileSmall ? 'mb-10' : isMobile ? 'mb-20' : 'mb-30'"
+              max-width="545"
+              weight="500"
+              class="color-blue-3"
+            >
+              Boshqaruvning barcha sub’ektlari, shu jumladan talabalar va
+              ularning ota-onalarini axborotga bo‘lgan ehtiyojini qondirish.
+              Boshqaruv xodimlari tomonidan ma’lumotlarni tahlil qilish va
+              qarorlar qabul qilish samaradorligini oshirish.
+            </AppText>
+            <AppText
+              :size="isMobileSmall ? 14 : isMobile ? 16 : 20"
+              :line-height="isMobileSmall ? 22 : isMobile ? 24 : 32"
+              max-width="545"
+              weight="500"
+              class="color-blue-3"
+            >
+              Boshqaruvning barcha sub’ektlari, shu jumladan talabalar va
+              ularning ota-onalarini axborotga bo‘lgan ehtiyojini qondirish.
+              Boshqaruv xodimlari tomonidan ma’lumotlarni tahlil qilish va
+              qarorlar qabul qilish samaradorligini oshirish.
+            </AppText>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="container mb-20">
       <div
         style="border-radius: 20px; background: #dfe5fb; margin-top: 60px"
@@ -190,6 +243,20 @@ export default {
     width: 100%;
   }
 }
+.counts {
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: -150px;
+  img {
+    max-width: 450px;
+    width: 100%;
+    -o-object-fit: contain;
+    object-fit: contain;
+  }
+}
 @media (max-width: 1024px) {
   .list {
     flex-direction: column;
@@ -201,6 +268,10 @@ export default {
         order: 2;
       }
     }
+  }
+  .counts {
+    margin-top: 20px;
+    order: 1;
   }
 }
 </style>

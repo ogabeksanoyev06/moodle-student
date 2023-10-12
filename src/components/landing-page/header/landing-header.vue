@@ -14,7 +14,7 @@
           </div>
           <p class="logo__title">LMS</p>
         </router-link>
-        <ul class="Lheader__menu">
+        <ul class="Lheader__menu" v-if="!isDesktopSmall">
           <li
             class="Lheader__menu-item"
             @click="systemDropdown = !systemDropdown"
@@ -36,13 +36,11 @@
             <div class="dropdown-menu" :class="systemDropdown ? 'active' : ''">
               <ul class="dropdown-menu-wrap">
                 <li class="dropdown-menu-item">
-                  <router-link :to="{ name: 'home' }">
-                    <span>Jamoa</span>
-                  </router-link>
+                  <router-link :to="{ name: 'home' }"> Jamoa </router-link>
                 </li>
                 <li class="dropdown-menu-item">
                   <router-link :to="{ name: 'home' }">
-                    <span>Oliy ta’lim muassasalari</span>
+                    Oliy ta’lim muassasalari
                   </router-link>
                 </li>
               </ul>
@@ -58,7 +56,11 @@
             <span>FAQS</span>
           </li>
         </ul>
-        <div class="Lheader__login" @click="$router.push({ path: '/login' })">
+        <div
+          class="Lheader__login"
+          @click="$router.push({ path: '/login' })"
+          v-if="!isMobileSmall"
+        >
           Tizimga kirish
         </div>
       </div>
@@ -97,6 +99,8 @@ export default {
 </script>
 <style scoped lang="scss">
 .Lheader {
+  position: relative;
+  z-index: 3;
   background-color: #0152da;
   box-shadow: 0px 2px 10px 0px rgba(2, 64, 168, 0.5);
   &.fixed {
@@ -195,8 +199,8 @@ export default {
     & > * {
       margin: 0;
       padding: 5px 12px;
-      color: rgba(0, 0, 0, 0.88);
-      font-weight: 400;
+      color: rgba(0, 0, 0, 0.88) !important;
+      font-weight: 500;
       font-size: 14px;
       cursor: pointer;
       transition: all 0.2s;

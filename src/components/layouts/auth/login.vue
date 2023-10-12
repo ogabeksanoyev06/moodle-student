@@ -87,8 +87,7 @@
               <div
                 class="form-group"
                 style="display: flex; justify-content: end"
-              >
-              </div>
+              ></div>
               <AppButton
                 theme="main"
                 type="submit"
@@ -99,17 +98,25 @@
                 :disabled="loading"
                 class="login mb-20 w-100"
               >
-                Face id orqali  kirish
+                Face id orqali kirish
               </AppButton>
             </form>
-            <AppModal @close="closeModal" :class="{ visible: showModal }" :width="700">
+            <AppModal
+              @close="closeModal"
+              :class="{ visible: showModal }"
+              :width="700"
+            >
               <template #modalHeader> Face Id </template>
               <template #modalBody>
-                <FaceId @face-match-result="handleFaceMatchResult" :is-open-camera="showModal"  :image="image"/>
+                <FaceId
+                  @face-match-result="handleFaceMatchResult"
+                  :is-open-camera="showModal"
+                  :image="image"
+                />
               </template>
             </AppModal>
-            <button class="face__btn" @click="faceForm=!faceForm">
-              <span v-if="!faceForm"  class="d-flex align-center">
+            <button class="face__btn" @click="faceForm = !faceForm">
+              <span v-if="!faceForm" class="d-flex align-center">
                 FACE orqali tizimga kirish
                 <img src="/icons/camera.svg" alt="" style="max-width: 20px" />
               </span>
@@ -146,7 +153,7 @@ export default {
     AppButton,
     BaseInput,
     ValidationObserver,
-    FaceId
+    FaceId,
   },
   data() {
     return {
@@ -160,8 +167,8 @@ export default {
       errorStatus: false,
       loading: false,
       showModal: false,
-      image:'',
-      facesMatched:null
+      image: "",
+      facesMatched: null,
     };
   },
   methods: {
@@ -170,13 +177,13 @@ export default {
 
     handleFaceMatchResult(result) {
       this.facesMatched = result;
-      if(result===false){
-        console.log(result)
-        this.closeModal()
+      if (result === false) {
+        console.log(result);
+        this.closeModal();
         this.errorNotification("Yuzlar mos kelmaydi!");
       }
-      if(result===true){
-        this.closeModal()
+      if (result === true) {
+        this.closeModal();
         this.successNotification("Yuzlar mos keladi!");
       }
     },
@@ -186,62 +193,65 @@ export default {
     confirmationSee() {
       this.passwordField = !this.passwordField;
       document.getElementById("password").type = this.passwordField
-          ? "password"
-          : "text";
+        ? "password"
+        : "text";
     },
     async loginToSystem() {
       this.loading = true;
       this.$http
-          .post(baseURLHemis + "auth/login", this.request)
-          .then((data) => {
-            if (data.success) {
-              TokenService.saveToken(data.data.token);
-              const headers = {
-                Authorization: "Bearer " + data.data.token,
-              };
-              this.$http.get(baseURLHemis + "account/me", headers).then((res) => {
-                if (Number(res.data.educationForm.code) === 16) {
-                  this.$router.push({name: "home"});
-                  this.successNotification("Tizimga muvaffaqiyatli kirildi");
-                } else {
-                  this.errorNotification("Siz tizimdan foydalana olmaysiz!");
-                }
-              });
-            }
-          })
-          .catch((error) => {
-            this.request.login = "";
-            this.request.password = "";
-            this.loading = false;
-            this.errorNotification(error.response.data.error);
-          })
-          .finally(() => {
-            this.loading = false;
-          });
+        .post(baseURLHemis + "auth/login", this.request)
+        .then((data) => {
+          if (data.success) {
+            TokenService.saveToken(data.data.token);
+            const headers = {
+              Authorization: "Bearer " + data.data.token,
+            };
+            this.$http.get(baseURLHemis + "account/me", headers).then((res) => {
+              if (Number(res.data.educationForm.code) === 16) {
+                this.$router.push({ name: "home" });
+                this.successNotification("Tizimga muvaffaqiyatli kirildi");
+              } else {
+                this.errorNotification("Siz tizimdan foydalana olmaysiz!");
+              }
+            });
+          }
+        })
+        .catch((error) => {
+          this.request.login = "";
+          this.request.password = "";
+          this.loading = false;
+          this.errorNotification(error.response.data.error);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     async getUserImage() {
-      console.log(this.request.login)
+      console.log(this.request.login);
       this.$http
-          .get(`https://student.tfi.uz/rest/v1/data/student-list?_education_form=16&search=${this.request.login}`, {
+        .get(
+          `https://student.tfi.uz/rest/v1/data/student-list?_education_form=16&search=${this.request.login}`,
+          {
             headers: {
-              Authorization: 'Bearer A9I0QP-QHygPDTyotnmoSfykIO0ZmAlQ'
-            }
-          })
-          .then((data) => {
-            this.image=data?.data.items[0].image
-            this.showModalClick()
-           console.log(data)
-          })
-          .catch((error) => {
-            this.request.login = "";
-            this.request.password = "";
-            this.loading = false;
-            console.log(error)
-            this.errorNotification(error.response.data.error);
-          })
-          .finally(() => {
-            this.loading = false;
-          });
+              Authorization: "Bearer A9I0QP-QHygPDTyotnmoSfykIO0ZmAlQ",
+            },
+          }
+        )
+        .then((data) => {
+          this.image = data?.data.items[0].image;
+          this.showModalClick();
+          console.log(data);
+        })
+        .catch((error) => {
+          this.request.login = "";
+          this.request.password = "";
+          this.loading = false;
+          console.log(error);
+          this.errorNotification(error.response.data.error);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
 
     closeModal() {
@@ -257,8 +267,8 @@ export default {
     ...mapGetters([]),
   },
   mounted() {
-    if(this.facesMatched===false){
-      this.showModal===false
+    if (this.facesMatched === false) {
+      this.showModal === false;
     }
     this.setWidth();
     window.addEventListener("resize", this.setWidth);
