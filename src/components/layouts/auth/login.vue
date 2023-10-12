@@ -142,6 +142,7 @@ import { KinesisContainer, KinesisElement } from "vue-kinesis";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import FaceId from "@/components/shared-components/FaceId.vue";
 import AppModal from "@/components/shared-components/AppModal.vue";
+import { baseURL } from "@/plugins/axios";
 export default {
   name: "AppLogin",
   components: {
@@ -183,8 +184,8 @@ export default {
       if (result === true) {
         this.closeModal();
         this.successNotification("Yuzlar mos keladi!");
-        localStorage.setItem('isLogin',true)
-        this.$router.push({name: "home"});
+        localStorage.setItem("isLogin", true);
+        this.$router.push({ name: "home" });
       }
     },
     setWidth() {
@@ -199,48 +200,48 @@ export default {
     async loginToSystem() {
       this.loading = true;
       this.$http
-          .post(baseURL + "auth/login", this.request)
-          .then((data) => {
-            console.log(data)
-            if (data.success) {
-                if (Number(data.data.educationForm.code) === 16) {
-                  this.$router.push({name: "home"});
-                  this.successNotification("Tizimga muvaffaqiyatli kirildi");
-                } else {
-                  this.errorNotification("Siz tizimdan foydalana olmaysiz!");
-                }
+        .post(baseURL + "auth/login", this.request)
+        .then((data) => {
+          console.log(data);
+          if (data.success) {
+            if (Number(data.data.educationForm.code) === 16) {
+              this.$router.push({ name: "home" });
+              this.successNotification("Tizimga muvaffaqiyatli kirildi");
+            } else {
+              this.errorNotification("Siz tizimdan foydalana olmaysiz!");
             }
-          })
-          .catch((error) => {
-            this.request.login = "";
-            this.request.password = "";
-            this.loading = false;
-            this.errorNotification(error.response.data.error);
-          })
-          .finally(() => {
-            this.loading = false;
-          });
+          }
+        })
+        .catch((error) => {
+          this.request.login = "";
+          this.request.password = "";
+          this.loading = false;
+          this.errorNotification(error.response.data.error);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     async getUserImage() {
       console.log(this.request.login);
       this.$http
-          .get(baseURL+ "get/student/"+this.request.login+"/")
-          .then((data) => {
-            console.log(data)
-            this.image=data.image
-            this.showModalClick()
-           console.log(data)
-          })
-          .catch((error) => {
-            this.request.login = "";
-            this.request.password = "";
-            this.loading = false;
-            console.log(error)
-            this.errorNotification(error.response.data.error);
-          })
-          .finally(() => {
-            this.loading = false;
-          });
+        .get(baseURL + "get/student/" + this.request.login + "/")
+        .then((data) => {
+          console.log(data);
+          this.image = data.image;
+          this.showModalClick();
+          console.log(data);
+        })
+        .catch((error) => {
+          this.request.login = "";
+          this.request.password = "";
+          this.loading = false;
+          console.log(error);
+          this.errorNotification(error.response.data.error);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
 
     closeModal() {

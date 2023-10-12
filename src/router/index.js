@@ -185,9 +185,8 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
-
 router.beforeEach((to, from, next) => {
-const isLogin = JSON.parse(localStorage.getItem('isLogin'))
+  const isLogin = JSON.parse(localStorage.getItem("isLogin"));
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!isLogin) {
       next("/landing-page");
@@ -202,8 +201,7 @@ const isLogin = JSON.parse(localStorage.getItem('isLogin'))
     }
   }
 
-
-//   next();
-// });
+  next();
+});
 
 export default router;
