@@ -140,7 +140,6 @@ import BaseInput from "../../shared-components/BaseInput.vue";
 import { ValidationObserver } from "vee-validate";
 import { KinesisContainer, KinesisElement } from "vue-kinesis";
 import { mapActions, mapGetters, mapMutations } from "vuex";
-import { baseURL } from "@/plugins/axios";
 import FaceId from "@/components/shared-components/FaceId.vue";
 import AppModal from "@/components/shared-components/AppModal.vue";
 export default {
@@ -184,6 +183,8 @@ export default {
       if (result === true) {
         this.closeModal();
         this.successNotification("Yuzlar mos keladi!");
+        localStorage.setItem('isLogin',true)
+        this.$router.push({name: "home"});
       }
     },
     setWidth() {
@@ -198,59 +199,48 @@ export default {
     async loginToSystem() {
       this.loading = true;
       this.$http
-        .post(baseURLHemis + "auth/login", this.request)
-        .then((data) => {
-          if (data.success) {
-            TokenService.saveToken(data.data.token);
-            const headers = {
-              Authorization: "Bearer " + data.data.token,
-            };
-            this.$http.get(baseURLHemis + "account/me", headers).then((res) => {
-              if (Number(res.data.educationForm.code) === 16) {
-                this.$router.push({ name: "home" });
-                this.successNotification("Tizimga muvaffaqiyatli kirildi");
-              } else {
-                this.errorNotification("Siz tizimdan foydalana olmaysiz!");
-              }
-            });
-          }
-        })
-        .catch((error) => {
-          this.request.login = "";
-          this.request.password = "";
-          this.loading = false;
-          this.errorNotification(error.response.data.error);
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+          .post(baseURL + "auth/login", this.request)
+          .then((data) => {
+            console.log(data)
+            if (data.success) {
+                if (Number(data.data.educationForm.code) === 16) {
+                  this.$router.push({name: "home"});
+                  this.successNotification("Tizimga muvaffaqiyatli kirildi");
+                } else {
+                  this.errorNotification("Siz tizimdan foydalana olmaysiz!");
+                }
+            }
+          })
+          .catch((error) => {
+            this.request.login = "";
+            this.request.password = "";
+            this.loading = false;
+            this.errorNotification(error.response.data.error);
+          })
+          .finally(() => {
+            this.loading = false;
+          });
     },
     async getUserImage() {
       console.log(this.request.login);
       this.$http
-        .get(
-          `https://student.tfi.uz/rest/v1/data/student-list?_education_form=16&search=${this.request.login}`,
-          {
-            headers: {
-              Authorization: "Bearer A9I0QP-QHygPDTyotnmoSfykIO0ZmAlQ",
-            },
-          }
-        )
-        .then((data) => {
-          this.image = data?.data.items[0].image;
-          this.showModalClick();
-          console.log(data);
-        })
-        .catch((error) => {
-          this.request.login = "";
-          this.request.password = "";
-          this.loading = false;
-          console.log(error);
-          this.errorNotification(error.response.data.error);
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+          .get(baseURL+ "get/student/"+this.request.login+"/")
+          .then((data) => {
+            console.log(data)
+            this.image=data.image
+            this.showModalClick()
+           console.log(data)
+          })
+          .catch((error) => {
+            this.request.login = "";
+            this.request.password = "";
+            this.loading = false;
+            console.log(error)
+            this.errorNotification(error.response.data.error);
+          })
+          .finally(() => {
+            this.loading = false;
+          });
     },
 
     closeModal() {

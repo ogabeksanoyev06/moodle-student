@@ -1,4 +1,4 @@
-import { baseURLHemis } from "@/plugins/axios";
+import {baseURL} from "@/plugins/axios";
 
 const state = {
   user: {},
@@ -24,11 +24,10 @@ const actions = {
     try {
       commit("setLoading", true);
       this._vm.$http
-        .get(baseURLHemis + "account/me")
+        .get(baseURL + "get/student/"+localStorage.getItem('studentId')+'/')
         .then((res) => {
-          if (res.success) {
-            commit("setUser", res.data);
-          }
+          console.log(res)
+            commit("setUser", res);
         })
         .catch((error) => {
           commit("setLoading", false);

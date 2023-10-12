@@ -279,7 +279,7 @@
       </div>
     </div>
     <video ref="video" width="100%" height="100%" autoplay playsinline></video>
-    <img crossorigin="anonymous"  ref="inputImage" src="https://api.fastlms.uz/media/students/320__90_2357640696.jpg" alt="img" v-show="false" />
+    <img crossorigin="anonymous" ref="inputImage" :src="image" alt="img" v-show="false" />
   </div>
 </template>
 
@@ -366,8 +366,13 @@ export default {
       const image = this.$refs.inputImage;
 
       const detectionsVideo = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks();
-      if (!detectionsVideo || detectionsVideo.length !== 1) {
-        console.log("Kamerada yuz aniqlanmadi yoki birdan ortiq yuz aniqlandi");
+      if (!detectionsVideo) {
+        console.log("Kamerada yuz aniqlanmadi ");
+        this.$emit('face-match-result', false);
+        return;
+      }
+      if(detectionsVideo.length !== 1){
+        console.log("Kamerada birdan ortiq yuz aniqlandi");
         this.$emit('face-match-result', false);
         return;
       }

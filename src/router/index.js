@@ -185,22 +185,23 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
-// router.beforeEach((to, from, next) => {
-//   const tokenExists = !!TokenService.getToken();
 
-//   if (to.matched.some((record) => record.meta.requiresAuth)) {
-//     if (!tokenExists) {
-//       next({ name: "landing-page" });
-//       return;
-//     }
-//   }
+router.beforeEach((to, from, next) => {
+const isLogin = JSON.parse(localStorage.getItem('isLogin'))
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!isLogin) {
+      next("/landing-page");
+      return;
+    }
+  }
 
-//   if (to.matched.some((record) => record.meta.guestOnly)) {
-//     if (tokenExists) {
-//       next("/");
-//       return;
-//     }
-//   }
+  if (to.matched.some((record) => record.meta.guestOnly)) {
+    if (isLogin) {
+      next("/");
+      return;
+    }
+  }
+
 
 //   next();
 // });
