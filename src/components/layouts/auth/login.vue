@@ -140,8 +140,7 @@ import BaseInput from "../../shared-components/BaseInput.vue";
 import { ValidationObserver } from "vee-validate";
 import { KinesisContainer, KinesisElement } from "vue-kinesis";
 import { mapActions, mapGetters, mapMutations } from "vuex";
-import TokenService from "@/service/TokenService";
-import { baseURLHemis } from "@/plugins/axios";
+import { baseURL } from "@/plugins/axios";
 import FaceId from "@/components/shared-components/FaceId.vue";
 import AppModal from "@/components/shared-components/AppModal.vue";
 export default {
