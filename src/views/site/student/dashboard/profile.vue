@@ -127,7 +127,7 @@
 import { ValidationObserver } from "vee-validate";
 import AppButton from "@/components/shared-components/AppButton.vue";
 import BaseInput from "@/components/shared-components/BaseInput.vue";
-import { baseURLHemis } from "@/plugins/axios";
+import {baseURL, baseURLHemis} from "@/plugins/axios";
 import AppLoading from "@/components/shared-components/AppLoading.vue";
 export default {
   name: "StudentProfile",
@@ -154,11 +154,10 @@ export default {
     getUser() {
       this.loading = true;
       this.$http
-        .get(baseURLHemis + "account/me")
+        .get(baseURL+'get/student/' + localStorage.getItem('studentId')+'/')
         .then((data) => {
-          if (data.success) {
-            this.user = data.data;
-          }
+          console.log(data)
+            this.user = data;
         })
         .catch((error) => {
           console.log(error);

@@ -191,17 +191,16 @@ router.beforeEach((to, from, next) => {
 });
 
 router.beforeEach((to, from, next) => {
-  const tokenExists = !!TokenService.getToken();
-
+const isLogin = JSON.parse(localStorage.getItem('isLogin'))
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (!tokenExists) {
+    if (!isLogin) {
       next("/landing-page");
       return;
     }
   }
 
   if (to.matched.some((record) => record.meta.guestOnly)) {
-    if (tokenExists) {
+    if (isLogin) {
       next("/");
       return;
     }

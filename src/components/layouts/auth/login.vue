@@ -133,7 +133,6 @@ import BaseInput from "../../shared-components/BaseInput.vue";
 import { ValidationObserver } from "vee-validate";
 import { KinesisContainer, KinesisElement } from "vue-kinesis";
 import { mapActions, mapGetters, mapMutations } from "vuex";
-import {baseURL} from "@/plugins/axios";
 import FaceId from "@/components/shared-components/FaceId.vue";
 import AppModal from "@/components/shared-components/AppModal.vue";
 export default {
@@ -177,6 +176,8 @@ export default {
       if(result===true){
         this.closeModal()
         this.successNotification("Yuzlar mos keladi!");
+        localStorage.setItem('isLogin',true)
+        this.$router.push({name: "home"});
       }
     },
     setWidth() {
@@ -191,11 +192,13 @@ export default {
     async loginToSystem() {
       this.loading = true;
       this.$http
-          .post(baseURL + "auth/login", this.request)
+          .post( "https://api.fastlms.uz/api/auth/login", this.request)
           .then((data) => {
             console.log(data)
             if (data.success) {
                 if (Number(data.data.educationForm.code) === 16) {
+                  localStorage.setItem('isLogin',true)
+                  localStorage.setItem('studentId',data.data.student_id_number)
                   this.$router.push({name: "home"});
                   this.successNotification("Tizimga muvaffaqiyatli kirildi");
                 } else {
@@ -204,6 +207,7 @@ export default {
             }
           })
           .catch((error) => {
+            console.log('error',error)
             this.request.login = "";
             this.request.password = "";
             this.loading = false;
@@ -216,19 +220,18 @@ export default {
     async getUserImage() {
       console.log(this.request.login)
       this.$http
-          .get(baseURL+ "get/student/"+this.request.login+"/")
+          .get("https://api.fastlms.uz/api/"+"get/student/"+this.request.login+"/")
           .then((data) => {
             console.log(data)
-            this.image=data.image
+            localStorage.setItem('studentId',this.request.login)
+            this.image=data.image.replace("http://", "https://");
             this.showModalClick()
-           console.log(data)
           })
-          .catch((error) => {
+          .catch((er) => {
+            this.errorNotification(er.response.data.message);
             this.request.login = "";
             this.request.password = "";
             this.loading = false;
-            console.log(error)
-            this.errorNotification(error.response.data.error);
           })
           .finally(() => {
             this.loading = false;
