@@ -253,6 +253,7 @@ export default {
   mounted() {
     if(this.facesMatched===false){
       this.showModal===false
+
     }
     this.setWidth();
     window.addEventListener("resize", this.setWidth);
