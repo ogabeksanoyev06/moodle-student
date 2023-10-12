@@ -118,6 +118,7 @@
             <button class="face__btn" @click="faceForm = !faceForm">
               <span v-if="!faceForm" class="d-flex align-center">
                 FACE orqali tizimga kirish
+
                 <img src="/icons/camera.svg" alt="" style="max-width: 20px" />
               </span>
               <span v-else>Parol orqali tizimga kirish</span>
@@ -142,7 +143,6 @@ import { KinesisContainer, KinesisElement } from "vue-kinesis";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import FaceId from "@/components/shared-components/FaceId.vue";
 import AppModal from "@/components/shared-components/AppModal.vue";
-import { baseURL } from "@/plugins/axios";
 export default {
   name: "AppLogin",
   components: {
@@ -200,11 +200,13 @@ export default {
     async loginToSystem() {
       this.loading = true;
       this.$http
-        .post(baseURL + "auth/login", this.request)
+        .post("https://api.fastlms.uz/api/auth/login", this.request)
         .then((data) => {
           console.log(data);
           if (data.success) {
             if (Number(data.data.educationForm.code) === 16) {
+              localStorage.setItem("isLogin", true);
+              localStorage.setItem("studentId", data.data.student_id_number);
               this.$router.push({ name: "home" });
               this.successNotification("Tizimga muvaffaqiyatli kirildi");
             } else {
@@ -213,6 +215,7 @@ export default {
           }
         })
         .catch((error) => {
+          console.log("error", error);
           this.request.login = "";
           this.request.password = "";
           this.loading = false;
@@ -225,19 +228,23 @@ export default {
     async getUserImage() {
       console.log(this.request.login);
       this.$http
-        .get(baseURL + "get/student/" + this.request.login + "/")
+        .get(
+          "https://api.fastlms.uz/api/" +
+            "get/student/" +
+            this.request.login +
+            "/"
+        )
         .then((data) => {
           console.log(data);
-          this.image = data.image;
+          localStorage.setItem("studentId", this.request.login);
+          this.image = data.image.replace("http://", "https://");
           this.showModalClick();
-          console.log(data);
         })
-        .catch((error) => {
+        .catch((er) => {
+          this.errorNotification(er.response.data.message);
           this.request.login = "";
           this.request.password = "";
           this.loading = false;
-          console.log(error);
-          this.errorNotification(error.response.data.error);
         })
         .finally(() => {
           this.loading = false;
