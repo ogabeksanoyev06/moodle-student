@@ -270,12 +270,7 @@
 <template>
   <div id="app">
     <div class="counter">
-    <div v-if="countdown!==0">
-      {{this.countdown}}
-
-    </div>
-      <div class="true" v-else>
-        <i class='bx bx-check'></i>
+      <div class="pulse">
       </div>
     </div>
     <video ref="video" width="100%" height="100%" autoplay playsinline></video>
@@ -344,7 +339,7 @@ export default {
       const stream = await navigator.mediaDevices.getUserMedia({ video: {} });
       video.srcObject = stream;
       video.onplaying = () => {
-        this.countdown=4
+        this.countdown=2
         let interval = setInterval(() => {
           if (this.countdown === 0) {
             clearInterval(interval);
@@ -354,9 +349,9 @@ export default {
           }
         }, 1000);
 
-      //   setTimeout(() => {
-      //     this.checkFace();
-      //   }, 4000);
+        //   setTimeout(() => {
+        //     this.checkFace();
+        //   }, 4000);
       };
     },
     async checkFace() {
@@ -430,7 +425,56 @@ export default {
 .true{
   font-size: 50px;
 }
+.pulse {
+  position: relative;
+  width: 33.6px;
+  height: 33.6px;
+}
+
+.pulse:before,
+.pulse:after {
+  width: 33.6px;
+  height: 33.6px;
+  border-radius: 50%;
+  content: '';
+  display: block;
+}
+
+.pulse:before {
+  background-color: rgba(63, 141, 242, 0.46);
+  animation: pulse-7ypmgi 1s infinite ease;
+}
+
+.pulse:after {
+  animation: pulse-6r5w34 1s infinite;
+  border: 4.5px solid rgba(63, 141, 242, 0.46);
+  left: 0;
+  position: absolute;
+  top: 0;
+}
+
+@keyframes pulse-7ypmgi {
+  0% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-6r5w34 {
+  0%, 50% {
+    opacity: 0;
+  }
+
+  55% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
 </style>
-
-
-

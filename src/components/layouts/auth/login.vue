@@ -101,10 +101,15 @@
                 Face id orqali kirish
               </AppButton>
             </form>
+            <div
+                class="overlay"
+                :class="{ visible: showModal }"
+                @click="closeModal"
+            ></div>
             <AppModal
               @close="closeModal"
               :class="{ visible: showModal }"
-              :width="700"
+              :width="500"
             >
               <template #modalHeader> Face Id </template>
               <template #modalBody>
@@ -276,7 +281,6 @@ export default {
   display: flex;
   align-items: center;
   min-height: 100vh;
-
   &__content {
     max-width: 50%;
     width: 100%;
@@ -317,6 +321,12 @@ export default {
       backdrop-filter: blur(10.5px);
     }
   }
+  .modal__wrap{
+    .modal__body{
+      padding: 0 !important;
+    }
+  }
+
 }
 .face__btn {
   width: 100%;
