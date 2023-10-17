@@ -273,7 +273,7 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss" >
 .input__block-input {
   border-radius: 15px !important;
 }

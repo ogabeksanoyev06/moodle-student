@@ -267,6 +267,241 @@
 
 
 
+<!--<template>-->
+<!--  <div id="app">-->
+<!--    <div class="counter">-->
+<!--      <div class="pulse">-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <video ref="video" width="100%" height="100%" autoplay playsinline></video>-->
+<!--    <img crossorigin="anonymous" ref="inputImage" :src="image" alt="img" v-show="false" />-->
+<!--  </div>-->
+<!--</template>-->
+
+<!--<script>-->
+<!--import * as faceapi from "face-api.js";-->
+
+<!--export default {-->
+<!--  name: "App",-->
+<!--  props: {-->
+<!--    isOpenCamera: {-->
+<!--      type: Boolean,-->
+<!--      required: true,-->
+<!--    },-->
+<!--    image:{-->
+<!--      type: String,-->
+<!--      required: true-->
+<!--    }-->
+<!--  },-->
+<!--  data() {-->
+<!--    return {-->
+<!--      modelsLoaded: false,-->
+<!--      countdown: 2,-->
+<!--    };-->
+<!--  },-->
+<!--  async mounted() {-->
+<!--    await this.loadModels();-->
+<!--  },-->
+<!--  watch: {-->
+<!--    async isOpenCamera(newVal) {-->
+<!--      if (newVal) {-->
+<!--        if (!this.modelsLoaded) await this.loadModels();-->
+<!--        this.setupWebcam();-->
+<!--      } else {-->
+<!--        this.stopWebcam();-->
+<!--      }-->
+<!--    },-->
+<!--  },-->
+<!--  methods: {-->
+<!--    stopWebcam() {-->
+<!--      const video = this.$refs.video;-->
+<!--      if(video && video.srcObject) {-->
+<!--        const stream = video.srcObject;-->
+<!--        const tracks = stream.getTracks();-->
+
+<!--        tracks.forEach(function(track) {-->
+<!--          track.stop();-->
+<!--        });-->
+
+<!--        video.srcObject = null;-->
+<!--      }-->
+<!--    },-->
+<!--    async loadModels() {-->
+<!--      await Promise.all([-->
+<!--        faceapi.nets.tinyFaceDetector.loadFromUri("/models"),-->
+<!--        faceapi.nets.faceLandmark68Net.loadFromUri("/models"),-->
+<!--        faceapi.nets.faceRecognitionNet.loadFromUri("/models"),-->
+<!--      ]);-->
+<!--      this.modelsLoaded = true;-->
+<!--    },-->
+<!--    async setupWebcam() {-->
+<!--      const video = this.$refs.video;-->
+<!--      const stream = await navigator.mediaDevices.getUserMedia({ video: {} });-->
+<!--      video.srcObject = stream;-->
+<!--      video.onplaying = () => {-->
+<!--        this.countdown=2-->
+<!--        let interval = setInterval(() => {-->
+<!--          if (this.countdown === 0) {-->
+<!--            clearInterval(interval);-->
+<!--            this.checkFace();-->
+<!--          } else {-->
+<!--            this.countdown&#45;&#45;;-->
+<!--          }-->
+<!--        }, 1000);-->
+
+<!--        //   setTimeout(() => {-->
+<!--        //     this.checkFace();-->
+<!--        //   }, 4000);-->
+<!--      };-->
+<!--    },-->
+<!--    async checkFace() {-->
+<!--      if (!this.modelsLoaded) return;-->
+
+<!--      const video = this.$refs.video;-->
+<!--      const image = this.$refs.inputImage;-->
+
+<!--      const detectionsVideo = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks();-->
+<!--      if (!detectionsVideo) {-->
+<!--        console.log("Kamerada yuz aniqlanmadi ");-->
+<!--        this.$emit('face-match-result', false);-->
+<!--        return;-->
+<!--      }-->
+<!--      if(detectionsVideo.length !== 1){-->
+<!--        console.log("Kamerada birdan ortiq yuz aniqlandi");-->
+<!--        this.$emit('face-match-result', false);-->
+<!--        return;-->
+<!--      }-->
+
+<!--      const videoBox = detectionsVideo[0].detection.box;-->
+<!--      const videoFace = await faceapi.extractFaces(video, [videoBox]);-->
+<!--      if (videoFace.length === 0) {-->
+<!--        console.log("Kamerada yuz aniqlanmadi");-->
+<!--        this.$emit('face-match-result', false);-->
+<!--        return;-->
+<!--      }-->
+
+<!--      const videoDescriptor = await faceapi.computeFaceDescriptor(videoFace[0]);-->
+
+<!--      const detectionsImage = await faceapi.detectSingleFace(image, new faceapi.TinyFaceDetectorOptions({ inputSize: 128, scoreThreshold: 0.5 })).withFaceLandmarks();-->
+<!--      if (!detectionsImage) {-->
+<!--        console.log("Rasm yuzi aniqlanmadi");-->
+<!--        this.$emit('face-match-result', false);-->
+<!--        return;-->
+<!--      }-->
+
+<!--      const imageBox = detectionsImage.detection.box;-->
+<!--      const imageFace = await faceapi.extractFaces(image, [imageBox]);-->
+<!--      if (imageFace.length === 0) {-->
+<!--        console.log("Rasm yuzi aniqlanmadi");-->
+<!--        this.$emit('face-match-result', false);-->
+<!--        return;-->
+<!--      }-->
+
+<!--      const imageDescriptor = await faceapi.computeFaceDescriptor(imageFace[0]);-->
+
+<!--      const distance = faceapi.euclideanDistance(videoDescriptor, imageDescriptor);-->
+<!--      if (distance < 0.50) {-->
+<!--        console.log("Yuzlar mos keladi");-->
+<!--        this.$emit('face-match-result', true);-->
+<!--      } else {-->
+<!--        console.log("Yuzlar mos kelmaydi");-->
+<!--        this.$emit('face-match-result', false);-->
+<!--      }-->
+<!--    }-->
+<!--  }-->
+<!--};-->
+<!--</script>-->
+<!--<style scoped>-->
+<!--.counter{-->
+<!--  position: absolute;-->
+<!--  width: 100%;-->
+<!--  height: 100%;-->
+<!--  display: flex;-->
+<!--  align-items: center;-->
+<!--  justify-content: center;-->
+<!--  font-size: 45px;-->
+<!--  color: #fff;-->
+<!--}-->
+<!--.true{-->
+<!--  font-size: 50px;-->
+<!--}-->
+<!--.pulse {-->
+<!--  position: relative;-->
+<!--  width: 33.6px;-->
+<!--  height: 33.6px;-->
+<!--}-->
+
+<!--.pulse:before,-->
+<!--.pulse:after {-->
+<!--  width: 33.6px;-->
+<!--  height: 33.6px;-->
+<!--  border-radius: 50%;-->
+<!--  content: '';-->
+<!--  display: block;-->
+<!--}-->
+
+<!--.pulse:before {-->
+<!--  background-color: rgba(63, 141, 242, 0.46);-->
+<!--  animation: pulse-7ypmgi 1s infinite ease;-->
+<!--}-->
+
+<!--.pulse:after {-->
+<!--  animation: pulse-6r5w34 1s infinite;-->
+<!--  border: 4.5px solid rgba(63, 141, 242, 0.46);-->
+<!--  left: 0;-->
+<!--  position: absolute;-->
+<!--  top: 0;-->
+<!--}-->
+
+<!--@keyframes pulse-7ypmgi {-->
+<!--  0% {-->
+<!--    transform: scale(0);-->
+<!--  }-->
+
+<!--  50% {-->
+<!--    transform: scale(1);-->
+<!--  }-->
+<!--}-->
+
+<!--@keyframes pulse-6r5w34 {-->
+<!--  0%, 50% {-->
+<!--    opacity: 0;-->
+<!--  }-->
+
+<!--  55% {-->
+<!--    opacity: 1;-->
+<!--  }-->
+
+<!--  100% {-->
+<!--    opacity: 0;-->
+<!--    transform: scale(2);-->
+<!--  }-->
+<!--}-->
+<!--</style>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <template>
   <div id="app">
     <div class="counter">
@@ -274,7 +509,8 @@
       </div>
     </div>
     <video ref="video" width="100%" height="100%" autoplay playsinline></video>
-    <img crossorigin="anonymous" ref="inputImage" :src="image" alt="img" v-show="false" />
+    <canvas ref="canvas" width="100%" height="100%" style="position:absolute; top:0; left:0;"></canvas>
+    <img crossorigin="anonymous" ref="inputImage" src="/img.jpg" alt="img" v-show="false" />
   </div>
 </template>
 
@@ -296,7 +532,7 @@ export default {
   data() {
     return {
       modelsLoaded: false,
-      countdown: 4,
+      countdown: 2,
     };
   },
   async mounted() {
@@ -336,7 +572,7 @@ export default {
     },
     async setupWebcam() {
       const video = this.$refs.video;
-      const stream = await navigator.mediaDevices.getUserMedia({ video: {} });
+      const stream = await navigator.mediaDevices.getUserMedia({ video: {} })
       video.srcObject = stream;
       video.onplaying = () => {
         this.countdown=2
@@ -349,17 +585,12 @@ export default {
           }
         }, 1000);
 
-        //   setTimeout(() => {
-        //     this.checkFace();
-        //   }, 4000);
       };
     },
     async checkFace() {
       if (!this.modelsLoaded) return;
-
       const video = this.$refs.video;
       const image = this.$refs.inputImage;
-
       const detectionsVideo = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks();
       if (!detectionsVideo) {
         console.log("Kamerada yuz aniqlanmadi ");
@@ -422,9 +653,7 @@ export default {
   font-size: 45px;
   color: #fff;
 }
-.true{
-  font-size: 50px;
-}
+
 .pulse {
   position: relative;
   width: 33.6px;
