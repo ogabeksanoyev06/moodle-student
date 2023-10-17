@@ -541,8 +541,8 @@ export default {
   watch: {
     async isOpenCamera(newVal) {
       if (newVal) {
-        if (!this.modelsLoaded) await this.loadModels();
         this.setupWebcam();
+        if (!this.modelsLoaded) await this.loadModels();
       } else {
         this.stopWebcam();
       }
