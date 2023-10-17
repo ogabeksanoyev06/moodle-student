@@ -532,7 +532,7 @@ export default {
   data() {
     return {
       modelsLoaded: false,
-      countdown: 1,
+      countdown: 0,
     };
   },
   async mounted() {
@@ -575,7 +575,6 @@ export default {
       const stream = await navigator.mediaDevices.getUserMedia({ video: {} })
       video.srcObject = stream;
       video.onplaying = () => {
-        this.countdown=1
         let interval = setInterval(() => {
           if (this.countdown === 0) {
             clearInterval(interval);
