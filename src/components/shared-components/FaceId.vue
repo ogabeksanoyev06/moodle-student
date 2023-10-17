@@ -574,18 +574,18 @@ export default {
       const video = this.$refs.video;
       const stream = await navigator.mediaDevices.getUserMedia({ video: {} })
       video.srcObject = stream;
-      video.onplaying = () => {
-        let interval = setInterval(() => {
-          if (this.countdown === 0) {
-            clearInterval(interval);
-            this.checkFace();
-          } else {
-            this.countdown--;
-          }
-        }, 1000);
+      video.play();  // Video o'zgaruvchisini ochish uchun qo'shilgan
 
-      };
+      let interval = setInterval(() => {
+        if (this.countdown === 0) {
+          clearInterval(interval);
+          this.checkFace();
+        } else {
+          this.countdown--;
+        }
+      }, 1000);
     },
+
     async checkFace() {
       if (!this.modelsLoaded) return;
       const video = this.$refs.video;
