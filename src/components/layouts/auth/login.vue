@@ -3,7 +3,6 @@
     <div class="auth">
       <div class="auth__content">
         <div class="auth__wrap">
-          <SEO title="page" />
           <router-link :to="{ name: 'landing-page' }">
             <div class="auth__logo">
               <img src="/svg/smallLogo.svg" alt="" class="mb-5" />
@@ -150,11 +149,9 @@ import { mapActions, mapGetters, mapMutations } from "vuex";
 import FaceId from "@/components/shared-components/FaceId.vue";
 import AppModal from "@/components/shared-components/AppModal.vue";
 import { baseURL } from "@/plugins/axios";
-import SEO from "@/SEO.vue";
 export default {
   name: "AppLogin",
   components: {
-    SEO,
     AppModal,
     "kinesis-container": KinesisContainer,
     "kinesis-element": KinesisElement,
@@ -177,6 +174,34 @@ export default {
       showModal: false,
       image: "",
       facesMatched: null,
+      meta: [
+        { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" },
+        { charset: "utf-8" },
+        { name: "description", content: "Next js" },
+        { name: "keywords", content: "Cspace, coworking, co-working, center, tashkent" },
+        { property: "og:type", content: "website" },
+        { property: "og:title", content: 'test' },
+        { property: "og:description", content: "Next js" },
+        { property: "og:site_name", content: 'test' },
+        {
+          property: "og:image",
+          content: "https://cdn.rasta.app/rasta/aef8208b-c6fc-4db9-878b-51544ab711be"
+        },
+        { name: "twitter:card", content: "summary" },
+        { name: "twitter:title", content: 'test' },
+        { name: "twitter:description", content: "Next js" },
+        { name: "twitter:site", content: 'test' },
+        { name: "twitter:creator", content: "Udevs" },
+        {
+          name: "twitter:image",
+          content: "https://cdn.rasta.app/rasta/aef8208b-c6fc-4db9-878b-51544ab711be"
+        }
+      ],
+      link: [
+        { rel: "icon", href: "/favicon.ico" }
+        // Add other links as needed, like the fonts link
+      ]
+
     };
   },
   methods: {
