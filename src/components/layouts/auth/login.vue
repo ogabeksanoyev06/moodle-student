@@ -3,7 +3,7 @@
     <div class="auth">
       <div class="auth__content">
         <div class="auth__wrap">
-          <SEO title="page" />
+          <SEO :title="page" />
           <router-link :to="{ name: 'landing-page' }">
             <div class="auth__logo">
               <img src="/svg/smallLogo.svg" alt="" class="mb-5" />
@@ -165,6 +165,7 @@ export default {
   },
   data() {
     return {
+      page:'login',
       request: {
         login: "",
         password: "",
