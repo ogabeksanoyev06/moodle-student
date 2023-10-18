@@ -13,7 +13,9 @@ import "./plugins/directives/click-outside";
 import http from "./plugins/axios";
 
 Vue.config.productionTip = false;
+import VueMeta from 'vue-meta';
 
+Vue.use(VueMeta);
 Vue.component("AppText", AppText);
 Vue.use(VueMask);
 Vue.use(Toast, {
