@@ -3,7 +3,6 @@
     <div class="auth">
       <div class="auth__content">
         <div class="auth__wrap">
-          <SEO :title="page" />
           <router-link :to="{ name: 'landing-page' }">
             <div class="auth__logo">
               <img src="/svg/smallLogo.svg" alt="" class="mb-5" />
@@ -150,11 +149,9 @@ import { mapActions, mapGetters, mapMutations } from "vuex";
 import FaceId from "@/components/shared-components/FaceId.vue";
 import AppModal from "@/components/shared-components/AppModal.vue";
 import { baseURL } from "@/plugins/axios";
-import SEO from "@/SEO.vue";
 export default {
   name: "AppLogin",
   components: {
-    SEO,
     AppModal,
     "kinesis-container": KinesisContainer,
     "kinesis-element": KinesisElement,
@@ -165,7 +162,6 @@ export default {
   },
   data() {
     return {
-      page:'login',
       request: {
         login: "",
         password: "",
