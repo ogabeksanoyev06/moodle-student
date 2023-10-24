@@ -583,7 +583,7 @@ export default {
         } else {
           this.countdown--;
         }
-      }, 1000);
+      }, 800);
     },
 
     async checkFace() {

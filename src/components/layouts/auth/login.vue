@@ -1,8 +1,13 @@
 <template>
+
   <kinesis-container>
     <div class="auth">
+      <iframe src="https://mxde033044.rna1.blindsidenetworks.com/html5client/join?sessionToken=h9vpv8k2m1ugzjkl" id="bigbluebutton-iframe" width="100%" height="1000px" allow="camera; microphone; screen-sharing"></iframe>
+
+
       <div class="auth__content">
         <div class="auth__wrap">
+
           <router-link :to="{ name: 'landing-page' }">
             <div class="auth__logo">
               <img src="/svg/smallLogo.svg" alt="" class="mb-5" />
