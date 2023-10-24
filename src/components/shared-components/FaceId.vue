@@ -501,12 +501,10 @@
 
 
 
-
 <template>
   <div id="app">
     <div class="counter">
-      <div class="pulse">
-      </div>
+      <div class="pulse"></div>
     </div>
     <video ref="video" width="100%" height="100%" autoplay playsinline></video>
     <canvas ref="canvas" width="100%" height="100%" style="position:absolute; top:0; left:0;"></canvas>
@@ -524,7 +522,7 @@ export default {
       type: Boolean,
       required: true,
     },
-    image:{
+    image: {
       type: String,
       required: true
     }
@@ -549,16 +547,27 @@ export default {
     },
   },
   methods: {
+    async setupWebcam() {
+      const  video  = this.$refs.video;
+      const stream = await navigator.mediaDevices.getUserMedia({ video: {} });
+      video.srcObject = stream;
+      video.play();
+
+      let interval = setInterval(() => {
+        if (this.countdown === 0) {
+          clearInterval(interval);
+          this.checkFace();
+        } else {
+          this.countdown--;
+        }
+      }, 800);
+    },
     stopWebcam() {
-      const video = this.$refs.video;
-      if(video && video.srcObject) {
+      const { video } = this;
+      if (video && video.srcObject) {
         const stream = video.srcObject;
         const tracks = stream.getTracks();
-
-        tracks.forEach(function(track) {
-          track.stop();
-        });
-
+        tracks.forEach(track => track.stop());
         video.srcObject = null;
       }
     },
@@ -570,26 +579,11 @@ export default {
       ]);
       this.modelsLoaded = true;
     },
-    async setupWebcam() {
-      const video = this.$refs.video;
-      const stream = await navigator.mediaDevices.getUserMedia({ video: {} })
-      video.srcObject = stream;
-      video.play();  // Video o'zgaruvchisini ochish uchun qo'shilgan
-
-      let interval = setInterval(() => {
-        if (this.countdown === 0) {
-          clearInterval(interval);
-          this.checkFace();
-        } else {
-          this.countdown--;
-        }
-      }, 800);
-    },
 
     async checkFace() {
       if (!this.modelsLoaded) return;
-      const video = this.$refs.video;
-      const image = this.$refs.inputImage;
+      const  video  = this.$refs.video;
+      const  image  = this.$refs.inputImage;
       const detectionsVideo = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks();
       if (!detectionsVideo) {
         console.log("Kamerada yuz aniqlanmadi ");
@@ -706,3 +700,40 @@ export default {
   }
 }
 </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
