@@ -59,7 +59,7 @@
         <div
           class="Lheader__login"
           @click="$router.push({ path: '/login' })"
-          v-if="!isMobileSmall"
+
         >
           Tizimga kirish
         </div>
