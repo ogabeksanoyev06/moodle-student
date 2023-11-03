@@ -269,6 +269,7 @@ export default {
     ...mapGetters([]),
   },
   mounted() {
+
     if (this.facesMatched === false) {
       this.showModal === false;
     }

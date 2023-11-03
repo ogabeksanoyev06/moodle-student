@@ -578,6 +578,7 @@ export default {
         faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
       ]);
       this.modelsLoaded = true;
+      console.log('loaded')
     },
 
     async checkFace() {

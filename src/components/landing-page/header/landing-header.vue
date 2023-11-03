@@ -59,7 +59,6 @@
         <div
           class="Lheader__login"
           @click="$router.push({ path: '/login' })"
-
         >
           Tizimga kirish
         </div>

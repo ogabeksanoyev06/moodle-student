@@ -6,7 +6,7 @@ const routes = [
   {
     path: "/landing-page",
     name: "landing-page",
-    component: () => import("../components/landing-page"),
+    component: () => import("../components/landing-page/index.vue"),
     meta: { guestOnly: true },
   },
 
@@ -29,7 +29,7 @@ const routes = [
   {
     path: "/",
     component: () => import("../layouts/MainLayout.vue"),
-    meta: { requiresAuth: true },
+      meta: { requiresAuth: true },
     children: [
       // home
       {
