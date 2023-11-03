@@ -71,7 +71,7 @@
                 :disabled="loading"
                 class="login mb-20 w-100"
               >
-                Tizimga kirish
+                Tizimga kir
               </AppButton>
             </form>
             <form @submit.prevent="handleSubmit(getUserImage)" v-if="faceForm">
