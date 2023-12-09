@@ -203,7 +203,6 @@ export default {
       this.$http
         .post("https://api.fastlms.uz/api/auth/login", this.request)
         .then((data) => {
-          console.log(data);
           if (data.success) {
             if (Number(data.data.educationForm.code) === 16) {
               localStorage.setItem("isLogin", true);
@@ -216,11 +215,10 @@ export default {
           }
         })
         .catch((error) => {
-          console.log("error", error);
           this.request.login = "";
           this.request.password = "";
           this.loading = false;
-          this.errorNotification(error.response.message);
+          this.errorNotification(error.response.data.message);
         })
         .finally(() => {
           this.loading = false;

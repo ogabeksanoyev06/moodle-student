@@ -184,6 +184,12 @@
     }
   }
 }
+.pointer {
+  cursor: pointer;
+}
+.d-block {
+  display: block;
+}
 
 .overlay {
   position: fixed;
@@ -291,7 +297,6 @@ input:checked + .slider:before {
   border-radius: 100%;
 }
 //
-
 
 @media (max-width: 991px) {
   .table-block {

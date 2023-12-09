@@ -1,8 +1,7 @@
 <template>
   <div class="content">
     <div class="info-box box-mini">
-      <semestr-pagination />
-      <div class="box box-success" v-for="(item, i) in 8" :key="i">
+      <div class="box box-success" v-for="(item, i) in 1" :key="i">
         <div class="box-header" @click="toggleAccordion(i)">
           <h3 class="box-title">
             1-semestr ( 12 oktabr, 2020 <span class="separator">/</span>
@@ -100,10 +99,9 @@
 </template>
 <script>
 import AppModal from "@/components/shared-components/AppModal.vue";
-import SemestrPagination from "@/components/shared-components/SemestrPagination.vue";
 export default {
   name: "EducationCurriculum",
-  components: { AppModal, SemestrPagination },
+  components: { AppModal },
   data() {
     return {
       activeIndex: 0,

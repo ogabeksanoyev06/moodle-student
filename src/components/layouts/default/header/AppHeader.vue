@@ -30,7 +30,7 @@
                 <img :src="user.image" alt="" />
                 <div class="d-flex flex-column">
                   <span class="user-name">
-                    {{ user.first_name }} {{user.second_name}}
+                    {{ user.first_name }} {{ user.second_name }}
                   </span>
                   <span class="user-role">Talaba</span>
                 </div>

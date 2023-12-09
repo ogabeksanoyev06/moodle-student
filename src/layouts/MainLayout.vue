@@ -111,7 +111,7 @@
         style="padding-left: 20px; padding-top: 20px"
         :class="isSadibar ? '' : 'active'"
       >
-        <div class="container" style="padding: px 0px 56px 56px">
+        <div class="container">
           <router-view />
         </div>
       </div>
@@ -161,11 +161,7 @@ export default {
               id: 12,
               link: "education-subjects",
             },
-            {
-              title: "Davomat",
-              id: 13,
-              link: "education-attendance",
-            },
+
             {
               title: "O'zlashtirish",
               id: 13,
@@ -176,58 +172,8 @@ export default {
               id: 13,
               link: "test-exams",
             },
-            {
-              title: "Reyting daftarcha",
-              id: 13,
-              link: "education-academic-data",
-            },
-            {
-              title: "Fan tanlovi",
-              id: 13,
-              link: "education-subject-choose",
-            },
           ],
         },
-        //         {
-        //           title: "Qayta o’qish",
-        //           icon: `<svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-        // <g clip-path="url(#clip0_586_2689)">
-        // <path d="M1.5832 13.3409C1.6257 10.1578 2.90514 7.18177 5.186 4.96098C7.4668 2.74024 10.4756 1.54011 13.6591 1.58304C16.6526 1.62301 19.505 2.78828 21.665 4.81907L20.1382 4.79871L20.1171 6.38058L24.2827 6.43616L24.3384 2.27053L22.7564 2.24944L22.7377 3.65644C20.2924 1.36261 17.0661 0.0464169 13.6802 0.00122375C10.073 -0.0466589 6.66593 1.31204 4.08232 3.82751C1.49877 6.34309 0.0494257 9.71417 0.00127941 13.3198C-0.0266697 15.4173 0.41461 17.4339 1.31283 19.3135L2.74024 18.6314C1.94775 16.9731 1.55847 15.1931 1.5832 13.3409Z" fill="#919CAA"/>
-        // <path d="M25.4168 13.6591C25.3743 16.8422 24.0949 19.8182 21.814 22.039C19.5332 24.2598 16.5244 25.4599 13.341 25.417C10.3475 25.377 7.49508 24.2117 5.33509 22.1809L6.86185 22.2013L6.88295 20.6194L2.71732 20.5638L2.66168 24.7295L4.2436 24.7506L4.26238 23.3436C6.70761 25.6374 9.93393 26.9536 13.3198 26.9988C16.927 27.0467 20.3341 25.688 22.9177 23.1725C25.5012 20.6569 26.9506 17.2859 26.9988 13.6802C27.0267 11.5828 26.5854 9.56618 25.6872 7.68652L24.2598 8.36869C25.0523 10.027 25.4416 11.807 25.4168 13.6591Z" fill="#919CAA"/>
-        // <path d="M6.1745 8.39344V18.6783L7.17461 18.4042C8.99621 17.905 10.9419 17.9901 12.709 18.6375V8.32141C10.7838 7.71159 8.37843 7.52876 6.1745 8.39344Z" fill="#919CAA"/>
-        // <path d="M20.8233 8.39344V18.6783L19.8232 18.4042C18.0016 17.905 16.0559 17.9901 14.2888 18.6375V8.32141C16.214 7.71159 18.6195 7.52876 20.8233 8.39344Z" fill="#919CAA"/>
-        // </g>
-        // <defs>
-        // <clipPath id="clip0_586_2689">
-        // <rect width="27" height="27" fill="white"/>
-        // </clipPath>
-        // </defs>
-        // </svg>
-        // `,
-        //           id: 1,
-        //           children: [
-        //             {
-        //               title: "Ariza qayta o'qish",
-        //               id: 14,
-        //               link: "retraining-application",
-        //             },
-        //             {
-        //               title: "Q.O'qish mashg'ulotlari",
-        //               id: 14,
-        //               link: "retraining-time-table",
-        //             },
-        //             {
-        //               title: "Q.O'qish nazorat jadvali",
-        //               id: 14,
-        //               link: "retraining-exam-table",
-        //             },
-        //             {
-        //               title: "Q.O'qish o'zlashtirish",
-        //               id: 14,
-        //               link: "retraining-performance",
-        //             },
-        //           ],
-        //         },
         {
           title: "Talaba ma’lumoti",
           icon: `<svg width="27" height="31" viewBox="0 0 27 31" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -245,66 +191,12 @@ export default {
               link: "student-decree",
             },
             {
-              title: "Shartnomalar",
-              id: 16,
-              link: "student-contract",
-            },
-            {
-              title: "Ma'lumotnomalar",
-              id: 17,
-              link: "student-reference",
-            },
-            {
-              title: "Talaba hujjati",
-              id: 18,
-              link: "student-document",
-            },
-            {
-              title: "Bitiruv varaqa",
-              id: 18,
-              link: "student-circulation-sheet",
-            },
-            {
               title: "Shaxsiy ma'lumotlar",
               id: 18,
               link: "student-personal-data",
             },
-            {
-              title: "Bitiruv ishi",
-              id: 18,
-              link: "student-graduate-qualifying",
-            },
           ],
         },
-        {
-          title: "Xabarlar",
-          icon: `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_586_1397)">
-<path d="M14.5893 15.3169C13.9673 15.7316 13.2449 15.9508 12.5 15.9508C11.7552 15.9508 11.0327 15.7316 10.4107 15.3169L0.166455 8.48721C0.109619 8.44932 0.054248 8.40981 0 8.36919V19.5604C0 20.8436 1.04126 21.8619 2.30142 21.8619H22.6985C23.9816 21.8619 25 20.8206 25 19.5604V8.36914C24.9456 8.40986 24.8901 8.44946 24.8332 8.4874L14.5893 15.3169Z" fill="#919CAA"/>
-<path d="M0.979004 7.26865L11.2233 14.0984C11.6111 14.357 12.0555 14.4862 12.5 14.4862C12.9444 14.4862 13.3889 14.3569 13.7767 14.0984L24.021 7.26865C24.634 6.8602 25 6.17661 25 5.43882C25 4.17022 23.9679 3.13818 22.6994 3.13818H2.30063C1.03208 3.13823 0 4.17026 0 5.44004C0 6.17661 0.366016 6.8602 0.979004 7.26865Z" fill="#919CAA"/>
-</g>
-<defs>
-<clipPath id="clip0_586_1397">
-<rect width="25" height="25" fill="white"/>
-</clipPath>
-</defs>
-</svg>
-`,
-          id: 3,
-          children: [
-            {
-              title: "Mening xabarlarim",
-              id: 19,
-              link: "message-my-messages",
-            },
-            {
-              title: "Xabar yaratish",
-              id: 20,
-              link: "message-compose",
-            },
-          ],
-        },
-
         {
           title: "Tizim",
           icon: `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">

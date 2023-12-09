@@ -24,6 +24,11 @@
     margin-right: #{$mr}px;
   }
 }
+@each $gap in (5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 70, 75) {
+  .gap-#{$gap} {
+    gap: #{$gap}px;
+  }
+}
 
 .mx-auto {
   margin-left: auto;

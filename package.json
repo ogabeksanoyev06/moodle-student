@@ -8,8 +8,10 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@kinescope/vue-kinescope-player": "^1.0.0",
     "axios": "^0.21.1",
     "core-js": "^3.8.3",
+    "element-ui": "^2.15.14",
     "face-api.js": "^0.22.2",
     "jwt-decode": "^3.1.2",
     "v-mask": "^2.3.0",
@@ -19,7 +21,10 @@
     "vue-kinesis": "^1.2.3",
     "vue-moment": "^4.1.0",
     "vue-router": "^3.5.1",
+    "vue-simple-drawer": "^1.0.6",
     "vue-toastification": "^1.7.14",
+    "vue-video-player": "^5.0.2",
+    "vue-vjs-hls": "^1.0.0",
     "vuex": "^3.6.2"
   },
   "devDependencies": {

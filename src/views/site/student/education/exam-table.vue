@@ -1,38 +1,50 @@
 <template>
   <div class="content">
-    <semestr-pagination />
-    <div>
-      <ul class="timeline">
-        <ul v-for="item in 5" :key="item">
-          <li class="time-label">
-            <span class="bg-primary"> Dushanba, 20-mart, 2023 </span>
-          </li>
-          <li>
-            <i class="fa bg-info fa-check"></i>
-            <div class="timeline-item">
-              <div class="time">
-                <span class="time-header">1-on</span>
-                <span class="time-icon">
-                  <i class="fa fa-clock-o"></i> 13:20
-                </span>
-              </div>
-              <div class="timeline-body">
-                Fan: AUDIT<br />
-                O'qituvchi: FAYZIYEV SHAXOBIDIN NURUTDINOVICH<br />
-                Auditoriya: J-302<br />
-              </div>
+    <ul class="timeline">
+      <ul v-for="item in 5" :key="item">
+        <li class="time-label">
+          <span class="bg-primary"> Dushanba, 20-mart, 2023 </span>
+        </li>
+        <li>
+          <i class="fa bg-info fa-check"></i>
+          <div class="timeline-item">
+            <div class="time">
+              <span class="time-header">1-on</span>
+              <span class="time-icon">
+                <i class="fa fa-clock-o"></i> 13:20
+              </span>
             </div>
-          </li>
-        </ul>
+            <div class="timeline-body">
+              Fan: AUDIT<br />
+              O'qituvchi: FAYZIYEV SHAXOBIDIN NURUTDINOVICH<br />
+              Auditoriya: J-302<br />
+            </div>
+          </div>
+        </li>
+        <li>
+          <i class="fa bg-info fa-check"></i>
+          <div class="timeline-item">
+            <div class="time">
+              <span class="time-header">1-on</span>
+              <span class="time-icon">
+                <i class="fa fa-clock-o"></i> 13:20
+              </span>
+            </div>
+            <div class="timeline-body">
+              Fan: AUDIT<br />
+              O'qituvchi: FAYZIYEV SHAXOBIDIN NURUTDINOVICH<br />
+              Auditoriya: J-302<br />
+            </div>
+          </div>
+        </li>
       </ul>
-    </div>
+    </ul>
   </div>
 </template>
 <script>
-import SemestrPagination from "@/components/shared-components/SemestrPagination.vue";
 export default {
   name: "EducationExamTable",
-  components: { SemestrPagination },
+  components: {},
   data() {
     return {};
   },
@@ -56,6 +68,7 @@ export default {
   ul {
     & > li {
       position: relative;
+      margin-right: 10px;
       margin-bottom: 15px;
       & > span {
         font-size: 14px;
@@ -63,18 +76,20 @@ export default {
         padding: 5px;
         background-color: #fff;
         border-radius: 4px;
-        background-color: #3f8bf1 !important;
+        background-color: #008bf8 !important;
         color: white;
         display: inline-block;
       }
     }
     & li > {
       .timeline-item {
+        -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
         box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
         border-radius: 3px;
         background: #fff;
         color: #919caa;
         margin-left: 60px;
+        margin-right: 15px;
         position: relative;
         & > .time {
           display: flex;
@@ -100,7 +115,7 @@ export default {
         line-height: 30px;
         position: absolute;
         color: #fff;
-        background: #3f8bf1;
+        background: #008bf8;
         border-radius: 50%;
         text-align: center;
         left: 18px;
