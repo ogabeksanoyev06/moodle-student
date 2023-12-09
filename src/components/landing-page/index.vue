@@ -185,6 +185,7 @@ import LandingHeader from "./header/landing-header.vue";
 import HeroBanner from "./HeroBanner.vue";
 import LandingFooter from "./footer/LandingFooter.vue";
 
+
 export default {
   name: "LandingPage",
   components: { LandingHeader, HeroBanner, LandingFooter },
@@ -207,7 +208,8 @@ export default {
       }
     },
   },
-  mounted() {
+  async mounted() {
+
     // this.setToken();
     this.setWidth();
     window.addEventListener("resize", this.setWidth);

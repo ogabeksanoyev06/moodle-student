@@ -23,8 +23,12 @@
     "vue-router": "^3.5.1",
     "vue-simple-drawer": "^1.0.6",
     "vue-toastification": "^1.7.14",
+<<<<<<< HEAD
     "vue-video-player": "^5.0.2",
     "vue-vjs-hls": "^1.0.0",
+=======
+    "vue-web-cam": "^1.9.0",
+>>>>>>> 29485d0a89d335ce7b2d12cd661ff6761e24b13a
     "vuex": "^3.6.2"
   },
   "devDependencies": {
