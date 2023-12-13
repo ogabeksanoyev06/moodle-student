@@ -1,12 +1,8 @@
 <template>
-
   <kinesis-container>
     <div class="auth">
-
-
       <div class="auth__content">
         <div class="auth__wrap">
-
           <router-link :to="{ name: 'landing-page' }">
             <div class="auth__logo">
               <img src="/svg/smallLogo.svg" alt="" class="mb-5" />
@@ -71,7 +67,7 @@
                 :disabled="loading"
                 class="login mb-20 w-100"
               >
-                Tizimga kir
+                Tizimga kirish
               </AppButton>
             </form>
             <form @submit.prevent="handleSubmit(getUserImage)" v-if="faceForm">
