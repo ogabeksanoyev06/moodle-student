@@ -156,7 +156,7 @@ export default {
       this.$http
         .get(baseURL+'get/student/' + localStorage.getItem('studentId')+'/')
         .then((data) => {
-          console.log(data)
+          console.log('aaa',data)
             this.user = data;
         })
         .catch((error) => {
