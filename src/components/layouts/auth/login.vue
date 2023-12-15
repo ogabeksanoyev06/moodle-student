@@ -101,15 +101,10 @@
                 Face id orqali kirish
               </AppButton>
             </form>
-            <div
-                class="overlay"
-                :class="{ visible: showModal }"
-                @click="closeModal"
-            ></div>
             <AppModal
               @close="closeModal"
               :class="{ visible: showModal }"
-              :width="500"
+              :width="700"
             >
               <template #modalHeader> Face Id </template>
               <template #modalBody>
@@ -212,6 +207,7 @@ export default {
             if (Number(data.data.educationForm.code) === 16) {
               localStorage.setItem("isLogin", true);
               localStorage.setItem("studentId", data.data.student_id_number);
+
               this.$router.push({ name: "home" });
               this.successNotification("Tizimga muvaffaqiyatli kirildi");
             } else {
@@ -263,7 +259,6 @@ export default {
     ...mapGetters([]),
   },
   mounted() {
-
     if (this.facesMatched === false) {
       this.showModal === false;
     }
@@ -272,7 +267,7 @@ export default {
   },
 };
 </script>
-<style lang="scss" >
+<style lang="scss" scoped>
 .input__block-input {
   border-radius: 15px !important;
 }
@@ -280,6 +275,7 @@ export default {
   display: flex;
   align-items: center;
   min-height: 100vh;
+
   &__content {
     max-width: 50%;
     width: 100%;
@@ -320,12 +316,6 @@ export default {
       backdrop-filter: blur(10.5px);
     }
   }
-  .modal__wrap{
-    .modal__body{
-      padding: 0 !important;
-    }
-  }
-
 }
 .face__btn {
   width: 100%;

@@ -16,6 +16,7 @@ import http from "./plugins/axios";
 import KinescopePlayer from "@kinescope/vue-kinescope-player";
 
 Vue.config.productionTip = false;
+
 Vue.component("AppText", AppText);
 Vue.use(VueMask);
 Vue.use(KinescopePlayer);
