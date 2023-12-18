@@ -61,14 +61,14 @@ const routes = [
         name: "education-subject-id",
         component: () =>
           import("../views/site/student/education/title-list.vue"),
-        props:true
+        props: true,
       },
       {
         path: "education/subject/resource/files/:id",
         name: "education-subject-id-files",
         component: () =>
           import("../views/site/student/education/subject-id.vue"),
-        props:true
+        props: true,
       },
       {
         path: "education/performance",

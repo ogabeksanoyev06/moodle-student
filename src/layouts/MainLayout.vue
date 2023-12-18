@@ -625,12 +625,11 @@
 <!--}-->
 <!--</style>-->
 
-
 <template>
   <div>
     <div
-        class="main-menu menu-fixed menu-light menu-accordion menu-shadow"
-        data-scroll-to-active="true"
+      class="main-menu menu-fixed menu-light menu-accordion menu-shadow"
+      data-scroll-to-active="true"
     >
       <div class="navbar-header">
         <ul class="nav navbar-nav flex-row">
@@ -642,11 +641,11 @@
           <li class="nav-item nav-toggle">
             <a class="nav-link modern-nav-toggle pr-0" data-toggle="collapse">
               <i
-                  class="feather icon-x d-block d-xl-none font-medium-4 primary toggle-icon"
+                class="feather icon-x d-block d-xl-none font-medium-4 primary toggle-icon"
               />
               <i
-                  class="toggle-icon feather icon-disc font-medium-4 d-none d-xl-block collapse-toggle-icon primary"
-                  data-ticon="icon-disc"
+                class="toggle-icon feather icon-disc font-medium-4 d-none d-xl-block collapse-toggle-icon primary"
+                data-ticon="icon-disc"
               >
               </i>
             </a>
@@ -656,9 +655,9 @@
       <div class="shadow-bottom"></div>
       <div class="main-menu-content">
         <ul
-            class="navigation navigation-main"
-            data-menu="menu-navigation"
-            id="main-menu-navigation"
+          class="navigation navigation-main"
+          data-menu="menu-navigation"
+          id="main-menu-navigation"
         >
           <li class="nav-item has-sub" v-for="(menu, i) in menu" :key="i">
             <a>
@@ -669,9 +668,9 @@
             </a>
             <ul class="menu-content">
               <li
-                  v-for="(child, index) in menu.children"
-                  :key="index"
-                  :class="currentRouteName === child.routeName ? 'active' : ''"
+                v-for="(child, index) in menu.children"
+                :key="index"
+                :class="currentRouteName === child.routeName ? 'active' : ''"
               >
                 <a @click.prevent="openRoute(child.routeName)">
                   <i class="feather icon-users"></i>

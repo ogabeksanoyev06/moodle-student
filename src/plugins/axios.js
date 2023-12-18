@@ -27,7 +27,7 @@ function setConfiguration(provider) {
     (error) => {
       if (error.response && error.response.status === 401) {
         router
-          .push({ name: "login" })
+          .push({ name: "home" })
           .then(() => {})
           .catch(() => {
             if (error.response.status === 401) {
