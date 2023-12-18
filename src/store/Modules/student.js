@@ -27,6 +27,7 @@ const actions = {
         .get(baseURL + "get/student/"+localStorage.getItem('studentId')+'/')
         .then((res) => {
           console.log(res)
+          localStorage.setItem('group',res.group.id)
             commit("setUser", res);
         })
         .catch((error) => {

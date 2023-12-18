@@ -6,7 +6,7 @@ const routes = [
   {
     path: "/landing-page",
     name: "landing-page",
-    component: () => import("../components/landing-page/index.vue"),
+    component: () => import("../components/landing-page"),
     meta: { guestOnly: true },
   },
 
@@ -30,7 +30,7 @@ const routes = [
   {
     path: "/",
     component: () => import("../layouts/MainLayout.vue"),
-      meta: { requiresAuth: true },
+    meta: { requiresAuth: true },
     children: [
       // home
       {
@@ -57,10 +57,18 @@ const routes = [
         component: () => import("../views/site/student/education/subjects.vue"),
       },
       {
-        path: "education/subject/resource/:subject_id",
+        path: "education/subject/resource/:id",
         name: "education-subject-id",
         component: () =>
+          import("../views/site/student/education/title-list.vue"),
+        props:true
+      },
+      {
+        path: "education/subject/resource/files/:id",
+        name: "education-subject-id-files",
+        component: () =>
           import("../views/site/student/education/subject-id.vue"),
+        props:true
       },
       {
         path: "education/performance",
