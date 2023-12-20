@@ -18,7 +18,7 @@
     </div>
     <div class="test">
       <div class="test_left">
-        <div class="test_body">
+        <div class="test_body" ref="testBody">
           <div class="test_subject">
             <div
               class="test_question"
@@ -364,9 +364,9 @@ export default {
   },
   methods: {
     scrollToQuestion(index) {
-      const questionRef = this.$refs[`question_${index}`];
-      if (questionRef && questionRef[0]) {
-        questionRef[0].scrollIntoView({ behavior: "smooth" });
+      const testElement = this.$refs["question_" + index][0];
+      if (testElement) {
+        testElement.scrollIntoView({ behavior: "smooth" });
       }
       this.activeP = index;
     },
