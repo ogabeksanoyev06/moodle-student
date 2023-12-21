@@ -1,4 +1,4 @@
-import {baseURL} from "@/plugins/axios";
+import { baseURL } from "@/plugins/axios";
 
 const state = {
   user: {},
@@ -20,15 +20,15 @@ const mutations = {
   setIsLoggedOn: (state, data) => (state.isLoggedOn = data),
 };
 const actions = {
-  getUser({ commit }) {
+  async getUser({ commit }) {
     try {
       commit("setLoading", true);
-      this._vm.$http
-        .get(baseURL + "get/student/"+localStorage.getItem('studentId')+'/')
+      await this._vm.$http
+        .get(baseURL + "get/student/" + localStorage.getItem("studentId") + "/")
         .then((res) => {
-          console.log(res)
-          localStorage.setItem('group',res.group.id)
-            commit("setUser", res);
+          console.log(res);
+          localStorage.setItem("group", res.group.id);
+          commit("setUser", res);
         })
         .catch((error) => {
           commit("setLoading", false);
