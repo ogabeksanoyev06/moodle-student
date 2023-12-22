@@ -1,6 +1,5 @@
 <template>
   <div class="exam-list">
-    {{ user }}
     <div class="card">
       <div class="card-content">
         <div class="card-body">
@@ -9,20 +8,41 @@
               <thead>
                 <tr>
                   <th scope="col">Nomi</th>
-                  <th scope="col">O'quv yili</th>
-                  <th scope="col">Guruhlar</th>
-                  <th scope="col">Savollar</th>
-                  <th scope="col">Boshlanish</th>
-                  <th scope="col">Tugash</th>
-                  <th scope="col">Vaqti</th>
-                  <th scope="col">Faol</th>
+                  <th scope="col">Natija</th>
+                  <th scope="col">Maks ball</th>
+                  <th scope="col">Test davri</th>
+                  <th></th>
                 </tr>
               </thead>
               <transition name="fade" :duration="2000">
                 <tbody class="table-bordered">
-                  <tr v-for="(tariff, index) in 10" :key="index">
+                  <tr v-for="(item, index) in examList" :key="index">
+                    <td>
+                      {{ index + 1 }}. {{ item.exam.name }}.
+                      {{ item.exam.curriculum.name }}
+                    </td>
                     <td></td>
-                    <td></td>
+                    <td>
+                      {{ item.exam.max_score }}
+                    </td>
+                    <td>
+                      {{
+                        $moment(item.exam.begin_time).format("YYYY-MM-DD HH:ss")
+                      }}
+                      <br />
+                      {{
+                        $moment(item.exam.end_time).format("YYYY-MM-DD HH:ss")
+                      }}
+                    </td>
+                    <td>
+                      <button
+                        :disabled="item.is_active && item.exam.exam_status"
+                        class="btn btn-success w-100"
+                        @click="goToTest(item.exam.id)"
+                      >
+                        Boshlash
+                      </button>
+                    </td>
                   </tr>
                 </tbody>
               </transition>
@@ -60,15 +80,22 @@ export default {
           this.loading = false;
         });
     },
+    goToTest(exam_id) {
+      this.$router.push({
+        name: "test",
+        params: { exam_id: exam_id },
+      });
+    },
   },
   computed: {
     ...mapGetters(["user"]),
   },
   async mounted() {
     await this.getUser();
-    this.student_id = this.user.student_id_number;
+    this.student_id = this.user.id;
     await this.getExamList();
   },
+  created() {},
 };
 </script>
 

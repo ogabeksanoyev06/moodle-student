@@ -24,5 +24,12 @@ Vue.mixin({
         duration: 1000,
       });
     },
+    notificationMessage(message, type) {
+      this.$toast.open({
+        message: message,
+        type: type,
+        position: "top-right",
+      });
+    },
   },
 });

@@ -22,6 +22,7 @@
     "vue-moment": "^4.1.0",
     "vue-router": "^3.5.1",
     "vue-simple-drawer": "^1.0.6",
+    "vue-toast-notification": "^0.5.0",
     "vue-toastification": "^1.7.14",
     "vue-video-player": "^5.0.2",
     "vue-vjs-hls": "^1.0.0",
