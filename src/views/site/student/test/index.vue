@@ -1,10 +1,5 @@
 <template>
   <section>
-    <!-- <div class="test_title mb-30">
-      <AppText :size="isMobileSmall ? 16 : isMobile ? 18 : 20" :weight="600">
-        Test Sarlavhasi
-      </AppText>
-    </div> -->
     <div class="test">
       <div class="test_left">
         <div class="test_body" ref="testBody">
@@ -25,6 +20,7 @@
                   class="test_answers-title"
                   v-for="(item, a) in question.answers"
                   :key="a"
+                  @click="selectAnswer(question.id, item.id)"
                 >
                   <AppText
                     :size="isMobile ? 14 : 16"
@@ -80,293 +76,23 @@
   </section>
 </template>
 <script>
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "AppTest",
   data() {
     return {
       questions: [],
-      exam_id: null,
-      // questions: [
-      //   {
-      //     id: 0,
-      //     question:
-      //       "К основными показателям качества работы аудиторской организации можно отнести:",
-      //     answers: [
-      //       {
-      //         answer: "контроля соблюдение международных стандартов аудита.",
-      //         isTrue: true,
-      //       },
-      //       {
-      //         answer: "отсутствие методики проведения аудиторской проверки",
-      //         isTrue: false,
-      //       },
-      //       {
-      //         answer: "отсутствие системы внутреннего контроля",
-      //         isTrue: false,
-      //       },
-      //       {
-      //         answer: "наличие жалоб юридических и физических лиц",
-      //         isTrue: false,
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     id: 1,
-      //     question:
-      //       "Финансовая (бухгалтерская) отчётность организации может быть признана достоверной, если:",
-      //     answers: [
-      //       {
-      //         answer: "Соблюдены все вышеперечисленные (a и b) условия.",
-      //         isTrue: true,
-      //       },
-      //       {
-      //         answer:
-      //           "Нарушения требований нормативных актов, по профессиональному суждению аудитора, несущественны",
-      //         isTrue: false,
-      //       },
-      //       {
-      //         answer:
-      //           "Выявленные аудитором и не устраненные аудируемым лицом искажения цифр намного ниже уровня существенности",
-      //         isTrue: false,
-      //       },
-      //       {
-      //         answer: "Нет верных ответов",
-      //         isTrue: false,
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     id: 2,
-      //     question:
-      //       "Финансовая (бухгалтерская) отчётность организации может быть признана достоверной, если:",
-      //     answers: [
-      //       {
-      //         answer: "Соблюдены все вышеперечисленные (a и b) условия.",
-      //         isTrue: true,
-      //       },
-      //       {
-      //         answer:
-      //           "Нарушения требований нормативных актов, по профессиональному суждению аудитора, несущественны",
-      //         isTrue: false,
-      //       },
-      //       {
-      //         answer:
-      //           "Выявленные аудитором и не устраненные аудируемым лицом искажения цифр намного ниже уровня существенности",
-      //         isTrue: false,
-      //       },
-      //       {
-      //         answer: "Нет верных ответов",
-      //         isTrue: false,
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     id: 3,
-      //     question:
-      //       "Финансовая (бухгалтерская) отчётность организации может быть признана достоверной, если:",
-      //     answers: [
-      //       {
-      //         answer: "Соблюдены все вышеперечисленные (a и b) условия.",
-      //         isTrue: true,
-      //       },
-      //       {
-      //         answer:
-      //           "Нарушения требований нормативных актов, по профессиональному суждению аудитора, несущественны",
-      //         isTrue: false,
-      //       },
-      //       {
-      //         answer:
-      //           "Выявленные аудитором и не устраненные аудируемым лицом искажения цифр намного ниже уровня существенности",
-      //         isTrue: false,
-      //       },
-      //       {
-      //         answer: "Нет верных ответов",
-      //         isTrue: false,
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     id: 3,
-      //     question:
-      //       "Финансовая (бухгалтерская) отчётность организации может быть признана достоверной, если:",
-      //     answers: [
-      //       {
-      //         answer: "Соблюдены все вышеперечисленные (a и b) условия.",
-      //         isTrue: true,
-      //       },
-      //       {
-      //         answer:
-      //           "Нарушения требований нормативных актов, по профессиональному суждению аудитора, несущественны",
-      //         isTrue: false,
-      //       },
-      //       {
-      //         answer:
-      //           "Выявленные аудитором и не устраненные аудируемым лицом искажения цифр намного ниже уровня существенности",
-      //         isTrue: false,
-      //       },
-      //       {
-      //         answer: "Нет верных ответов",
-      //         isTrue: false,
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     id: 2,
-      //     question:
-      //       "Финансовая (бухгалтерская) отчётность организации может быть признана достоверной, если:",
-      //     answers: [
-      //       {
-      //         answer: "Соблюдены все вышеперечисленные (a и b) условия.",
-      //         isTrue: true,
-      //       },
-      //       {
-      //         answer:
-      //           "Нарушения требований нормативных актов, по профессиональному суждению аудитора, несущественны",
-      //         isTrue: false,
-      //       },
-      //       {
-      //         answer:
-      //           "Выявленные аудитором и не устраненные аудируемым лицом искажения цифр намного ниже уровня существенности",
-      //         isTrue: false,
-      //       },
-      //       {
-      //         answer: "Нет верных ответов",
-      //         isTrue: false,
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     id: 3,
-      //     question:
-      //       "Финансовая (бухгалтерская) отчётность организации может быть признана достоверной, если:",
-      //     answers: [
-      //       {
-      //         answer: "Соблюдены все вышеперечисленные (a и b) условия.",
-      //         isTrue: true,
-      //       },
-      //       {
-      //         answer:
-      //           "Нарушения требований нормативных актов, по профессиональному суждению аудитора, несущественны",
-      //         isTrue: false,
-      //       },
-      //       {
-      //         answer:
-      //           "Выявленные аудитором и не устраненные аудируемым лицом искажения цифр намного ниже уровня существенности",
-      //         isTrue: false,
-      //       },
-      //       {
-      //         answer: "Нет верных ответов",
-      //         isTrue: false,
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     id: 3,
-      //     question:
-      //       "Финансовая (бухгалтерская) отчётность организации может быть признана достоверной, если:",
-      //     answers: [
-      //       {
-      //         answer: "Соблюдены все вышеперечисленные (a и b) условия.",
-      //         isTrue: true,
-      //       },
-      //       {
-      //         answer:
-      //           "Нарушения требований нормативных актов, по профессиональному суждению аудитора, несущественны",
-      //         isTrue: false,
-      //       },
-      //       {
-      //         answer:
-      //           "Выявленные аудитором и не устраненные аудируемым лицом искажения цифр намного ниже уровня существенности",
-      //         isTrue: false,
-      //       },
-      //       {
-      //         answer: "Нет верных ответов",
-      //         isTrue: false,
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     id: 2,
-      //     question:
-      //       "Финансовая (бухгалтерская) отчётность организации может быть признана достоверной, если:",
-      //     answers: [
-      //       {
-      //         answer: "Соблюдены все вышеперечисленные (a и b) условия.",
-      //         isTrue: true,
-      //       },
-      //       {
-      //         answer:
-      //           "Нарушения требований нормативных актов, по профессиональному суждению аудитора, несущественны",
-      //         isTrue: false,
-      //       },
-      //       {
-      //         answer:
-      //           "Выявленные аудитором и не устраненные аудируемым лицом искажения цифр намного ниже уровня существенности",
-      //         isTrue: false,
-      //       },
-      //       {
-      //         answer: "Нет верных ответов",
-      //         isTrue: false,
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     id: 3,
-      //     question:
-      //       "Финансовая (бухгалтерская) отчётность организации может быть признана достоверной, если:",
-      //     answers: [
-      //       {
-      //         answer: "Соблюдены все вышеперечисленные (a и b) условия.",
-      //         isTrue: true,
-      //       },
-      //       {
-      //         answer:
-      //           "Нарушения требований нормативных актов, по профессиональному суждению аудитора, несущественны",
-      //         isTrue: false,
-      //       },
-      //       {
-      //         answer:
-      //           "Выявленные аудитором и не устраненные аудируемым лицом искажения цифр намного ниже уровня существенности",
-      //         isTrue: false,
-      //       },
-      //       {
-      //         answer: "Нет верных ответов",
-      //         isTrue: false,
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     id: 3,
-      //     question:
-      //       "Финансовая (бухгалтерская) отчётность организации может быть признана достоверной, если:",
-      //     answers: [
-      //       {
-      //         answer: "Соблюдены все вышеперечисленные (a и b) условия.",
-      //         isTrue: true,
-      //       },
-      //       {
-      //         answer:
-      //           "Нарушения требований нормативных актов, по профессиональному суждению аудитора, несущественны",
-      //         isTrue: false,
-      //       },
-      //       {
-      //         answer:
-      //           "Выявленные аудитором и не устраненные аудируемым лицом искажения цифр намного ниже уровня существенности",
-      //         isTrue: false,
-      //       },
-      //       {
-      //         answer: "Нет верных ответов",
-      //         isTrue: false,
-      //       },
-      //     ],
-      //   },
-      // ],
+      exam_id: "",
+      exam_detail: null,
+      ip_address: "",
+      student_id: "",
       answerLabels: ["A", "B", "C", "D", "E", "F", "G", "H"],
       testTimer: 0,
       activeP: 0,
     };
   },
   methods: {
+    ...mapActions(["getUser"]),
     scrollToQuestion(index) {
       const testElement = this.$refs["question_" + index][0];
       if (testElement) {
@@ -374,9 +100,9 @@ export default {
       }
       this.activeP = index;
     },
-    getExamTest() {
+    async getExamTest() {
       this.loading = true;
-      this.$http
+      await this.$http
         .get(`test/${this.exam_id}`)
         .then((res) => {
           this.questions = res;
@@ -387,6 +113,51 @@ export default {
         .finally(() => {
           this.loading = false;
         });
+    },
+    async resultCreate() {
+      const result = {
+        exam: this.exam_id,
+        student: this.student_id,
+        group: this.user.group.id,
+        ip_address: this.ip_address,
+        attempts: this.exam_detail.attempts,
+        correct_answer: 0,
+        total_count: this.exam_detail.total_count,
+        max_score: this.exam_detail.max_score,
+        begin_time: this.exam_detail.begin_time,
+        end_time: this.exam_detail.end_time,
+        is_start: true,
+        exam_time: null,
+      };
+      await this.$http
+        .post(`result/create`, result)
+        .then((res) => {
+          console.log("sasasasass", res);
+        })
+        .catch((err) => {
+          if (err.response && err.response.data) {
+            const errors = err.response.data;
+            for (const key in errors) {
+              if (Object.hasOwnProperty.call(errors, key)) {
+                const errorMessages = errors[key];
+                this.notificationMessage(
+                  `${key}: ${errorMessages.join(", ")}`,
+                  "error"
+                );
+              }
+            }
+          }
+        })
+        .finally(() => {});
+    },
+    async getExamDetail() {
+      await this.$http
+        .get(`exam-detail/${this.exam_id}`)
+        .then((res) => {
+          this.exam_detail = res;
+        })
+        .catch(() => {})
+        .finally(() => {});
     },
     setTimer() {
       let _this = this;
@@ -417,13 +188,51 @@ export default {
       }
       return hours + ":" + minutes + ":" + seconds;
     },
+    async fetchLocalIPAddress() {
+      return new Promise((resolve) => {
+        window.RTCPeerConnection =
+          window.RTCPeerConnection ||
+          window.mozRTCPeerConnection ||
+          window.webkitRTCPeerConnection;
+
+        const pc = new RTCPeerConnection();
+
+        pc.createDataChannel("");
+
+        pc.createOffer().then((offer) => {
+          pc.setLocalDescription(offer);
+        });
+
+        pc.onicecandidate = (e) => {
+          if (!e.candidate) {
+            return;
+          }
+
+          const ipRegex = /\d+\.\d+\.\d+\.\d+/;
+          const ipAddress = ipRegex.exec(e.candidate.candidate)[0];
+
+          resolve(ipAddress);
+          this.ip_address = ipAddress;
+          pc.onicecandidate = null;
+          pc.close();
+        };
+      });
+    },
   },
-  mounted() {
-    this.getExamTest();
+  computed: {
+    ...mapGetters(["user"]),
+  },
+  async mounted() {
+    await this.getUser();
+    await this.getExamTest();
+    await this.getExamDetail();
+    await this.fetchLocalIPAddress();
+    await this.resultCreate();
     this.setTimer();
   },
   created() {
     this.exam_id = this.$route.params.exam_id;
+    this.student_id = localStorage.getItem("student_id");
   },
 };
 </script>

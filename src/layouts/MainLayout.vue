@@ -859,14 +859,4 @@ export default {
 .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
   opacity: 0;
 }
-
-.katex-display {
-  text-align: inherit !important;
-}
-
-.katex-display > .katex {
-  display: block;
-  text-align: inherit !important;
-  white-space: normal !important;
-}
 </style>

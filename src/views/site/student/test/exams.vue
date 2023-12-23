@@ -36,12 +36,17 @@
                     </td>
                     <td>
                       <button
-                        :disabled="item.is_active && item.exam.exam_status"
+                        :disabled="!item.is_active && !item.exam.exam_status"
                         class="btn btn-success w-100"
-                        @click="goToTest(item.exam.id)"
+                        @click="goToTest(item.exam.id, item.id)"
                       >
                         Boshlash
                       </button>
+                    </td>
+                  </tr>
+                  <tr v-if="errorMessage !== ''">
+                    <td class="text-center" colspan="5">
+                      {{ errorMessage }}
                     </td>
                   </tr>
                 </tbody>
@@ -61,6 +66,7 @@ export default {
   data() {
     return {
       examList: [],
+      errorMessage: "",
       student_id: null,
     };
   },
@@ -74,17 +80,18 @@ export default {
           this.examList = res;
         })
         .catch((err) => {
-          console.log(err);
+          this.errorMessage = err.response.data.message;
         })
         .finally(() => {
           this.loading = false;
         });
     },
-    goToTest(exam_id) {
+    goToTest(exam_id, student_id) {
       this.$router.push({
         name: "test",
         params: { exam_id: exam_id },
       });
+      localStorage.setItem("student_id", student_id);
     },
   },
   computed: {
