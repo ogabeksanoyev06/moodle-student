@@ -86,12 +86,11 @@ export default {
           this.loading = false;
         });
     },
-    goToTest(exam_id, student_id) {
+    goToTest(exam_id) {
       this.$router.push({
         name: "test",
         params: { exam_id: exam_id },
       });
-      localStorage.setItem("student_id", student_id);
     },
   },
   computed: {
@@ -100,6 +99,8 @@ export default {
   async mounted() {
     await this.getUser();
     this.student_id = this.user.id;
+    localStorage.setItem("student_id", this.student_id);
+
     await this.getExamList();
   },
   created() {},

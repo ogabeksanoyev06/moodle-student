@@ -62,22 +62,32 @@
             class="test_pagination-item"
             v-for="(question, index) in questions"
             :key="index"
-            :class="{ active: index === activeP }"
             @click="scrollToQuestion(index)"
           >
             {{ index + 1 }}
           </li>
         </ul>
         <div class="test_pagination-bottom">
-          <button>Yakunlash</button>
+          <button @click="showModalClick">Yakunlash</button>
         </div>
       </div>
     </div>
+    <AppModal @close="closeModal" :class="{ visible: showModal }" :width="300">
+      <template #modalHeader> Test natijangiz </template>
+      <template #modalBody> </template>
+    </AppModal>
+    <div
+      class="overlay"
+      :class="{ visible: showModal }"
+      @click="closeModal"
+    ></div>
   </section>
 </template>
 <script>
+import AppModal from "@/components/shared-components/AppModal.vue";
 import { mapActions, mapGetters } from "vuex";
 export default {
+  components: { AppModal },
   name: "AppTest",
   data() {
     return {
@@ -89,6 +99,7 @@ export default {
       answerLabels: ["A", "B", "C", "D", "E", "F", "G", "H"],
       testTimer: 0,
       activeP: 0,
+      showModal: false,
     };
   },
   methods: {
@@ -103,9 +114,17 @@ export default {
     async getExamTest() {
       this.loading = true;
       await this.$http
-        .get(`test/${this.exam_id}`)
-        .then((res) => {
-          this.questions = res;
+        .get(`test/${this.exam_id}/for/${this.student_id}/`)
+        .then((response) => {
+          response.forEach((element) => {
+            let model = {
+              id: element.id,
+              name: element.name,
+              answers: element.answers,
+              is_selected: null,
+            };
+            this.questions.push(model);
+          });
         })
         .catch((err) => {
           this.notificationMessage(err.response.data.message, "error");
@@ -121,13 +140,12 @@ export default {
         group: this.user.group.id,
         ip_address: this.ip_address,
         attempts: this.exam_detail.attempts,
-        correct_answer: 0,
         total_count: this.exam_detail.total_count,
         max_score: this.exam_detail.max_score,
-        begin_time: this.exam_detail.begin_time,
         end_time: this.exam_detail.end_time,
         is_start: true,
-        exam_time: null,
+        exam_time: 0,
+        correct_answer: 0,
       };
       await this.$http
         .post(`result/create`, result)
@@ -217,6 +235,42 @@ export default {
           pc.close();
         };
       });
+    },
+    //
+    selectAnswer(questionId, answerId) {
+      this.$http
+        .patch(`student-exam-answers/${this.exam_id}/for/${this.student_id}/`, {
+          question: questionId,
+          answer: answerId,
+          is_selected: true,
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {});
+    },
+    isSelected(questionId, answerId) {
+      const selectedQuestion = this.questions.find((q) => q.id === questionId);
+      if (selectedQuestion) {
+        const selectedAnswer = selectedQuestion.answers.find(
+          (a) => a.id === answerId
+        );
+        return selectedAnswer ? selectedAnswer.isSelected : false;
+      }
+      return false;
+    },
+    finishTest() {},
+
+    closeModal() {
+      this.showModal = false;
+      document.body.style.overflowY = "scroll";
+    },
+    showModalClick() {
+      this.showModal = true;
+      document.body.style.overflowY = "hidden";
     },
   },
   computed: {
