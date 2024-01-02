@@ -150,7 +150,7 @@ export default {
       await this.$http
         .post(`result/create`, result)
         .then((res) => {
-          console.log("sasasasass", res);
+          this.testTimer = Math.abs(res.exam_time_second);
         })
         .catch((err) => {
           if (err.response && err.response.data) {
@@ -179,7 +179,6 @@ export default {
     },
     setTimer() {
       let _this = this;
-      this.testTimer = 50 * 60;
       let testTimerInterval = setInterval(function () {
         if (_this.testTimer / 60 <= 0) {
           _this.testFinish();
