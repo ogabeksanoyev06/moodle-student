@@ -17,10 +17,11 @@
               </div>
               <ul class="test_answers pb-1">
                 <li
-                  class="test_answers-title"
+
                   v-for="(item, a) in question.answers"
                   :key="a"
                   @click="selectAnswer(question.id, item.id)"
+                  :class="item.is_selected?'test_answers-title active':'test_answers-title'"
                 >
                   <AppText
                     :size="isMobile ? 14 : 16"
@@ -59,10 +60,11 @@
         </div>
         <ul class="test_pagination">
           <li
-            class="test_pagination-item"
+
             v-for="(question, index) in questions"
             :key="index"
             @click="scrollToQuestion(index)"
+            :class="question.is_selected?'test_pagination-item active':'test_pagination-item'"
           >
             {{ index + 1 }}
           </li>
@@ -73,8 +75,18 @@
       </div>
     </div>
     <AppModal @close="closeModal" :class="{ visible: showModal }" :width="300">
-      <template #modalHeader> Test natijangiz </template>
-      <template #modalBody> </template>
+      <template #modalHeader> Testni yakunlamoqchimisiz ?</template>
+      <template #modalBody>
+        <div @click="closeModal" class="buttons">
+          <button class="btn btn-danger">
+            Yo'q
+          </button>
+          <button @click="finishTest" class="btn btn-success">
+            Ha
+          </button>
+        </div>
+
+      </template>
     </AppModal>
     <div
       class="overlay"
@@ -92,6 +104,7 @@ export default {
   data() {
     return {
       questions: [],
+      select:[],
       exam_id: "",
       exam_detail: null,
       ip_address: "",
@@ -120,8 +133,8 @@ export default {
             let model = {
               id: element.id,
               name: element.name,
-              answers: element.answers,
-              is_selected: null,
+              answers: element.answers.map(answer => ({ ...answer, is_selected: false })),
+              is_selected: false,
             };
             this.questions.push(model);
           });
@@ -144,12 +157,13 @@ export default {
         max_score: this.exam_detail.max_score,
         end_time: this.exam_detail.end_time,
         is_start: true,
-        exam_time: 0,
+        exam_time: this.exam_detail.exam_time,
         correct_answer: 0,
       };
       await this.$http
         .post(`result/create`, result)
         .then((res) => {
+          console.log('res',res)
           this.testTimer = Math.abs(res.exam_time_second);
         })
         .catch((err) => {
@@ -168,6 +182,14 @@ export default {
         })
         .finally(() => {});
     },
+    getDefault(){
+      this.$http.get(`https://api.fastlms.uz/api/student-select-answers-get/${this.exam_id}/for/${this.student_id}/`).then((res)=>{
+       this.select = res.data
+        this.collectSelect()
+      }).catch((err)=>{
+        console.log(err)
+      })
+    },
     async getExamDetail() {
       await this.$http
         .get(`exam-detail/${this.exam_id}`)
@@ -181,7 +203,6 @@ export default {
       let _this = this;
       let testTimerInterval = setInterval(function () {
         if (_this.testTimer / 60 <= 0) {
-          _this.testFinish();
           clearInterval(testTimerInterval);
           return;
         }
@@ -240,10 +261,12 @@ export default {
       this.$http
         .patch(`student-exam-answers/${this.exam_id}/for/${this.student_id}/`, {
           question: questionId,
-          answer: answerId,
-          is_selected: true,
+          is_selected: answerId
         })
         .then((res) => {
+        this.select = res
+          this.collectSelect()
+          console.log(this.questions)
           console.log(res);
         })
         .catch((err) => {
@@ -255,13 +278,38 @@ export default {
       const selectedQuestion = this.questions.find((q) => q.id === questionId);
       if (selectedQuestion) {
         const selectedAnswer = selectedQuestion.answers.find(
-          (a) => a.id === answerId
+            (a) => a.id === answerId
         );
-        return selectedAnswer ? selectedAnswer.isSelected : false;
+        return selectedAnswer ? selectedAnswer.is_selected : false;
       }
       return false;
     },
-    finishTest() {},
+collectSelect() {
+  this.select.forEach((pair) => {
+    const questionId = pair.question;
+    const answerId = pair.is_selected;
+    const selectedQuestion = this.questions.find((q) => q.id === questionId);
+    if (selectedQuestion) {
+      selectedQuestion.is_selected=true
+      selectedQuestion.answers.forEach((answer) => {
+        answer.is_selected = false;
+      });
+      const selectedAnswer = selectedQuestion.answers.find(
+          (a) => a.id === answerId
+      );
+      if (selectedAnswer) {
+        selectedAnswer.is_selected = true;
+      }
+    }
+  });
+},
+    finishTest() {
+      this.$http.get(`https://api.fastlms.uz/api/exam-finish/${this.exam_id}/finish/${this.student_id}/`).then(()=>{
+        this.$router.push({name:'test-exams'})
+      }).catch((err)=>{
+        console.log(err)
+      })
+    },
 
     closeModal() {
       this.showModal = false;
@@ -282,6 +330,7 @@ export default {
     await this.fetchLocalIPAddress();
     await this.resultCreate();
     this.setTimer();
+    this.getDefault()
   },
   created() {
     this.exam_id = this.$route.params.exam_id;
@@ -290,6 +339,12 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.buttons{
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  justify-content: space-around;
+}
 section {
   height: calc(100vh - 150px);
 }

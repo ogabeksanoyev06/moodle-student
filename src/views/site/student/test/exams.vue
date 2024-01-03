@@ -36,7 +36,7 @@
                     </td>
                     <td>
                       <button
-                        :disabled="!item.is_active && !item.exam.exam_status"
+                        :disabled="item.is_active && item.exam.exam_status && item.is_finish"
                         class="btn btn-success w-100"
                         @click="goToTest(item.exam.id, item.id)"
                       >
@@ -78,6 +78,7 @@ export default {
         .get(`exam-list/${this.student_id}`)
         .then((res) => {
           this.examList = res;
+          console.log(res)
         })
         .catch((err) => {
           this.errorMessage = err.response.data.message;
