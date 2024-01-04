@@ -1,63 +1,65 @@
 <template>
-  <div class="container list-subjects">
-    <div v-for="item in subjects" :key="item.id" class="subject-list-card">
-      <div class="header-card">
-        <div class="title-card">{{item.subject_id.name}}</div>
-        <div class="subtitle">
-          <span>{{item.subject_id.subjectgroup.name}}</span> | <span>{{item.curriculum_id.markingsystem.gpa_limit}}</span>
+  <div class=" list-subjects">
+
+      <div  v-for="item in subjects" :key="item.id" class="subject-list-card">
+        <div class="header-card">
+          <div class="title-card">{{item.subject_id.name}}</div>
+          <div class="subtitle">
+            <span>{{item.subject_id.subjectgroup.name}}</span> | <span>{{item.curriculum_id.markingsystem.gpa_limit}}</span>
+          </div>
+        </div>
+        <div class="body-card">
+          <div class='card-body-section'>
+            <div class="title-section">
+              Maruza soni
+            </div>
+            <div class="info-section">
+              <div class="tag">
+                {{item.topic_count}}
+              </div>
+              <div class="info">
+                <img width="13" height="13" src="/svg/amountLecture.svg" alt=""/>
+              </div>
+            </div>
+          </div>
+          <div class='card-body-section'>
+            <div class="title-section">
+              Video darsliklar
+            </div>
+            <div class="info-section">
+              <div class="tag">
+                {{item.video_count}}
+              </div>
+              <div class="info">
+                <img width="13" height="13" src="/svg/vidio.svg" alt=""/>
+              </div>
+            </div>
+          </div>
+          <div class='card-body-section'>
+            <div class="title-section">
+              Topshiriqlar soni
+            </div>
+            <div class="info-section">
+              <div class="tag">
+                {{ item.task_count}}
+              </div>
+              <div class="info">
+                <img width="13" height="13" src="/svg/user.svg" alt=""/>
+              </div>
+            </div>
+          </div>
+          <router-link :to="{name:'education-subject-id',params:{id:item.id}}" >
+            <div class="footer-card">
+
+              <button class="button-card">
+                Kirish
+              </button>
+
+            </div>
+          </router-link>
         </div>
       </div>
-      <div class="body-card">
-        <div class='card-body-section'>
-          <div class="title-section">
-            Maruza soni
-          </div>
-          <div class="info-section">
-            <div class="tag">
-              {{item.topic_count}}
-            </div>
-            <div class="info">
-              <img width="13" height="13" src="/svg/amountLecture.svg" alt=""/>
-            </div>
-          </div>
-        </div>
-        <div class='card-body-section'>
-          <div class="title-section">
-            Video darsliklar
-          </div>
-          <div class="info-section">
-            <div class="tag">
-              {{item.video_count}}
-            </div>
-            <div class="info">
-              <img width="13" height="13" src="/svg/vidio.svg" alt=""/>
-            </div>
-          </div>
-        </div>
-        <div class='card-body-section'>
-          <div class="title-section">
-            Topshiriqlar soni
-          </div>
-          <div class="info-section">
-            <div class="tag">
-              {{ item.task_count}}
-            </div>
-            <div class="info">
-              <img width="13" height="13" src="/svg/user.svg" alt=""/>
-            </div>
-          </div>
-        </div>
-        <router-link :to="{name:'education-subject-id',params:{id:item.id}}" >
-          <div class="footer-card">
 
-            <button class="button-card">
-              Kirish
-            </button>
-
-          </div>
-        </router-link>
-      </div>
-    </div>
   </div>
 </template>
 <script>
@@ -74,7 +76,9 @@ export default {
     getSubjects(){
       axios.get(`https://api.fastlms.uz/api/student/content/get_all_active/?group_id=${localStorage.getItem('group')}`).then((res)=>{
         console.log(res)
+
         this.subjects=res.data.results
+        console.log(this.subjects.length)
       })
     },
     goToLink(id) {

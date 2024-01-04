@@ -14,12 +14,12 @@
           </video>
           <div class="list-chips">
             <div v-for="(item,index) in video" :key="index">
-              <button @click="perform(item)" :class="videoContentId === item.id ? 'chips active':'chips'" >
+              <button @click="perform(item)" :class="videoContentId === item?.id ? 'chips active':'chips'" >
                 <div>
                   {{index+1}} -
                 </div>
                 <div>
-                  {{item.name}}
+                  {{item?.name}}
                 </div>
               </button>
             </div>
@@ -78,7 +78,7 @@
                       </clipPath>
                     </defs>
                   </svg>
-                  <p class="mb-0">{{index+1}} : {{item.name}}</p>
+                  <p class="mb-0">{{index+1}} : {{item?.name}}</p>
                 </div>
                 <div style="cursor: pointer" @click="download(item.file_file)" class="d-flex align-center gap-10">
                     <svg
@@ -130,8 +130,8 @@ export default {
       videoContentId:null,
       drawer: false,
       subjectId: null,
-      videoRef:JSON.parse(localStorage.getItem('videoContent')).vide_file,
-      title:JSON.parse(localStorage.getItem('videoContent')).name,
+      videoRef:JSON.parse(localStorage.getItem('videoContent'))?.vide_file,
+      title:JSON.parse(localStorage.getItem('videoContent'))?.name,
       videoOptions: {
         autoplay: true,
         controls: true,
@@ -189,11 +189,12 @@ export default {
       this.title=item?.name
       localStorage.setItem('videoContent',JSON.stringify(item))
       console.log(item)
-      this.videoContentId = JSON.parse(localStorage.getItem('videoContent')).id
+      this.videoContentId = JSON.parse(localStorage.getItem('videoContent'))?.id
     },
     getSubjects(){
+      console.log('test')
        axios.get(`https://api.fastlms.uz/api/student/content/topic/one/?topic_id=${this.id}`).then((res)=>{
-        console.log(res)
+        console.log('res',res)
         this.file=res.data.results.topic_files
         this.video=res.data.results.topic_videos
          console.log(localStorage.getItem('videoContent'))
@@ -218,7 +219,7 @@ export default {
     }
   },
    mounted() {
-     this.videoContentId = JSON.parse(localStorage.getItem('videoContent')).id
+     this.videoContentId = JSON.parse(localStorage.getItem('videoContent'))?.id
      this.getSubjects()
     this.subjectId = this.$route.params.subject_id;
   },

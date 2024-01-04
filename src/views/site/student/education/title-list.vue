@@ -17,7 +17,7 @@
             Kirish
           </button>
           </router-link>
-          <div class="loader"></div>
+          <div v-show="t.in_progress" class="loader"></div>
 
         </div>
       </div>
