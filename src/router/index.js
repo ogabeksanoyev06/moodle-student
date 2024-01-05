@@ -64,6 +64,12 @@ const routes = [
         props: true,
       },
       {
+        path: "education/subject/tasks/:id",
+        name: "education-tasks-id",
+        component: () => import("../views/site/student/education/tasks.vue"),
+        props: true,
+      },
+      {
         path: "education/subject/resource/files/:id",
         name: "education-subject-id-files",
         component: () =>

@@ -1,24 +1,24 @@
 <template>
   <div>
     <div class="lesson-list">
-
-      <div v-for="(t, index) in this.subjects" :key="t.id" class="lesson-list-item">
+      <div
+        v-for="(t, index) in this.subjects"
+        :key="t.id"
+        class="lesson-list-item"
+      >
         <div class="name">
-          <div class="tr">
-            {{index+1}}.
-          </div>
+          <div class="tr">{{ index + 1 }}.</div>
           <div>
-            {{t.name}}
+            {{ t.name }}
           </div>
         </div>
         <div class="action">
-          <router-link :to="{name:'education-subject-id-files',params:{id:t.id}}">
-          <button class="button-use">
-            Kirish
-          </button>
+          <router-link
+            :to="{ name: 'education-subject-id-files', params: { id: t.id } }"
+          >
+            <button class="button-use">Kirish</button>
           </router-link>
           <div v-show="t.in_progress" class="loader"></div>
-
         </div>
       </div>
     </div>
@@ -28,30 +28,36 @@
 import axios from "axios";
 
 export default {
-  name:"Title-list",
-  props: ['id'],
-  data(){
-return{
-  subjects:[]
-}
+  name: "Title-list",
+  props: ["id"],
+  data() {
+    return {
+      subjects: [],
+    };
   },
-  methods:{
-    getSubjects(){
-      axios.get(`https://api.fastlms.uz/api/student/content/topic/get_all/?content_id=${this.id}&group_id=${localStorage.getItem('group')}`).then((res)=>{
-        this.subjects=res.data.results
-        console.log(res)
-      })
-    }
+  methods: {
+    getSubjects() {
+      axios
+        .get(
+          `https://api.fastlms.uz/api/student/content/topic/get_all/?content_id=${
+            this.id
+          }&group_id=${localStorage.getItem("group")}`
+        )
+        .then((res) => {
+          this.subjects = res.data.results;
+          console.log(res);
+        });
+    },
   },
   mounted() {
-    this.getSubjects()
-  }
-}
+    this.getSubjects();
+  },
+};
 </script>
-<style>
-.button-use{
-padding: 10px 20px;
-  background: #008BF8;
+<style scoped lang="scss">
+.button-use {
+  padding: 10px 20px;
+  background: #008bf8;
   border-radius: 5px;
   color: #fff;
   margin-right: 15px;
@@ -60,8 +66,8 @@ padding: 10px 20px;
   width: 12px;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: #008BF8;
-  box-shadow: 0 0 0 0 #008BF8;
+  background: #008bf8;
+  box-shadow: 0 0 0 0 #008bf8;
   animation: l2 1.5s infinite linear;
   position: relative;
 }
@@ -79,33 +85,34 @@ padding: 10px 20px;
   animation-delay: -1s;
 }
 @keyframes l2 {
-  100% {box-shadow: 0 0 0 20px rgba(0, 139, 248, 0.25)
+  100% {
+    box-shadow: 0 0 0 20px rgba(0, 139, 248, 0.25);
   }
 }
-.lesson-list{
+.lesson-list {
   margin-top: 40px;
-  .lesson-list-item{
+  .lesson-list-item {
     display: flex;
     border-radius: 12px;
     height: 53px;
-    background:  #F8FAFF;
+    background: #f8faff;
     align-items: center;
     justify-content: space-between;
     padding: 0 12px 0 20px;
     margin-bottom: 20px;
-    .name{
+    .name {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 3px;
-      color: #031B3C;
+      color: #031b3c;
       font-size: 16px;
       font-style: normal;
       font-weight: 500;
       line-height: normal;
       letter-spacing: -0.32px;
     }
-    .action{
+    .action {
       display: flex;
       align-items: center;
       justify-content: center;

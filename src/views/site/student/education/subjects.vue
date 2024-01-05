@@ -1,158 +1,143 @@
 <template>
-  <div class=" list-subjects">
-
-      <div  v-for="item in subjects" :key="item.id" class="subject-list-card">
-        <div class="header-card">
-          <div class="title-card">{{item.subject_id.name}}</div>
-          <div class="subtitle">
-            <span>{{item.subject_id.subjectgroup.name}}</span> | <span>{{item.curriculum_id.markingsystem.gpa_limit}}</span>
-          </div>
-        </div>
-        <div class="body-card">
-          <div class='card-body-section'>
-            <div class="title-section">
-              Maruza soni
-            </div>
-            <div class="info-section">
-              <div class="tag">
-                {{item.topic_count}}
-              </div>
-              <div class="info">
-                <img width="13" height="13" src="/svg/amountLecture.svg" alt=""/>
-              </div>
-            </div>
-          </div>
-          <div class='card-body-section'>
-            <div class="title-section">
-              Video darsliklar
-            </div>
-            <div class="info-section">
-              <div class="tag">
-                {{item.video_count}}
-              </div>
-              <div class="info">
-                <img width="13" height="13" src="/svg/vidio.svg" alt=""/>
-              </div>
-            </div>
-          </div>
-          <div class='card-body-section'>
-            <div class="title-section">
-              Topshiriqlar soni
-            </div>
-            <div class="info-section">
-              <div class="tag">
-                {{ item.task_count}}
-              </div>
-              <div class="info">
-                <img width="13" height="13" src="/svg/user.svg" alt=""/>
-              </div>
-            </div>
-          </div>
-          <router-link :to="{name:'education-subject-id',params:{id:item.id}}" >
-            <div class="footer-card">
-
-              <button class="button-card">
-                Kirish
-              </button>
-
-            </div>
-          </router-link>
+  <div class="list-subjects">
+    <div v-for="item in subjects" :key="item.id" class="subject-list-card">
+      <div class="header-card">
+        <div class="title-card">{{ item.subject_id.name }}</div>
+        <div class="subtitle">
+          <span>{{ item.subject_id.subjectgroup.name }}</span> |
+          <span>{{ item.curriculum_id.markingsystem.gpa_limit }}</span>
         </div>
       </div>
+      <div class="body-card">
+        <div class="card-body-section" @click="goToLink(item.id)">
+          <div class="title-section">Resruslar</div>
+          <div class="info-section">
+            <div class="tag">
+              {{ item.topic_count }}
+            </div>
+            <div class="info">
+              <img width="13" height="13" src="/svg/amountLecture.svg" alt="" />
+            </div>
+          </div>
+        </div>
 
+        <div class="card-body-section" @click="goToLinkTask(item.id)">
+          <div class="title-section">Topshiriqlar soni</div>
+          <div class="info-section">
+            <div class="tag">
+              {{ item.task_count }}
+            </div>
+            <div class="info">
+              <img width="13" height="13" src="/svg/user.svg" alt="" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
-import axios from "axios";
-
 export default {
   name: "EducationSubjects",
   data() {
     return {
-      subjects:[]
+      subjects: [],
     };
   },
   methods: {
-    getSubjects(){
-      axios.get(`https://api.fastlms.uz/api/student/content/get_all_active/?group_id=${localStorage.getItem('group')}`).then((res)=>{
-        console.log(res)
-
-        this.subjects=res.data.results
-        console.log(this.subjects.length)
-      })
+    getSubjects() {
+      this.$http
+        .get(
+          `student/content/get_all_active/?group_id=${localStorage.getItem(
+            "group"
+          )}`
+        )
+        .then((res) => {
+          console.log(res);
+          this.subjects = res.results;
+          console.log(this.subjects.length);
+        });
     },
     goToLink(id) {
       this.$router.push({
         name: "education-subject-id",
-        params: { subject_id: id },
+        params: { id: id },
+      });
+    },
+    goToLinkTask(id) {
+      this.$router.push({
+        name: "education-tasks-id",
+        params: { id: id },
       });
     },
   },
   mounted() {
-    this.getSubjects()
-  }
+    this.getSubjects();
+  },
 };
 </script>
 <style scoped lang="scss">
-.list-subjects{
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 5px;
-
+.list-subjects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
-.subject-list-card{
-  background: #008BF8;
-  max-width: 281px;
+.subject-list-card {
+  max-width: 350px;
   width: 100%;
-  border-radius: 20px;
+  border-radius: 4px;
 
-  .header-card{
+  .header-card {
     padding: 24px;
+    background: #008bf8;
     box-sizing: border-box;
-    .title-card{
-      color: #F2F3F8;
+    .title-card {
+      color: #f2f3f8;
       font-size: 16px;
       font-style: normal;
       font-weight: 500;
       line-height: normal;
       letter-spacing: -0.32px;
     }
-    .subtitle{
+    .subtitle {
       margin-top: 3px;
-      color:  #F2F3F8;
+      color: #f2f3f8;
       font-size: 12px;
       font-style: normal;
       font-weight: 400;
       line-height: normal;
       letter-spacing: -0.24px;
     }
-
   }
-  .body-card{
+  .body-card {
     border-top-left-radius: 0 !important;
-    border-radius: 20px;
-    padding: 24px;
     box-sizing: border-box;
     background: #fff;
-    .card-body-section{
-      margin-bottom: 6px;
+    border-radius: 0 0 4px 4px;
+    .card-body-section {
+      padding: 10px 15px;
+      border-bottom: 1px solid #f4f4f4;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      .title-section{
-        color: #919CAA;
+      cursor: pointer;
+      &:last-of-type {
+        border-bottom: none;
+      }
+      .title-section {
+        color: #919caa;
         font-size: 14px;
         font-style: normal;
         font-weight: 400;
         line-height: normal;
         letter-spacing: -0.28px;
       }
-      .info-section{
+      .info-section {
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 5px;
-        .tag{
+        .tag {
           display: inline-flex;
           padding: 0 8px;
           flex-direction: column;
@@ -160,8 +145,8 @@ export default {
           align-items: center;
           gap: 2px;
           border-radius: 100px;
-          background:  #008BF8;
-          color: #FFF;
+          background: #008bf8;
+          color: #fff;
           font-size: 10px;
           font-style: normal;
           font-weight: 400;
@@ -170,20 +155,19 @@ export default {
         }
       }
     }
-    .footer-card{
+    .footer-card {
       margin-top: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
-      .button-card{
-        height: 24px;
+      .button-card {
+        height: 40px;
         width: 100%;
-        border-radius: 12px;
-        background:  linear-gradient(133deg, #008BF8 0.82%, #0043A7 99.18%);
-        color:  #F2F3F8;
-        font-size: 12px;
+        background: linear-gradient(133deg, #008bf8 0.82%, #0043a7 99.18%);
+        color: #f2f3f8;
+        font-size: 14px;
         font-style: normal;
-        font-weight: 400;
+        font-weight: 500;
         line-height: normal;
         letter-spacing: -0.24px;
       }

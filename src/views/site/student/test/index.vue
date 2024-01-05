@@ -85,7 +85,6 @@
             Ha
           </button>
         </div>
-
       </template>
     </AppModal>
     <div
@@ -273,16 +272,6 @@ export default {
           console.log(err);
         })
         .finally(() => {});
-    },
-    isSelected(questionId, answerId) {
-      const selectedQuestion = this.questions.find((q) => q.id === questionId);
-      if (selectedQuestion) {
-        const selectedAnswer = selectedQuestion.answers.find(
-            (a) => a.id === answerId
-        );
-        return selectedAnswer ? selectedAnswer.is_selected : false;
-      }
-      return false;
     },
 collectSelect() {
   this.select.forEach((pair) => {
