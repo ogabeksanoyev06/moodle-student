@@ -202,7 +202,7 @@ export default {
       let _this = this;
       let testTimerInterval = setInterval(function () {
         if (_this.testTimer / 60 <= 0) {
-          this.finishTest()
+          _this.finishTest()
           clearInterval(testTimerInterval);
           return;
         }
@@ -258,10 +258,12 @@ export default {
     },
     //
     selectAnswer(questionId, answerId) {
+      this.fetchLocalIPAddress()
       this.$http
         .patch(`student-exam-answers/${this.exam_id}/for/${this.student_id}/`, {
           question: questionId,
-          is_selected: answerId
+          is_selected: answerId,
+          ip_address:this.ip_address
         })
         .then((res) => {
         this.select = res

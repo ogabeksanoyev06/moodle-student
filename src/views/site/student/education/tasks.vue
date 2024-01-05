@@ -50,24 +50,47 @@
 </template>
 
 <script>
+
+
+import {mapActions} from "vuex";
+
 export default {
   name: "tasks-list",
   data() {
-    return { fileList: [] };
+    return {
+      fileList: [],
+      id:''
+    };
   },
   methods: {
+    ...mapActions(["getUser"]),
     submitUpload() {
       this.$refs.upload.submit();
     },
     handleSuccess(response, file, fileList) {
-      // Fayl yuklash muvaffaqiyatli bo'lganda ishlaydigan funksiya
       console.log(response, file, fileList);
     },
     handleRemove(file, fileList) {
-      // Faylni o'chirish uchun ishlaydigan funksiya
       console.log(file, fileList);
     },
+    getTasks(){
+      console.log('aa')
+      this.$http.get(`student/topic/tasks/?topic_id=${this.id}&student_id=${this.user.id}`).then((res)=>{
+        console.log(res)
+      })
+    },
+    getUser(){
+      this.$http.get("get/student/"+ localStorage.getItem("studentId") + "/").then(()=>{
+        this.getTasks()
+      })
+    }
   },
+  created() {
+    this.id = this.$route.params.id
+  },
+  mounted() {
+    this.getUser()
+  }
 };
 </script>
 

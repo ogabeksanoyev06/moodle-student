@@ -66,7 +66,7 @@ export default {
     },
     goToLinkTask(id) {
       this.$router.push({
-        name: "education-tasks-id",
+        name: "education-subject-tasks",
         params: { id: id },
       });
     },

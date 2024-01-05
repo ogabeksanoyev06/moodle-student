@@ -65,6 +65,13 @@ const routes = [
       },
       {
         path: "education/subject/tasks/:id",
+        name: "education-subject-tasks",
+        component: () =>
+          import("../views/site/student/education/title-list-task.vue"),
+        props: true,
+      },
+      {
+        path: "education/subject/tasks/add/:id",
         name: "education-tasks-id",
         component: () => import("../views/site/student/education/tasks.vue"),
         props: true,
@@ -123,6 +130,24 @@ const router = new VueRouter({
 });
 router.beforeEach((to, from, next) => {
   window.scrollTo(0, 0);
+  next();
+});
+router.beforeEach((to, from, next) => {
+  const isLogin = JSON.parse(localStorage.getItem("isLogin"));
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!isLogin) {
+      next("/landing-page");
+      return;
+    }
+  }
+
+  if (to.matched.some((record) => record.meta.guestOnly)) {
+    if (isLogin) {
+      next("/");
+      return;
+    }
+  }
+
   next();
 });
 

@@ -265,9 +265,9 @@ export default {
               .then((data) => {
                 if (data.success) {
                   if (Number(data.data.educationForm.code) === 16) {
+                    console.log(data.data)
                     localStorage.setItem("isLogin", true);
                     localStorage.setItem("studentId", data.data.student_id_number);
-
                     this.$router.push({name: "home"});
                     this.successNotification("Tizimga muvaffaqiyatli kirildi");
                   } else {
