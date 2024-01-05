@@ -182,7 +182,7 @@ export default {
         .finally(() => {});
     },
     getDefault(){
-      this.$http.get(`https://api.fastlms.uz/api/student-select-answers-get/${this.exam_id}/for/${this.student_id}/`).then((res)=>{
+      this.$http.get(`student-select-answers-get/${this.exam_id}/for/${this.student_id}/`).then((res)=>{
        this.select = res.data
         this.collectSelect()
       }).catch((err)=>{
@@ -202,6 +202,7 @@ export default {
       let _this = this;
       let testTimerInterval = setInterval(function () {
         if (_this.testTimer / 60 <= 0) {
+          this.finishTest()
           clearInterval(testTimerInterval);
           return;
         }
@@ -293,7 +294,7 @@ collectSelect() {
   });
 },
     finishTest() {
-      this.$http.get(`https://api.fastlms.uz/api/exam-finish/${this.exam_id}/finish/${this.student_id}/`).then(()=>{
+      this.$http.get(`exam-finish/${this.exam_id}/finish/${this.student_id}/`).then(()=>{
         this.$router.push({name:'test-exams'})
       }).catch((err)=>{
         console.log(err)
