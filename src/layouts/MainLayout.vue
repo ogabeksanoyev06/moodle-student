@@ -720,27 +720,23 @@ export default {
 `,
           id: 0,
           children: [
-            {
-              title: "O'quv reja",
-              id: 9,
-              routeName: "education-curriculum",
-            },
-            {
-              title: "Nazorat jadvali",
-              id: 11,
-              routeName: "education-exam-table",
-            },
+            // {
+            //   title: "O'quv reja",
+            //   id: 9,
+            //   routeName: "education-curriculum",
+            // },
+            // {
+            //   title: "Nazorat jadvali",
+            //   id: 11,
+            //   routeName: "education-exam-table",
+            // },
             {
               title: "Fanlar resurslari",
               id: 12,
               routeName: "education-subjects",
             },
 
-            {
-              title: "O'zlashtirish",
-              id: 13,
-              routeName: "education-performance",
-            },
+
             {
               title: "Imtihonlar",
               id: 13,
@@ -759,11 +755,11 @@ export default {
 `,
           id: 2,
           children: [
-            {
-              title: "Buyruqlar",
-              id: 15,
-              routeName: "student-decree",
-            },
+            // {
+            //   title: "Buyruqlar",
+            //   id: 15,
+            //   routeName: "student-decree",
+            // },
             {
               title: "Shaxsiy ma'lumotlar",
               id: 18,
@@ -783,11 +779,11 @@ export default {
               id: 23,
               routeName: "dashboard-profile",
             },
-            {
-              title: "Kirish tarixi",
-              id: 24,
-              routeName: "home",
-            },
+            // {
+            //   title: "Kirish tarixi",
+            //   id: 24,
+            //   routeName: "home",
+            // },
           ],
         },
       ],

@@ -36,7 +36,7 @@
                     </td>
                     <td>
                       <button
-                        :disabled="item.is_active && item.exam.exam_status && item.is_finish"
+                        :disabled="!item.is_active || !item.exam.exam_status || item.is_finish"
                         class="btn btn-success w-100"
                         @click="goToTest(item.exam.id, item.id)"
                       >
