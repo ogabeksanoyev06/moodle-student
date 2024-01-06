@@ -198,12 +198,13 @@ table.data-list-view.dataTable thead .sorting_asc:after, table.data-list-view.da
   top : 1.071rem;
 }
 table.data-list-view.dataTable thead .dt-checkboxes-select-all input, table.data-thumb-view.dataTable thead .dt-checkboxes-select-all input {
-  width : 100%;
+  width : 0;
   position : relative;
 }
 table.data-list-view.dataTable thead .dt-checkboxes-select-all input:before, table.data-thumb-view.dataTable thead .dt-checkboxes-select-all input:before {
   border : 2px solid #B4B4B4;
   content : '';
+  width : 1.071rem;
   height : 1.071rem;
   padding : 0;
   border-radius : 2px;
@@ -230,7 +231,7 @@ table.data-list-view.dataTable thead .dt-checkboxes-select-all input:after, tabl
   color : #FFFFFF;
   opacity : 0;
   position : absolute;
-
+  width : 0.928rem;
   height : 1rem;
   -webkit-transform : translate(100%);
      -moz-transform : translate(100%);
@@ -332,6 +333,7 @@ table.data-list-view.dataTable tbody td.dt-checkboxes-cell input:before, table.d
   position : absolute;
   left : -8px;
   content : '';
+  width : 1.071rem;
   height : 1.071rem;
   padding : 0;
   border-radius : 2px;

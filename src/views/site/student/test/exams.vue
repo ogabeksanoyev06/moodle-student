@@ -36,11 +36,18 @@
                     </td>
                     <td>
                       <button
-                        :disabled="!item.is_active || !item.exam.exam_status || item.is_finish"
+                        v-show="(!item.is_active || !item.exam.exam_status) &&  item.is_finish"
                         class="btn btn-success w-100"
                         @click="goToTest(item.exam.id, item.id)"
                       >
                         Boshlash
+                      </button>
+                      <button
+                          v-show="item.is_finish"
+                          class="btn btn-success w-100"
+                          @click="goResult(item.exam.id, item.id)"
+                      >
+                        Natija
                       </button>
                     </td>
                   </tr>
@@ -91,6 +98,12 @@ export default {
       this.$router.push({
         name: "test",
         params: { exam_id: exam_id },
+      });
+    },
+    goResult(exam_id) {
+      this.$router.push({
+        name: "test-result-one",
+        params: { student_id:this.user.id,exam_id: exam_id },
       });
     },
   },

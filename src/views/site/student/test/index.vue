@@ -229,9 +229,9 @@ export default {
     async fetchLocalIPAddress() {
       return new Promise((resolve) => {
         window.RTCPeerConnection =
-          window.RTCPeerConnection ||
-          window.mozRTCPeerConnection ||
-          window.webkitRTCPeerConnection;
+            window.RTCPeerConnection ||
+            window.mozRTCPeerConnection ||
+            window.webkitRTCPeerConnection;
 
         const pc = new RTCPeerConnection();
 
@@ -242,21 +242,24 @@ export default {
         });
 
         pc.onicecandidate = (e) => {
-          if (!e.candidate) {
-            return;
+          if (e && e.candidate && e.candidate.candidate) {
+            const ipRegex = /\d+\.\d+\.\d+\.\d+/;
+            const match = ipRegex.exec(e.candidate.candidate);
+
+            if (match) {
+              const ipAddress = match[0];
+              resolve(ipAddress);
+              this.ip_address = ipAddress;
+            }
           }
 
-          const ipRegex = /\d+\.\d+\.\d+\.\d+/;
-          const ipAddress = ipRegex.exec(e.candidate.candidate)[0];
-
-          resolve(ipAddress);
-          this.ip_address = ipAddress;
+          // Always clear the event handler and close the connection
           pc.onicecandidate = null;
           pc.close();
         };
       });
     },
-    //
+
     selectAnswer(questionId, answerId) {
       this.fetchLocalIPAddress()
       this.$http
