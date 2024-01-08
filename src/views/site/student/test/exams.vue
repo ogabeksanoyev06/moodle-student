@@ -14,8 +14,8 @@
                   <th></th>
                 </tr>
               </thead>
-              <transition name="fade" :duration="2000">
-                <tbody class="table-bordered">
+              <transition v-show="examList.length>0" name="fade" :duration="2000">
+                <tbody  class="table-bordered">
                   <tr v-for="(item, index) in examList" :key="index">
                     <td>
                       {{ index + 1 }}. {{ item.exam.name }}.
@@ -35,13 +35,19 @@
                       }}
                     </td>
                     <td>
-                      <button
-                        v-show="(!item.is_active || !item.exam.exam_status) &&  item.is_finish"
-                        class="btn btn-success w-100"
-                        @click="goToTest(item.exam.id, item.id)"
-                      >
-                        Boshlash
-                      </button>
+<div v-show="!item.is_finish">
+  <button
+      v-show="!item.is_start"
+      class="btn btn-success w-100"
+      @click="goToTest(item.exam.id, item.id)"
+  >
+    Boshlash
+  </button>
+  <button class="btn btn-success w-100" v-show="item.is_start">
+    Davom etish
+  </button>
+</div>
+
                       <button
                           v-show="item.is_finish"
                           class="btn btn-success w-100"
@@ -57,8 +63,11 @@
                     </td>
                   </tr>
                 </tbody>
+
               </transition>
+
             </table>
+            <no-content v-show="examList.length<=0" style="margin-top: 5px;margin-bottom: 5px"/>
           </div>
         </div>
       </div>
@@ -68,13 +77,18 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import NoContent from "@/views/site/NoContent.vue";
+
 export default {
   name: "exam-list",
+  components: {NoContent},
+
   data() {
     return {
       examList: [],
       errorMessage: "",
       student_id: null,
+      ip_address:''
     };
   },
   methods: {
@@ -95,11 +109,46 @@ export default {
         });
     },
     goToTest(exam_id) {
+
       this.$router.push({
         name: "test",
         params: { exam_id: exam_id },
       });
     },
+    async fetchLocalIPAddress() {
+      return new Promise((resolve) => {
+        window.RTCPeerConnection =
+            window.RTCPeerConnection ||
+            window.mozRTCPeerConnection ||
+            window.webkitRTCPeerConnection;
+
+        const pc = new RTCPeerConnection();
+
+        pc.createDataChannel("");
+
+        pc.createOffer().then((offer) => {
+          pc.setLocalDescription(offer);
+        });
+
+        pc.onicecandidate = (e) => {
+          if (e && e.candidate && e.candidate.candidate) {
+            const ipRegex = /\d+\.\d+\.\d+\.\d+/;
+            const match = ipRegex.exec(e.candidate.candidate);
+
+            if (match) {
+              const ipAddress = match[0];
+              resolve(ipAddress);
+              this.ip_address = ipAddress;
+            }
+          }
+
+          // Always clear the event handler and close the connection
+          pc.onicecandidate = null;
+          pc.close();
+        };
+      });
+    },
+
     goResult(exam_id) {
       this.$router.push({
         name: "test-result-one",
@@ -111,6 +160,7 @@ export default {
     ...mapGetters(["user"]),
   },
   async mounted() {
+    this.fetchLocalIPAddress();
     await this.getUser();
     this.student_id = this.user.id;
     localStorage.setItem("student_id", this.student_id);

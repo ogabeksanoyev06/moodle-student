@@ -1,44 +1,54 @@
 <template>
-  <div class="list-subjects">
-    <div v-for="item in subjects" :key="item.id" class="subject-list-card">
-      <div class="header-card">
-        <div class="title-card">{{ item.subject_id.name }}</div>
-        <div class="subtitle">
-          <span>{{ item.subject_id.subjectgroup.name }}</span> |
-          <span>{{ item.curriculum_id.markingsystem.gpa_limit }}</span>
-        </div>
-      </div>
-      <div class="body-card">
-        <div class="card-body-section" @click="goToLink(item.id)">
-          <div class="title-section">Resruslar</div>
-          <div class="info-section">
-            <div class="tag">
-              {{ item.topic_count }}
-            </div>
-            <div class="info">
-              <img width="13" height="13" src="/svg/amountLecture.svg" alt="" />
-            </div>
+  <div>
+    <div v-show="subjects.length>0" class="list-subjects">
+      <div  v-for="item in subjects" :key="item.id" class="subject-list-card">
+        <div class="header-card">
+          <div class="title-card">{{ item.subject_id.name }}</div>
+          <div class="subtitle">
+            <span>{{ item.subject_id.subjectgroup.name }}</span> |
+            <span>{{ item.curriculum_id.markingsystem.gpa_limit }}</span>
           </div>
         </div>
+        <div class="body-card">
+          <div class="card-body-section" @click="goToLink(item.id)">
+            <div class="title-section">Resruslar</div>
+            <div class="info-section">
+              <div class="tag">
+                {{ item.topic_count }}
+              </div>
+              <div class="info">
+                <img width="13" height="13" src="/svg/amountLecture.svg" alt="" />
+              </div>
+            </div>
+          </div>
 
-        <div class="card-body-section" @click="goToLinkTask(item.id)">
-          <div class="title-section">Topshiriqlar soni</div>
-          <div class="info-section">
-            <div class="tag">
-              {{ item.task_count }}
-            </div>
-            <div class="info">
-              <img width="13" height="13" src="/svg/user.svg" alt="" />
+          <div class="card-body-section" @click="goToLinkTask(item.id)">
+            <div class="title-section">Topshiriqlar soni</div>
+            <div class="info-section">
+              <div class="tag">
+                {{ item.task_count }}
+              </div>
+              <div class="info">
+                <img width="13" height="13" src="/svg/user.svg" alt="" />
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+
+
     </div>
+    <NoContent v-show="subjects.length<=0"/>
   </div>
+
 </template>
 <script>
+import NoContent from "@/views/site/NoContent.vue";
+
 export default {
   name: "EducationSubjects",
+  components: {NoContent},
   data() {
     return {
       subjects: [],

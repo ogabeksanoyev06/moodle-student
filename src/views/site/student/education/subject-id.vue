@@ -1,17 +1,11 @@
 <template>
   <div class="lesson-view" style="padding-bottom: 30px">
-    <div class="">
+    <div>
 
-          <h3 class="lesson-view-header-title">Mavzu: {{this.title}}</h3>
-          <video
-              ref="videoPlayer"
-              width="100%"
-              height="300"
-              :src="`https://api.fastlms.uz${this.videoRef}`"
-              controls
-              preload="auto"
-              poster="/svg/prewiew.svg">
-          </video>
+          <h3 class="lesson-view-header-title">Dars: {{this.title}}</h3>
+      <div class="player-container">
+        <vue-core-video-player cover="./svg/prewiew.svg" :autoplay="false" :src="`https://api.fastlms.uz${this.videoRef}`"></vue-core-video-player>
+      </div>
           <div class="list-chips">
             <div v-for="(item,index) in video" :key="index">
               <button @click="perform(item)" :class="videoContentId === item?.id ? 'chips active':'chips'" >
@@ -117,7 +111,6 @@
 
 <script>
 import AppButton from "@/components/shared-components/AppButton.vue";
-// import { videoPlayer } from "vue-vjs-hls";
 import axios from "axios";
 export default {
   name: "subject-id",
@@ -132,18 +125,6 @@ export default {
       subjectId: null,
       videoRef:JSON.parse(localStorage.getItem('videoContent'))?.vide_file,
       title:JSON.parse(localStorage.getItem('videoContent'))?.name,
-      videoOptions: {
-        autoplay: true,
-        controls: true,
-        start: 0,
-        source: {
-          src: '',
-          type: "video/mp4",
-        },
-        language: "ru-Ru",
-        playbackRates: [0.7, 1.0, 1.3, 1.5, 1.7],
-        poster: "//vjs.zencdn.net/v/oceans.png",
-      },
     };
   },
   methods: {
@@ -238,7 +219,7 @@ export default {
   align-items: center;
   justify-content: center;
   border: 2px solid rgba(0, 0, 0, 0.41);
-  border-radius: 10px;
+  border-radius: 30px;
   &.active{
     border: 2px solid #008BF8;
   }
@@ -451,5 +432,11 @@ export default {
   100% {
     transform: translateY(0);
   }
+}
+.player-container{
+  margin-bottom: 5px;
+  width: 100% !important;
+  height: 70vh;
+
 }
 </style>

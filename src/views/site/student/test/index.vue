@@ -126,7 +126,11 @@ export default {
     async getExamTest() {
       this.loading = true;
       await this.$http
-        .get(`test/${this.exam_id}/for/${this.student_id}/`)
+        .post(`test/begin/`,{
+          exam:this.exam_id,
+          student:this.student_id,
+          ip_address:this.ip_address
+        })
         .then((response) => {
           response.forEach((element) => {
             let model = {
@@ -202,12 +206,24 @@ export default {
       let _this = this;
       let testTimerInterval = setInterval(function () {
         if (_this.testTimer / 60 <= 0) {
-          _this.finishTest()
           clearInterval(testTimerInterval);
           return;
         }
         _this.testTimer--;
       }, 1000);
+    },
+    enterFullScreen() {
+      const element = this.$el; // Use the current component's root element
+
+      if (element.requestFullscreen) {
+        element.requestFullscreen();
+      } else if (element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+      } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+      } else if (element.msRequestFullscreen) {
+        element.msRequestFullscreen();
+      }
     },
     timerFormat(time) {
       let sec_num = parseInt(time, 10);
@@ -319,11 +335,11 @@ collectSelect() {
     ...mapGetters(["user"]),
   },
   async mounted() {
-    await this.getUser();
-    await this.getExamTest();
-    await this.getExamDetail();
     await this.fetchLocalIPAddress();
+    await this.getUser();
+    await this.getExamDetail();
     await this.resultCreate();
+    await this.getExamTest();
     this.setTimer();
     this.getDefault()
   },
