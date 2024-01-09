@@ -659,7 +659,7 @@
           data-menu="menu-navigation"
           id="main-menu-navigation"
         >
-          <li class="nav-item has-sub" v-for="(menu, i) in menu" :key="i">
+          <li  class="nav-item has-sub" v-for="(menu, i) in menu" :key="i"  >
             <a>
               <i class="feather icon-users"></i>
               <span class="menu-title">

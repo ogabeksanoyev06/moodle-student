@@ -269,7 +269,7 @@ export default {
                     localStorage.setItem("isLogin", true);
                     localStorage.setItem("studentId", data.data.student_id_number);
                     this.$router.push({name: "home"});
-                    this.successNotification("Tizimga muvaffaqiyatli kirildi");
+                    window.location.reload()
                   } else {
                     this.errorNotification("Siz tizimdan foydalana olmaysiz!");
                   }
