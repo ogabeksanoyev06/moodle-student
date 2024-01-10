@@ -100,7 +100,8 @@ const routes = [
         name: "test",
         component: () => import("../views/site/student/test"),
       },
-      {path: "test/result/one/:student_id/:exam_id",
+      {
+        path: "test/result/one/:student_id/:exam_id",
         component: () => import("@/views/site/student/test/result-one.vue"),
         name: "test-result-one",
       },
