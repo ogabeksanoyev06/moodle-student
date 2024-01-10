@@ -235,7 +235,64 @@ export default {
       }
       return hours + ":" + minutes + ":" + seconds;
     },
-    async fetchLocalIPAddress() {
+    // async fetchLocalIPAddress() {
+    //   return new Promise((resolve) => {
+    //     window.RTCPeerConnection =
+    //         window.RTCPeerConnection ||
+    //         window.mozRTCPeerConnection ||
+    //         window.webkitRTCPeerConnection;
+    //
+    //     const pc = new RTCPeerConnection();
+    //
+    //     pc.createDataChannel("");
+    //
+    //     pc.createOffer().then((offer) => {
+    //       pc.setLocalDescription(offer);
+    //     });
+    //
+    //     pc.onicecandidate = (e) => {
+    //       if (e && e.candidate && e.candidate.candidate) {
+    //         const ipRegex = /\d+\.\d+\.\d+\.\d+/;
+    //         const match = ipRegex.exec(e.candidate.candidate);
+    //
+    //         if (match) {
+    //           const ipAddress = match[0];
+    //           resolve(ipAddress);
+    //           this.ip_address = ipAddress;
+    //         }
+    //       }
+    //
+    //       // Always clear the event handler and close the connection
+    //       pc.onicecandidate = null;
+    //       pc.close();
+    //     };
+    //   });
+    // },
+    async  fetchLocalIPAddress() {
+      try {
+        // Attempt to use WebRTC API
+        const ipAddress = await this.getIPAddressViaWebRTC();
+        if (ipAddress) {
+          return ipAddress;
+        }
+
+        // Fallback to other methods if WebRTC fails
+
+        // Check if there's a local IP address using a third-party service
+        const localIPAddress = await this.getIPAddressViaService();
+        if (localIPAddress) {
+          return localIPAddress;
+        }
+
+        // If all else fails, return null or handle the situation accordingly
+        return null;
+      } catch (error) {
+        console.error("Error fetching local IP address:", error);
+        return null;
+      }
+    },
+
+    async  getIPAddressViaWebRTC() {
       return new Promise((resolve) => {
         window.RTCPeerConnection =
             window.RTCPeerConnection ||
@@ -258,7 +315,6 @@ export default {
             if (match) {
               const ipAddress = match[0];
               resolve(ipAddress);
-              this.ip_address = ipAddress;
             }
           }
 
@@ -269,8 +325,23 @@ export default {
       });
     },
 
+    async  getIPAddressViaService() {
+      try {
+        // Use a third-party service to get the public IP address
+        const response = await fetch("https://api.ipify.org?format=json");
+        const data = await response.json();
+
+        // Extract the IP address from the response
+        return data.ip;
+      } catch (error) {
+        console.error("Error fetching IP address via service:", error);
+        return null;
+      }
+    },
     selectAnswer(questionId, answerId) {
-      this.fetchLocalIPAddress()
+      this.fetchLocalIPAddress().then((ipAddress) => {
+        this.ip_address=ipAddress
+      });
       this.$http
         .patch(`student-exam-answers/${this.exam_id}/for/${this.student_id}/`, {
           question: questionId,
@@ -358,7 +429,9 @@ collectSelect() {
         student: this.student_id
       }).then(() => {}).catch(() => {});
     })
-    await this.fetchLocalIPAddress();
+    this.fetchLocalIPAddress().then((ipAddress) => {
+      this.ip_address=ipAddress
+    });
     await this.getUser();
     await this.getExamDetail();
     await this.resultCreate();
