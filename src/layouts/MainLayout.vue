@@ -791,8 +791,11 @@ export default {
   },
   methods: {
     openRoute(routeName) {
-      this.$router.push({ name: routeName });
-      this.$store.commit("setCurrentRouteName", routeName);
+      if(this.currentRouteName !== routeName){
+        this.$router.push({ name: routeName });
+        this.$store.commit("setCurrentRouteName", routeName);
+      }
+
     },
 
     getUserByToken() {
