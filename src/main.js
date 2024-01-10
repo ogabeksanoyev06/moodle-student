@@ -19,7 +19,9 @@ import VueCoreVideoPlayer from 'vue-core-video-player'
 
 Vue.use(VueCoreVideoPlayer)
 Vue.config.productionTip = false;
+import VueCookies from 'vue-cookies';
 
+Vue.use(VueCookies);
 Vue.component("AppText", AppText);
 Vue.use(VueMask);
 Vue.use(KinescopePlayer);

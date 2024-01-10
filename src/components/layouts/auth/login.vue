@@ -268,8 +268,8 @@ export default {
                     console.log(data.data)
                     localStorage.setItem("isLogin", true);
                     localStorage.setItem("studentId", data.data.student_id_number);
-                    this.$router.push({name: "home"});
                     window.location.reload()
+                    this.$router.push({name: "home"});
                   } else {
                     this.errorNotification("Siz tizimdan foydalana olmaysiz!");
                   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="card">
     <div class="info-box box-mini">
       <div class="box box-success" v-for="(item, i) in 1" :key="i">
         <div class="box-header" @click="toggleAccordion(i)">

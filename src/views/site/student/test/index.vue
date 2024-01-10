@@ -57,6 +57,9 @@
           >
             {{ timerFormat(testTimer) }}
           </span>
+          <button @click="checkLogOut" style="width: fit-content !important;" class="btn btn-danger">
+            Yopish
+          </button>
         </div>
         <ul class="test_pagination">
           <li
@@ -97,6 +100,7 @@
 <script>
 import AppModal from "@/components/shared-components/AppModal.vue";
 import { mapActions, mapGetters } from "vuex";
+import axios from "axios";
 export default {
   components: { AppModal },
   name: "AppTest",
@@ -123,13 +127,14 @@ export default {
       }
       this.activeP = index;
     },
+
     async getExamTest() {
       this.loading = true;
       await this.$http
         .post(`test/begin/`,{
           exam:this.exam_id,
+          ip_address:this.ip_address,
           student:this.student_id,
-          ip_address:this.ip_address
         })
         .then((response) => {
           response.forEach((element) => {
@@ -206,24 +211,12 @@ export default {
       let _this = this;
       let testTimerInterval = setInterval(function () {
         if (_this.testTimer / 60 <= 0) {
+          _this.finishTest()
           clearInterval(testTimerInterval);
           return;
         }
         _this.testTimer--;
       }, 1000);
-    },
-    enterFullScreen() {
-      const element = this.$el; // Use the current component's root element
-
-      if (element.requestFullscreen) {
-        element.requestFullscreen();
-      } else if (element.mozRequestFullScreen) {
-        element.mozRequestFullScreen();
-      } else if (element.webkitRequestFullscreen) {
-        element.webkitRequestFullscreen();
-      } else if (element.msRequestFullscreen) {
-        element.msRequestFullscreen();
-      }
     },
     timerFormat(time) {
       let sec_num = parseInt(time, 10);
@@ -330,11 +323,41 @@ collectSelect() {
       this.showModal = true;
       document.body.style.overflowY = "hidden";
     },
+    checkLogOut(){
+      this.$http.post("check-logout/",{
+        exam:this.exam_id,
+        student:this.student_id
+      }).then(()=>{
+        this.$router.push({
+          name: "test-exams"
+        });
+      }).catch(()=>{
+
+      })
+    }
+  },
+  beforeDestroy() {
+    this.checkLogOut()
+    window.addEventListener('beforeunload', function (e) {
+      e.preventDefault();
+      axios.post("https://api.fastlms.uz/api/check-logout/", {
+        exam: this.exam_id,
+        student: this.student_id
+      }).then(() => {}).catch(() => {});
+    })
+
   },
   computed: {
     ...mapGetters(["user"]),
   },
   async mounted() {
+    window.addEventListener('beforeunload', function (e) {
+      e.preventDefault();
+      axios.post("https://api.fastlms.uz/api/check-logout/", {
+        exam: this.exam_id,
+        student: this.student_id
+      }).then(() => {}).catch(() => {});
+    })
     await this.fetchLocalIPAddress();
     await this.getUser();
     await this.getExamDetail();
@@ -437,6 +460,9 @@ section {
     background-color: #fff;
     padding: 1rem;
     border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
   &_pagination-item {
     width: 30px;

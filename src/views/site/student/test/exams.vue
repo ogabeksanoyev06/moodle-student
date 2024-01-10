@@ -8,7 +8,6 @@
               <thead>
                 <tr>
                   <th scope="col">Nomi</th>
-                  <th scope="col">Natija</th>
                   <th scope="col">Maks ball</th>
                   <th scope="col">Test davri</th>
                   <th></th>
@@ -21,7 +20,7 @@
                       {{ index + 1 }}. {{ item.exam.name }}.
                       {{ item.exam.curriculum.name }}
                     </td>
-                    <td></td>
+
                     <td>
                       {{ item.exam.max_score }}
                     </td>
@@ -37,13 +36,14 @@
                     <td>
 <div v-show="!item.is_finish">
   <button
+      :disabled="!item.is_active || !item.exam.exam_status"
       v-show="!item.is_start"
       class="btn btn-success w-100"
       @click="goToTest(item.exam.id, item.id)"
   >
     Boshlash
   </button>
-  <button class="btn btn-success w-100" v-show="item.is_start">
+  <button :disabled="!item.is_active || !item.exam.exam_status" @click="goToTestCheck(item.exam.id)" class="btn btn-success w-100" v-show="item.is_start">
     Davom etish
   </button>
 </div>
@@ -109,12 +109,26 @@ export default {
         });
     },
     goToTest(exam_id) {
-
       this.$router.push({
         name: "test",
         params: { exam_id: exam_id },
       });
     },
+    goToTestCheck(exam_id) {
+      this.$http.post("check-continue/",{
+        exam:exam_id,
+        student:this.student_id,
+        ip_address:this.ip_address
+      }).then(()=>{
+        this.$router.push({
+          name: "test",
+          params: { exam_id: exam_id },
+        });
+      }).catch((err)=>{
+        this.notificationMessage(err.response.data.message, "error");
+      })
+    },
+
     async fetchLocalIPAddress() {
       return new Promise((resolve) => {
         window.RTCPeerConnection =
@@ -163,11 +177,12 @@ export default {
     this.fetchLocalIPAddress();
     await this.getUser();
     this.student_id = this.user.id;
-    localStorage.setItem("student_id", this.student_id);
-
+    localStorage.setItem("student_id", this.student_id)
     await this.getExamList();
   },
+
   created() {},
+
 };
 </script>
 

@@ -220,12 +220,16 @@ export default {
       this.$http.get(`student/topic/tasks/?topic_id=${this.id}&student_id=${id}`).then((res)=>{
         console.log(res)
         this.tasks = res.results
+      }).catch(()=>{
+
       })
     },
     getUser(){
       this.$http.get("get/student/"+ localStorage.getItem("studentId") + "/").then((res)=>{
         this.task.student_id = res.id
         this.getTasks(res.id)
+      }).catch(()=>{
+
       })
     }
   },

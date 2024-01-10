@@ -50,7 +50,9 @@ export default {
         .then((res) => {
           this.subjects = res.data.results;
           console.log(res);
-        });
+        }).catch(()=>{
+
+      })
     },
   },
   mounted() {
