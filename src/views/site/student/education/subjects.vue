@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div v-show="subjects.length>0" class="list-subjects">
-      <div  v-for="item in subjects" :key="item.id" class="subject-list-card">
+    <div v-show="subjects.length > 0" class="list-subjects">
+      <div v-for="item in subjects" :key="item.id" class="subject-list-card">
         <div class="header-card">
           <div class="title-card">{{ item.subject_id.name }}</div>
           <div class="subtitle">
@@ -17,7 +17,12 @@
                 {{ item.topic_count }}
               </div>
               <div class="info">
-                <img width="13" height="13" src="/svg/amountLecture.svg" alt="" />
+                <img
+                  width="13"
+                  height="13"
+                  src="/svg/amountLecture.svg"
+                  alt=""
+                />
               </div>
             </div>
           </div>
@@ -35,20 +40,16 @@
           </div>
         </div>
       </div>
-
-
-
     </div>
-    <NoContent v-show="subjects.length<=0"/>
+    <NoContent v-show="subjects.length <= 0" />
   </div>
-
 </template>
 <script>
 import NoContent from "@/views/site/NoContent.vue";
 
 export default {
   name: "EducationSubjects",
-  components: {NoContent},
+  components: { NoContent },
   data() {
     return {
       subjects: [],
@@ -93,7 +94,7 @@ export default {
   gap: 10px;
 }
 .subject-list-card {
-  max-width: 350px;
+  max-width: 400px;
   width: 100%;
   border-radius: 4px;
 
@@ -101,6 +102,7 @@ export default {
     padding: 24px;
     background: #008bf8;
     box-sizing: border-box;
+    min-height: 110px;
     .title-card {
       color: #f2f3f8;
       font-size: 16px;

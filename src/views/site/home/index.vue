@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <!-- <div>
     <div>
       <app-text
         size="18"
@@ -43,6 +43,27 @@
       </div>
     </div>
   </div>
+  </div> -->
+  <section id="dashboard-analytics">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="card bg-analytics text-white">
+          <div class="card-content">
+            <div class="card-body text-center">
+              <div class="text-center">
+                <h1 class="mb-2 text-white">Lms masofaviy ta'lim tizimi</h1>
+                <p class="m-auto w-75">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse
+                  illum similique culpa velit odio porro dignissimos dolorem
+                  enim quibusdam ut.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 <script>
 export default {
@@ -92,29 +113,32 @@ export default {
       ],
     };
   },
-  methods:{
-    checkCookie(){
+  methods: {
+    checkCookie() {
       const cookies = this.$cookies.get("user_token");
-      console.log('cokie',cookies)
-      if(cookies===null){
-        this.$http.post('check-cookie/',{
-          exam:this.exam_id,
-          student:this.student_id
-        },{ withCredentials: false })
-            .then(response => {
-              console.log('Data from the backend:', response);
-            })
-            .catch(error => {
-              console.error('Error fetching data from the backend:', error);
-            });
+      console.log("cokie", cookies);
+      if (cookies === null) {
+        this.$http
+          .post(
+            "check-cookie/",
+            {
+              exam: this.exam_id,
+              student: this.student_id,
+            },
+            { withCredentials: false }
+          )
+          .then((response) => {
+            console.log("Data from the backend:", response);
+          })
+          .catch((error) => {
+            console.error("Error fetching data from the backend:", error);
+          });
       }
     },
-
   },
   mounted() {
-    this.checkCookie()
+    this.checkCookie();
   },
-
 };
 </script>
 
