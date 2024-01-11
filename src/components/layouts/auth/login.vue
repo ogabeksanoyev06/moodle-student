@@ -273,8 +273,8 @@ export default {
                     "studentId",
                     data.data.student_id_number
                   );
-                  window.location.reload();
                   this.$router.push({ name: "home" });
+                  window.location.reload();
                 } else {
                   this.errorNotification("Siz tizimdan foydalana olmaysiz!");
                 }
