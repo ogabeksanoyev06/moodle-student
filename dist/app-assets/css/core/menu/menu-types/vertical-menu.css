@@ -474,9 +474,9 @@ body.vertical-layout.vertical-menu-modern.menu-collapsed .footer {
 body.vertical-layout.vertical-menu-modern.menu-collapsed
   .app-content
   .header-navbar.floating-nav {
-  width: -webkit-calc(100% - 2rem- 80px);
-  width: -moz-calc(100% - 2rem- 80px);
-  width: calc(100% - 2rem- 80px);
+  width: -webkit-calc(100% - 2rem - 80px);
+  width: -moz-calc(100% - 2rem - 80px);
+  width: calc(100% - 2rem - 80px);
 }
 
 body.vertical-layout.vertical-menu-modern.menu-collapsed.menu-flipped .content {
