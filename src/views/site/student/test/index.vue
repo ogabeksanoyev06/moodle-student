@@ -100,7 +100,6 @@
 <script>
 import AppModal from "@/components/shared-components/AppModal.vue";
 import { mapActions, mapGetters } from "vuex";
-import axios from "axios";
 export default {
   components: { AppModal },
   name: "AppTest",
@@ -380,7 +379,6 @@ collectSelect() {
 },
     finishTest() {
       this.$http.get(`exam-finish/${this.exam_id}/finish/${this.student_id}/`).then(()=>{
-        this.$router.push({name:'test-exams'})
       }).catch((err)=>{
         console.log(err)
       })
@@ -399,36 +397,34 @@ collectSelect() {
         exam:this.exam_id,
         student:this.student_id
       }).then(()=>{
-        this.$router.push({
+        this.$router.replace({
           name: "test-exams"
         });
       }).catch(()=>{
 
       })
+    },
+    handleBeforeUnload(event) {
+      event.preventDefault();
+
+      const data = {
+        exam: this.exam_id,
+        student: this.student_id
+      };
+
+      const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+      navigator.sendBeacon("https://api.fastlms.uz/api/check-logout/", blob);
     }
   },
   beforeDestroy() {
+    window.removeEventListener('beforeunload', this.handleBeforeUnload);
     this.checkLogOut()
-    window.addEventListener('beforeunload', function (e) {
-      e.preventDefault();
-      axios.post("https://api.fastlms.uz/api/check-logout/", {
-        exam: this.exam_id,
-        student: this.student_id
-      }).then(() => {}).catch(() => {});
-    })
-
   },
   computed: {
     ...mapGetters(["user"]),
   },
   async mounted() {
-    window.addEventListener('beforeunload', function (e) {
-      e.preventDefault();
-      axios.post("https://api.fastlms.uz/api/check-logout/", {
-        exam: this.exam_id,
-        student: this.student_id
-      }).then(() => {}).catch(() => {});
-    })
+    window.addEventListener('beforeunload', this.handleBeforeUnload);
     this.fetchLocalIPAddress().then((ipAddress) => {
       this.ip_address=ipAddress
     });
