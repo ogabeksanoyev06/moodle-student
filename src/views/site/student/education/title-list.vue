@@ -2,6 +2,7 @@
   <div>
     <div class="lesson-list">
       <div
+          v-show="subjects.length>0"
         v-for="(t, index) in this.subjects"
         :key="t.id"
         class="lesson-list-item"
@@ -21,14 +22,17 @@
           <div v-show="t.in_progress" class="loader"></div>
         </div>
       </div>
+      <NoContent v-show="subjects.length<=0"/>
     </div>
   </div>
 </template>
 <script>
 import axios from "axios";
+import NoContent from "@/views/site/NoContent.vue";
 
 export default {
   name: "Title-list",
+  components: {NoContent},
   props: ["id"],
   data() {
     return {
@@ -46,7 +50,9 @@ export default {
         .then((res) => {
           this.subjects = res.data.results;
           console.log(res);
-        });
+        }).catch(()=>{
+
+      })
     },
   },
   mounted() {

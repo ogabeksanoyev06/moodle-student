@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="card">
     <app-loading v-if="loading" />
     <div class="box">
       <div class="box-header pa-10">

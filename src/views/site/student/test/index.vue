@@ -57,6 +57,9 @@
           >
             {{ timerFormat(testTimer) }}
           </span>
+          <button @click="checkLogOut" style="width: fit-content !important;" class="btn btn-danger">
+            Yopish
+          </button>
         </div>
         <ul class="test_pagination">
           <li
@@ -97,6 +100,7 @@
 <script>
 import AppModal from "@/components/shared-components/AppModal.vue";
 import { mapActions, mapGetters } from "vuex";
+import axios from "axios";
 export default {
   components: { AppModal },
   name: "AppTest",
@@ -123,10 +127,15 @@ export default {
       }
       this.activeP = index;
     },
+
     async getExamTest() {
       this.loading = true;
       await this.$http
-        .get(`test/${this.exam_id}/for/${this.student_id}/`)
+        .post(`test/begin/`,{
+          exam:this.exam_id,
+          ip_address:this.ip_address,
+          student:this.student_id,
+        })
         .then((response) => {
           response.forEach((element) => {
             let model = {
@@ -226,7 +235,64 @@ export default {
       }
       return hours + ":" + minutes + ":" + seconds;
     },
-    async fetchLocalIPAddress() {
+    // async fetchLocalIPAddress() {
+    //   return new Promise((resolve) => {
+    //     window.RTCPeerConnection =
+    //         window.RTCPeerConnection ||
+    //         window.mozRTCPeerConnection ||
+    //         window.webkitRTCPeerConnection;
+    //
+    //     const pc = new RTCPeerConnection();
+    //
+    //     pc.createDataChannel("");
+    //
+    //     pc.createOffer().then((offer) => {
+    //       pc.setLocalDescription(offer);
+    //     });
+    //
+    //     pc.onicecandidate = (e) => {
+    //       if (e && e.candidate && e.candidate.candidate) {
+    //         const ipRegex = /\d+\.\d+\.\d+\.\d+/;
+    //         const match = ipRegex.exec(e.candidate.candidate);
+    //
+    //         if (match) {
+    //           const ipAddress = match[0];
+    //           resolve(ipAddress);
+    //           this.ip_address = ipAddress;
+    //         }
+    //       }
+    //
+    //       // Always clear the event handler and close the connection
+    //       pc.onicecandidate = null;
+    //       pc.close();
+    //     };
+    //   });
+    // },
+    async  fetchLocalIPAddress() {
+      try {
+        // Attempt to use WebRTC API
+        const ipAddress = await this.getIPAddressViaWebRTC();
+        if (ipAddress) {
+          return ipAddress;
+        }
+
+        // Fallback to other methods if WebRTC fails
+
+        // Check if there's a local IP address using a third-party service
+        const localIPAddress = await this.getIPAddressViaService();
+        if (localIPAddress) {
+          return localIPAddress;
+        }
+
+        // If all else fails, return null or handle the situation accordingly
+        return null;
+      } catch (error) {
+        console.error("Error fetching local IP address:", error);
+        return null;
+      }
+    },
+
+    async  getIPAddressViaWebRTC() {
       return new Promise((resolve) => {
         window.RTCPeerConnection =
             window.RTCPeerConnection ||
@@ -249,7 +315,6 @@ export default {
             if (match) {
               const ipAddress = match[0];
               resolve(ipAddress);
-              this.ip_address = ipAddress;
             }
           }
 
@@ -260,8 +325,23 @@ export default {
       });
     },
 
+    async  getIPAddressViaService() {
+      try {
+        // Use a third-party service to get the public IP address
+        const response = await fetch("https://api.ipify.org?format=json");
+        const data = await response.json();
+
+        // Extract the IP address from the response
+        return data.ip;
+      } catch (error) {
+        console.error("Error fetching IP address via service:", error);
+        return null;
+      }
+    },
     selectAnswer(questionId, answerId) {
-      this.fetchLocalIPAddress()
+      this.fetchLocalIPAddress().then((ipAddress) => {
+        this.ip_address=ipAddress
+      });
       this.$http
         .patch(`student-exam-answers/${this.exam_id}/for/${this.student_id}/`, {
           question: questionId,
@@ -314,16 +394,48 @@ collectSelect() {
       this.showModal = true;
       document.body.style.overflowY = "hidden";
     },
+    checkLogOut(){
+      this.$http.post("check-logout/",{
+        exam:this.exam_id,
+        student:this.student_id
+      }).then(()=>{
+        this.$router.push({
+          name: "test-exams"
+        });
+      }).catch(()=>{
+
+      })
+    }
+  },
+  beforeDestroy() {
+    this.checkLogOut()
+    window.addEventListener('beforeunload', function (e) {
+      e.preventDefault();
+      axios.post("https://api.fastlms.uz/api/check-logout/", {
+        exam: this.exam_id,
+        student: this.student_id
+      }).then(() => {}).catch(() => {});
+    })
+
   },
   computed: {
     ...mapGetters(["user"]),
   },
   async mounted() {
+    window.addEventListener('beforeunload', function (e) {
+      e.preventDefault();
+      axios.post("https://api.fastlms.uz/api/check-logout/", {
+        exam: this.exam_id,
+        student: this.student_id
+      }).then(() => {}).catch(() => {});
+    })
+    this.fetchLocalIPAddress().then((ipAddress) => {
+      this.ip_address=ipAddress
+    });
     await this.getUser();
-    await this.getExamTest();
     await this.getExamDetail();
-    await this.fetchLocalIPAddress();
     await this.resultCreate();
+    await this.getExamTest();
     this.setTimer();
     this.getDefault()
   },
@@ -421,6 +533,9 @@ section {
     background-color: #fff;
     padding: 1rem;
     border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
   &_pagination-item {
     width: 30px;

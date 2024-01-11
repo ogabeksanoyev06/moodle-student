@@ -10,7 +10,7 @@
     :hideDetails="hideDetails"
   >
     <div class="input__block" :class="disabled ? 'disabled' : ''">
-      <label class="input__block-label">
+      <label class="input__block-label w-100">
         <span v-if="label" class="input__block-title">{{ label }}</span>
         <div class="input__block-wrap" :class="errors[0] ? 'error' : ''">
           <div class="input__block-prepend">
@@ -112,5 +112,4 @@ export default {
   },
 };
 </script>
-<style>
-</style>
+<style></style>

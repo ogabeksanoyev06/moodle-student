@@ -122,17 +122,20 @@ export default {
   watch: {
     modal() {
       if (this.modal) {
+        // eslint-disable-next-line no-undef
         $(`#${this.modalId}`).modal("show");
       }
     },
   },
   mounted() {
+    // eslint-disable-next-line no-undef
     $(`#${this.modalId}`).on("hidden.bs.modal", () => {
       this.$emit("modal-closed");
     });
   },
   methods: {
     closeModal() {
+      // eslint-disable-next-line no-undef
       $(`#${this.modalId}`).modal("hide");
     },
   },
