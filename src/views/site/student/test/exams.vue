@@ -13,7 +13,7 @@
                   <th></th>
                 </tr>
               </thead>
-              <transition v-show="examList.length>0" name="fade" :duration="2000">
+              <transition  name="fade" :duration="2000">
                 <tbody  class="table-bordered">
                   <tr v-for="(item, index) in examList" :key="index">
                     <td>
@@ -67,7 +67,7 @@
               </transition>
 
             </table>
-            <no-content v-show="examList.length<=0" style="margin-top: 5px;margin-bottom: 5px"/>
+
           </div>
         </div>
       </div>
@@ -77,11 +77,11 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import NoContent from "@/views/site/NoContent.vue";
+
 
 export default {
   name: "exam-list",
-  components: {NoContent},
+
 
   data() {
     return {
