@@ -2,7 +2,7 @@
   <div>
     <div class="lesson-list">
       <div
-          v-show="subjects.length>0"
+        v-show="subjects.length > 0"
         v-for="(t, index) in this.subjects"
         :key="t.id"
         class="lesson-list-item"
@@ -22,7 +22,7 @@
           <div v-show="t.in_progress" class="loader"></div>
         </div>
       </div>
-      <NoContent v-show="subjects.length<=0"/>
+      <NoContent v-show="subjects.length <= 0" />
     </div>
   </div>
 </template>
@@ -32,7 +32,7 @@ import NoContent from "@/views/site/NoContent.vue";
 
 export default {
   name: "Title-list",
-  components: {NoContent},
+  components: { NoContent },
   props: ["id"],
   data() {
     return {
@@ -41,18 +41,17 @@ export default {
   },
   methods: {
     getSubjects() {
-      axios
+      this.$http
         .get(
-          `https://api.fastlms.uz/api/student/content/topic/get_all/?content_id=${
+          `student/content/topic/get_all/?content_id=${
             this.id
           }&group_id=${localStorage.getItem("group")}`
         )
         .then((res) => {
           this.subjects = res.data.results;
           console.log(res);
-        }).catch(()=>{
-
-      })
+        })
+        .catch(() => {});
     },
   },
   mounted() {

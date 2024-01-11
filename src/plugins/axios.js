@@ -2,7 +2,7 @@ import axios from "axios";
 import TokenService from "../service/TokenService";
 import router from "../router/index";
 
-export const baseURL = "https://api.fastlms.uz/api/";
+export const baseURL = "https://api-lms.tfi.uz/api/";
 export const baseURLHemis = "https://student.tfi.uz/rest/v1/";
 
 export const http = axios.create({

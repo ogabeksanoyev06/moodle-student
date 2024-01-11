@@ -263,7 +263,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$http
-            .post("https://api.fastlms.uz/api/auth/login", this.request)
+            .post("auth/login", this.request)
             .then((data) => {
               if (data.success) {
                 if (Number(data.data.educationForm.code) === 16) {

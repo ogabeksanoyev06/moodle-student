@@ -17,11 +17,14 @@
               </div>
               <ul class="test_answers pb-1">
                 <li
-
                   v-for="(item, a) in question.answers"
                   :key="a"
                   @click="selectAnswer(question.id, item.id)"
-                  :class="item.is_selected?'test_answers-title active':'test_answers-title'"
+                  :class="
+                    item.is_selected
+                      ? 'test_answers-title active'
+                      : 'test_answers-title'
+                  "
                 >
                   <AppText
                     :size="isMobile ? 14 : 16"
@@ -57,17 +60,24 @@
           >
             {{ timerFormat(testTimer) }}
           </span>
-          <button @click="checkLogOut" style="width: fit-content !important;" class="btn btn-danger">
+          <button
+            @click="checkLogOut"
+            style="width: fit-content !important"
+            class="btn btn-danger"
+          >
             Yopish
           </button>
         </div>
         <ul class="test_pagination">
           <li
-
             v-for="(question, index) in questions"
             :key="index"
             @click="scrollToQuestion(index)"
-            :class="question.is_selected?'test_pagination-item active':'test_pagination-item'"
+            :class="
+              question.is_selected
+                ? 'test_pagination-item active'
+                : 'test_pagination-item'
+            "
           >
             {{ index + 1 }}
           </li>
@@ -81,12 +91,8 @@
       <template #modalHeader> Testni yakunlamoqchimisiz ?</template>
       <template #modalBody>
         <div @click="closeModal" class="buttons">
-          <button class="btn btn-danger">
-            Yo'q
-          </button>
-          <button @click="finishTest" class="btn btn-success">
-            Ha
-          </button>
+          <button class="btn btn-danger">Yo'q</button>
+          <button @click="finishTest" class="btn btn-success">Ha</button>
         </div>
       </template>
     </AppModal>
@@ -106,7 +112,7 @@ export default {
   data() {
     return {
       questions: [],
-      select:[],
+      select: [],
       exam_id: "",
       exam_detail: null,
       ip_address: "",
@@ -130,17 +136,20 @@ export default {
     async getExamTest() {
       this.loading = true;
       await this.$http
-        .post(`test/begin/`,{
-          exam:this.exam_id,
-          ip_address:this.ip_address,
-          student:this.student_id,
+        .post(`test/begin/`, {
+          exam: this.exam_id,
+          ip_address: this.ip_address,
+          student: this.student_id,
         })
         .then((response) => {
           response.forEach((element) => {
             let model = {
               id: element.id,
               name: element.name,
-              answers: element.answers.map(answer => ({ ...answer, is_selected: false })),
+              answers: element.answers.map((answer) => ({
+                ...answer,
+                is_selected: false,
+              })),
               is_selected: false,
             };
             this.questions.push(model);
@@ -170,7 +179,7 @@ export default {
       await this.$http
         .post(`result/create`, result)
         .then((res) => {
-          console.log('res',res)
+          console.log("res", res);
           this.testTimer = Math.abs(res.exam_time_second);
         })
         .catch((err) => {
@@ -189,13 +198,18 @@ export default {
         })
         .finally(() => {});
     },
-    getDefault(){
-      this.$http.get(`student-select-answers-get/${this.exam_id}/for/${this.student_id}/`).then((res)=>{
-       this.select = res.data
-        this.collectSelect()
-      }).catch((err)=>{
-        console.log(err)
-      })
+    getDefault() {
+      this.$http
+        .get(
+          `student-select-answers-get/${this.exam_id}/for/${this.student_id}/`
+        )
+        .then((res) => {
+          this.select = res.data;
+          this.collectSelect();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     async getExamDetail() {
       await this.$http
@@ -210,7 +224,7 @@ export default {
       let _this = this;
       let testTimerInterval = setInterval(function () {
         if (_this.testTimer / 60 <= 0) {
-          _this.finishTest()
+          _this.finishTest();
           clearInterval(testTimerInterval);
           return;
         }
@@ -267,7 +281,7 @@ export default {
     //     };
     //   });
     // },
-    async  fetchLocalIPAddress() {
+    async fetchLocalIPAddress() {
       try {
         // Attempt to use WebRTC API
         const ipAddress = await this.getIPAddressViaWebRTC();
@@ -291,12 +305,12 @@ export default {
       }
     },
 
-    async  getIPAddressViaWebRTC() {
+    async getIPAddressViaWebRTC() {
       return new Promise((resolve) => {
         window.RTCPeerConnection =
-            window.RTCPeerConnection ||
-            window.mozRTCPeerConnection ||
-            window.webkitRTCPeerConnection;
+          window.RTCPeerConnection ||
+          window.mozRTCPeerConnection ||
+          window.webkitRTCPeerConnection;
 
         const pc = new RTCPeerConnection();
 
@@ -324,7 +338,7 @@ export default {
       });
     },
 
-    async  getIPAddressViaService() {
+    async getIPAddressViaService() {
       try {
         // Use a third-party service to get the public IP address
         const response = await fetch("https://api.ipify.org?format=json");
@@ -339,18 +353,18 @@ export default {
     },
     selectAnswer(questionId, answerId) {
       this.fetchLocalIPAddress().then((ipAddress) => {
-        this.ip_address=ipAddress
+        this.ip_address = ipAddress;
       });
       this.$http
         .patch(`student-exam-answers/${this.exam_id}/for/${this.student_id}/`, {
           question: questionId,
           is_selected: answerId,
-          ip_address:this.ip_address
+          ip_address: this.ip_address,
         })
         .then((res) => {
-        this.select = res
-          this.collectSelect()
-          console.log(this.questions)
+          this.select = res;
+          this.collectSelect();
+          console.log(this.questions);
           console.log(res);
         })
         .catch((err) => {
@@ -358,30 +372,34 @@ export default {
         })
         .finally(() => {});
     },
-collectSelect() {
-  this.select.forEach((pair) => {
-    const questionId = pair.question;
-    const answerId = pair.is_selected;
-    const selectedQuestion = this.questions.find((q) => q.id === questionId);
-    if (selectedQuestion) {
-      selectedQuestion.is_selected=true
-      selectedQuestion.answers.forEach((answer) => {
-        answer.is_selected = false;
+    collectSelect() {
+      this.select.forEach((pair) => {
+        const questionId = pair.question;
+        const answerId = pair.is_selected;
+        const selectedQuestion = this.questions.find(
+          (q) => q.id === questionId
+        );
+        if (selectedQuestion) {
+          selectedQuestion.is_selected = true;
+          selectedQuestion.answers.forEach((answer) => {
+            answer.is_selected = false;
+          });
+          const selectedAnswer = selectedQuestion.answers.find(
+            (a) => a.id === answerId
+          );
+          if (selectedAnswer) {
+            selectedAnswer.is_selected = true;
+          }
+        }
       });
-      const selectedAnswer = selectedQuestion.answers.find(
-          (a) => a.id === answerId
-      );
-      if (selectedAnswer) {
-        selectedAnswer.is_selected = true;
-      }
-    }
-  });
-},
+    },
     finishTest() {
-      this.$http.get(`exam-finish/${this.exam_id}/finish/${this.student_id}/`).then(()=>{
-      }).catch((err)=>{
-        console.log(err)
-      })
+      this.$http
+        .get(`exam-finish/${this.exam_id}/finish/${this.student_id}/`)
+        .then(() => {})
+        .catch((err) => {
+          console.log(err);
+        });
     },
 
     closeModal() {
@@ -392,48 +410,51 @@ collectSelect() {
       this.showModal = true;
       document.body.style.overflowY = "hidden";
     },
-    checkLogOut(){
-      this.$http.post("check-logout/",{
-        exam:this.exam_id,
-        student:this.student_id
-      }).then(()=>{
-        this.$router.replace({
-          name: "test-exams"
-        });
-      }).catch(()=>{
-
-      })
+    checkLogOut() {
+      this.$http
+        .post("check-logout/", {
+          exam: this.exam_id,
+          student: this.student_id,
+        })
+        .then(() => {
+          this.$router.replace({
+            name: "test-exams",
+          });
+        })
+        .catch(() => {});
     },
     handleBeforeUnload(event) {
       event.preventDefault();
 
       const data = {
         exam: this.exam_id,
-        student: this.student_id
+        student: this.student_id,
       };
 
-      const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
-      navigator.sendBeacon("https://api.fastlms.uz/api/check-logout/", blob);
-    }
+      const blob = new Blob([JSON.stringify(data)], {
+        type: "application/json",
+      });
+      navigator.sendBeacon("https://api-lms.tfi.uz/api/check-logout/", blob);
+    },
   },
   beforeDestroy() {
-    window.removeEventListener('beforeunload', this.handleBeforeUnload);
-    this.checkLogOut()
+    window.removeEventListener("beforeunload", this.handleBeforeUnload);
+    this.checkLogOut();
   },
   computed: {
     ...mapGetters(["user"]),
   },
   async mounted() {
-    window.addEventListener('beforeunload', this.handleBeforeUnload);
+    window.addEventListener("beforeunload", this.handleBeforeUnload);
     this.fetchLocalIPAddress().then((ipAddress) => {
-      this.ip_address=ipAddress
+      this.ip_address = ipAddress;
     });
     await this.getUser();
     await this.getExamDetail();
     await this.resultCreate();
     await this.getExamTest();
     this.setTimer();
-    this.getDefault()
+    this.getDefault();
   },
   created() {
     this.exam_id = this.$route.params.exam_id;
@@ -442,7 +463,7 @@ collectSelect() {
 };
 </script>
 <style lang="scss" scoped>
-.buttons{
+.buttons {
   display: flex;
   align-items: center;
   flex-direction: row-reverse;

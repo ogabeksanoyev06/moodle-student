@@ -36,18 +36,17 @@ export default {
   },
   methods: {
     getSubjects() {
-      axios
+      this.$http
         .get(
-          `https://api.fastlms.uz/api/student/content/topic/get_all/?content_id=${
+          `student/content/topic/get_all/?content_id=${
             this.id
           }&group_id=${localStorage.getItem("group")}`
         )
         .then((res) => {
           this.subjects = res.data.results;
           console.log(res);
-        }).catch(()=>{
-
-      })
+        })
+        .catch(() => {});
     },
   },
   mounted() {
