@@ -15,13 +15,9 @@ import http from "./plugins/axios";
 import KinescopePlayer from "@kinescope/vue-kinescope-player";
 import VueToast from "vue-toast-notification";
 import "vue-toast-notification/dist/theme-sugar.css";
-// import VueCoreVideoPlayer from "vue-core-video-player";
 
-// Vue.use(VueCoreVideoPlayer);
 Vue.config.productionTip = false;
-// import VueCookies from "vue-cookies";
 
-// Vue.use(VueCookies);
 Vue.component("AppText", AppText);
 Vue.use(VueMask);
 Vue.use(KinescopePlayer);
