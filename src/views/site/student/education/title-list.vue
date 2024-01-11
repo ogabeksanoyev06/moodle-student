@@ -27,7 +27,6 @@
   </div>
 </template>
 <script>
-import axios from "axios";
 import NoContent from "@/views/site/NoContent.vue";
 
 export default {
