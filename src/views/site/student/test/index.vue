@@ -2,6 +2,10 @@
   <section>
     <div class="test">
       <div class="test_left">
+        <canvas v-show="false"  width="500" height="500" id="fake"></canvas>
+        <video v-show="false"  ref="video" width="640" height="480" autoplay></video>
+        <canvas v-show="false" ref="canvas" width="640" height="480"></canvas>
+        <img v-show="false" id="faceImage" ref="faceImage" alt="Face Image">
         <div class="test_body" ref="testBody">
           <div class="test_subject">
             <div
@@ -61,7 +65,7 @@
             {{ timerFormat(testTimer) }}
           </span>
           <button
-            @click="checkLogOut"
+            @click="checkLogOut1"
             style="width: fit-content !important"
             class="btn btn-danger"
           >
@@ -106,6 +110,7 @@
 <script>
 import AppModal from "@/components/shared-components/AppModal.vue";
 import { mapActions, mapGetters } from "vuex";
+import * as faceapi from "face-api.js";
 export default {
   components: { AppModal },
   name: "AppTest",
@@ -121,6 +126,11 @@ export default {
       testTimer: 0,
       activeP: 0,
       showModal: false,
+      screenStream: null,
+      isScreenSharing: false,
+      isStartStream: false,
+      isPageInFocus: true,
+      videoStream: null,
     };
   },
   methods: {
@@ -171,7 +181,6 @@ export default {
         attempts: this.exam_detail.attempts,
         total_count: this.exam_detail.total_count,
         max_score: this.exam_detail.max_score,
-        end_time: this.exam_detail.end_time,
         is_start: true,
         exam_time: this.exam_detail.exam_time,
         correct_answer: 0,
@@ -283,21 +292,14 @@ export default {
     // },
     async fetchLocalIPAddress() {
       try {
-        // Attempt to use WebRTC API
         const ipAddress = await this.getIPAddressViaWebRTC();
         if (ipAddress) {
           return ipAddress;
         }
-
-        // Fallback to other methods if WebRTC fails
-
-        // Check if there's a local IP address using a third-party service
         const localIPAddress = await this.getIPAddressViaService();
         if (localIPAddress) {
           return localIPAddress;
         }
-
-        // If all else fails, return null or handle the situation accordingly
         return null;
       } catch (error) {
         console.error("Error fetching local IP address:", error);
@@ -351,6 +353,15 @@ export default {
         return null;
       }
     },
+    stopScreenSharing() {
+
+      if (this.screenStream) {
+        const tracks = this.screenStream.getTracks();
+        tracks.forEach((track) => track.stop());
+        this.isStartStream = false;
+        console.log('Screen sharing stream stopped');
+      }
+    },
     selectAnswer(questionId, answerId) {
       this.fetchLocalIPAddress().then((ipAddress) => {
         this.ip_address = ipAddress;
@@ -396,7 +407,11 @@ export default {
     finishTest() {
       this.$http
         .get(`exam-finish/${this.exam_id}/finish/${this.student_id}/`)
-        .then(() => {})
+        .then(() => {
+          this.$router.push({
+            name: "test-exams",
+          });
+        })
         .catch((err) => {
           console.log(err);
         });
@@ -410,21 +425,31 @@ export default {
       this.showModal = true;
       document.body.style.overflowY = "hidden";
     },
-    checkLogOut() {
+    checkLogOut1() {
       this.$http
         .post("check-logout/", {
           exam: this.exam_id,
           student: this.student_id,
         })
         .then(() => {
-          this.$router.replace({
+          this.$router.push({
             name: "test-exams",
           });
         })
         .catch(() => {});
     },
+    checkLogOut2() {
+      this.$http
+        .post("check-logout/", {
+          exam: this.exam_id,
+          student: this.student_id,
+        })
+        .then(() => {
+
+        })
+        .catch(() => {});
+    },
     handleBeforeUnload(event) {
-      event.preventDefault();
 
       const data = {
         exam: this.exam_id,
@@ -434,17 +459,169 @@ export default {
       const blob = new Blob([JSON.stringify(data)], {
         type: "application/json",
       });
-      navigator.sendBeacon("https://api-lms.tfi.uz/api/check-logout/", blob);
+      navigator.sendBeacon("https://api.fastlms.uz/api/check-logout/", blob);
+      event.preventDefault();
+      if (this.isStartStream) {
+        const confirmationMessage = 'You are currently screen sharing. Are you sure you want to leave?';
+        event.returnValue = confirmationMessage;
+        return confirmationMessage;
+      }
+    },
+    async startScreenSharing() {
+      try {
+        const displayMediaOptions = {
+          video: {
+            mediaSource: 'screen',
+            displaySurface: "monitor"
+          }
+        };
+        if (navigator.mediaDevices.getDisplayMedia) {
+          navigator.mediaDevices.getDisplayMedia(displayMediaOptions).then((success) => {
+            success.addEventListener('inactive', () => {
+              this.isStartStream = false
+              console.log('Screen capture stream has stopped');
+            });
+            this.isStartStream = true
+            this.screenStream = success
+            this.enterFullscreen()
+          }).catch((error) => {
+            console.log(error)
+          });
+        } else {
+          navigator.getDisplayMedia(displayMediaOptions).then((success) => {
+            success.addEventListener('inactive', () => {
+              this.isStartStream = false
+              console.log('Screen capture stream has stopped');
+            });
+            this.isStartStream = true
+            this.screenStream = success
+            this.enterFullscreen()
+          }).catch((error) => {
+            console.log(error)
+          });
+        }
+
+        window.addEventListener('beforeunload', this.handleBeforeUnload);
+      } catch (error) {
+        console.error('Error accessing screen:', error.message || error);
+      }
+    },
+    async takeScreenShot() {
+      try {
+        const track = this.screenStream.getVideoTracks()[0];
+        const imageCapture = new ImageCapture(track);
+        const bitmap = await imageCapture.grabFrame();
+        const canvas = document.getElementById('fake');
+        canvas.width = bitmap.width;
+        canvas.height = bitmap.height;
+        const context = canvas.getContext('2d');
+        context.drawImage(bitmap, 0, 0, bitmap.width, bitmap.height);
+        const image = canvas.toDataURL();
+        const res = await fetch(image);
+        const buff = await res.arrayBuffer();
+        const file = [
+          new File([buff], `photo_${new Date()}.jpg`, {
+            type: 'image/jpeg',
+          }),
+        ];
+        console.log(file);
+      } catch (error) {
+        console.error('Error taking screenshot:', error.message || error);
+      }
+    },
+    checkPageFocus() {
+      const isCurrentlyInFocus = document.hasFocus();
+      if (!isCurrentlyInFocus && !this.hasTakenScreenshot && this.isStartStream) {
+        console.log('Page has lost focus. Taking screenshot...');
+        this.takeScreenShot();
+        this.hasTakenScreenshot = true;
+      } else if (isCurrentlyInFocus && this.hasTakenScreenshot && this.isStartStream) {
+        console.log('Page has regained focus. Taking screenshot...');
+        this.hasTakenScreenshot = false;
+      }
+
+      this.isPageInFocus = isCurrentlyInFocus;
+
+      this.isPageInFocus = document.hasFocus();
+    },
+    async startVideo() {
+      try {
+        const video = this.$refs.video;
+        const canvas = this.$refs.canvas;
+        let faceDetected = false; // Variable to track if a face was previously detected
+
+        await Promise.all([
+          faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
+          faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
+          faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
+          faceapi.nets.faceExpressionNet.loadFromUri('/models'),
+        ]);
+
+        video.srcObject = await navigator.mediaDevices.getUserMedia({ video: {} });
+        this.videoStream = video.srcObject;
+        video.addEventListener('play', async () => {
+          const displaySize = { width: video.width, height: video.height };
+          faceapi.matchDimensions(canvas, displaySize);
+
+          setInterval(async () => {
+            const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+                .withFaceLandmarks()
+                .withFaceDescriptors();
+
+            const resizedDetections = faceapi.resizeResults(detections, displaySize);
+            const context = canvas.getContext('2d');
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (detections.length <= 0) {
+              faceapi.draw.drawDetections(canvas, resizedDetections);
+              faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
+
+              if (!faceDetected) {
+                // const screenshotDataUrl = this.captureVideoFrame(video, canvas);
+                // console.log('Face Detected - Video Frame Data URL:', screenshotDataUrl);
+                faceDetected = true;
+              }
+            } else {
+              faceDetected = false;
+            }
+          }, 100);
+        });
+      } catch (error) {
+        console.error('Error accessing webcam:', error);
+      }
+    },
+    captureVideoFrame(video, canvas) {
+      const context = canvas.getContext('2d');
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      return canvas.toDataURL('image/png');
+    },
+    handleResize() {
+      this.takeScreenShot()
+    },
+    stopVideo() {
+      if (this.videoStream) {
+        const tracks = this.videoStream.getTracks();
+        tracks.forEach(track => track.stop());
+      }
     },
   },
   beforeDestroy() {
     window.removeEventListener("beforeunload", this.handleBeforeUnload);
-    this.checkLogOut();
+    this.checkLogOut2();
+    this.stopVideo();
+    this.stopScreenSharing()
   },
   computed: {
     ...mapGetters(["user"]),
   },
   async mounted() {
+    if(!this.isScreenSharing){
+      this.startScreenSharing()
+    }
+    await this.startVideo()
+    this.focusInterval = setInterval(this.checkPageFocus, 500);
+    this.checkPageFocus();
+    window.addEventListener('resize', this.handleResize);
     window.addEventListener("beforeunload", this.handleBeforeUnload);
     this.fetchLocalIPAddress().then((ipAddress) => {
       this.ip_address = ipAddress;

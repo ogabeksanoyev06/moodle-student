@@ -5,6 +5,8 @@ const state = {
   loading: false,
   accessToken: null,
   isLoggedOn: false,
+  currentRouteName: null,
+
 };
 
 const getters = {
@@ -18,6 +20,9 @@ const mutations = {
   setLoading: (state, data) => (state.loading = data),
   setAccessToken: (state, data) => (state.accessToken = data),
   setIsLoggedOn: (state, data) => (state.isLoggedOn = data),
+  setCurrentRouteName(state, currentRoute) {
+    state.currentRouteName = currentRoute;
+  },
 };
 const actions = {
   async getUser({ commit }) {
