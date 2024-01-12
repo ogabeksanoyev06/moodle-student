@@ -1,23 +1,48 @@
 <template>
   <div>
-    <div class="lesson-list">
-      <div
-        v-for="(t, index) in this.subjects"
-        :key="t.id"
-        class="lesson-list-item"
-      >
-        <div class="name">
-          <div class="tr">{{ index + 1 }}.</div>
-          <div>
-            {{ t.name }}
+   
+
+
+
+
+    <div class="card">
+      <div class="card-content">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead>
+              <tr>
+                <th scope="col">Nomi</th>
+                <th scope="col">Kirish</th>
+              </tr>
+              </thead>
+              <transition  name="fade" :duration="2000">
+                <tbody  class="table-bordered">
+                <tr v-for="(t, index) in this.subjects" :key="index">
+                  <td>
+                    {{t.name}}
+                  </td>
+                  <td style="width: 100px !important;">
+                    <router-link
+                        :to="{ name: 'education-tasks-id', params: { id: t.id } }"
+                    >
+                      <button class="btn btn-success ">Kirish</button>
+                    </router-link>
+                  </td>
+
+                </tr>
+                <tr v-if="errorMessage !== ''">
+                  <td class="text-center" colspan="5">
+                    {{ errorMessage }}
+                  </td>
+                </tr>
+                </tbody>
+
+              </transition>
+
+            </table>
+
           </div>
-        </div>
-        <div class="action">
-          <router-link
-            :to="{ name: 'education-tasks-id', params: { id: t.id } }"
-          >
-            <button class="button-use">Kirish</button>
-          </router-link>
         </div>
       </div>
     </div>
@@ -32,6 +57,7 @@ export default {
   data() {
     return {
       subjects: [],
+      errorMessage:''
     };
   },
   methods: {
@@ -43,10 +69,12 @@ export default {
           }&group_id=${localStorage.getItem("group")}`
         )
         .then((res) => {
-          this.subjects = res.data.results;
+          this.subjects = res.results;
           console.log(res);
         })
-        .catch(() => {});
+        .catch((err) => {
+          this.errorMessage = err.response.data.message
+        });
     },
   },
   mounted() {

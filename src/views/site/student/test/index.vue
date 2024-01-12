@@ -173,6 +173,7 @@ export default {
         });
     },
     async resultCreate() {
+      console.log('exam',this.exam_detail.attempts)
       const result = {
         exam: this.exam_id,
         student: this.student_id,
@@ -232,7 +233,7 @@ export default {
       let _this = this;
       let testTimerInterval = setInterval(function () {
         if (_this.testTimer / 60 <= 0) {
-          _this.finishTest();
+          // _this.finishTest();
           clearInterval(testTimerInterval);
           return;
         }

@@ -237,23 +237,23 @@ export default {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(link.href);
     },
-    // getTasks(id) {
-    //   console.log("aa");
-    //   this.$http
-    //     .get(`student/topic/tasks/?topic_id=${this.id}&student_id=${id}`)
-    //     .then((res) => {
-    //       console.log(res);
-    //       this.tasks = res.results;
-    //     });
-    // },
-    // getUser() {
-    //   this.$http
-    //     .get("get/student/" + localStorage.getItem("studentId") + "/")
-    //     .then((res) => {
-    //       this.task.student_id = res.id;
-    //       this.getTasks(res.id);
-    //     });
-    // },
+    getTasks(id) {
+      console.log("aa");
+      this.$http
+        .get(`student/topic/tasks/?topic_id=${this.id}&student_id=${id}`)
+        .then((res) => {
+          console.log(res);
+          this.tasks = res.results;
+        });
+    },
+    getUser() {
+      this.$http
+        .get("get/student/" + localStorage.getItem("studentId") + "/")
+        .then((res) => {
+          this.task.student_id = res.id;
+          this.getTasks(res.id);
+        });
+    },
     // getTasks(id) {
     //   console.log("aa");
     //   this.$http
