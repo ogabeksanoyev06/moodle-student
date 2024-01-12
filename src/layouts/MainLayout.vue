@@ -798,22 +798,22 @@ export default {
 
     },
 
-    getUserByToken() {
-      this.$api.get("").then((res) => {
-        if (res.statusCode === 200) {
-          this.$store.commit("commitCurrentUser", res.result);
-        }
-      });
-    },
+    // getUserByToken() {
+    //   this.$api.get("").then((res) => {
+    //     if (res.statusCode === 200) {
+    //       this.$store.commit("commitCurrentUser", res.result);
+    //     }
+    //   });
+    // },
   },
   computed: {
-    currentRouteName() {
-      return this.$route.name;
-    },
+    // currentRouteName() {
+    //   return this.$route.name;
+    // },
   },
   watch: {
     $route() {
-      this.currentRouteName();
+      // this.currentRouteName();
     },
   },
   // created() {
@@ -830,6 +830,9 @@ export default {
 <style scoped></style>
 
 <style>
+td{
+  font-size: 14px;
+}
 ::-webkit-scrollbar {
   height: 7px;
   width: 7px;
