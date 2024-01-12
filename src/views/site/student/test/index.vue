@@ -183,7 +183,6 @@ export default {
         max_score: this.exam_detail.max_score,
         is_start: true,
         exam_time: this.exam_detail.exam_time,
-        correct_answer: 0,
       };
       await this.$http
         .post(`result/create`, result)

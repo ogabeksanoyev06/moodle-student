@@ -807,13 +807,13 @@ export default {
     // },
   },
   computed: {
-    // currentRouteName() {
-    //   return this.$route.name;
-    // },
+    currentRouteName() {
+      return this.$route.name;
+    },
   },
   watch: {
     $route() {
-      // this.currentRouteName();
+      this.currentRouteName();
     },
   },
   // created() {
