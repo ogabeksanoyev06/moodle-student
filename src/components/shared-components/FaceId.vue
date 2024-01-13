@@ -344,7 +344,7 @@ export default {
       const stream = await navigator.mediaDevices.getUserMedia({ video: {} });
       video.srcObject = stream;
       video.onplaying = () => {
-        this.countdown=4
+        this.countdown=2
         let interval = setInterval(() => {
           if (this.countdown === 0) {
             clearInterval(interval);

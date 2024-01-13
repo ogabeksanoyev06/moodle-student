@@ -35,26 +35,13 @@
                   </td>
                   <td>
 
-                      <button
-                          :disabled="!item.is_active || !item.exam.exam_status"
-                          v-show="item.is_start && item.is_finish"
-                          class="btn btn-success w-100"
-                          @click="goToTest(item.exam.id, item.id)"
-                      >
-                        Boshlash
-                      </button>
-                      <button :disabled="!item.is_active || !item.exam.exam_status" @click="goToTestCheck(item.exam.id)"
-                              class="btn btn-success w-100" v-show="item.is_start && !item.is_finish">
-                        Davom etish
-                      </button>
 
-<!--                    <button-->
-<!--                        v-show="item.is_finish"-->
-<!--                        class="btn btn-success w-100"-->
-<!--                        @click="goResult(item.exam.id, item.id)"-->
-<!--                    >-->
-<!--                      Natija-->
-<!--                    </button>-->
+                    <button
+                        class="btn btn-success w-100"
+                        @click="goResult(item.exam.id, item.id)"
+                    >
+                      Natija
+                    </button>
                   </td>
                 </tr>
                 <tr v-if="errorMessage !== ''">
@@ -96,7 +83,7 @@ export default {
     getExamList() {
       this.loading = true;
       this.$http
-          .get(`exam-list/${this.student_id}`)
+          .get(`exam-list-finish/${this.student_id}`)
           .then((res) => {
             this.examList = res;
             console.log(res)

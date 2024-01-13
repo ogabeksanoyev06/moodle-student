@@ -742,6 +742,11 @@ export default {
               id: 13,
               routeName: "test-exams",
             },
+            {
+              title: "Imtihonlar natijaslari",
+              id: 14,
+              routeName: "test-exams-result",
+            },
           ],
         },
         {
@@ -807,13 +812,13 @@ export default {
     // },
   },
   computed: {
-    // currentRouteName() {
-    //   return this.$route.name;
-    // },
+    currentRouteName() {
+      return this.$route.name;
+    },
   },
   watch: {
     $route() {
-      // this.currentRouteName();
+      this.currentRouteName();
     },
   },
   // created() {

@@ -96,6 +96,11 @@ const routes = [
         component: () => import("../views/site/student/test/exams.vue"),
       },
       {
+        path: "test/exams/result",
+        name: "test-exams-result",
+        component: () => import("../views/site/student/test/exams-result.vue"),
+      },
+      {
         path: "test/:exam_id",
         name: "test",
         component: () => import("../views/site/student/test"),

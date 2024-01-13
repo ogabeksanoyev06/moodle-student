@@ -1,7 +1,6 @@
 <template>
   <div class="lesson-view" style="padding-bottom: 30px">
     <div>
-      <h3 class="lesson-view-header-title">Dars: {{ this.title }}</h3>
       <div class="player-container">
         <vue-core-video-player
           cover="./svg/prewiew.svg"
@@ -187,18 +186,18 @@ export default {
         .get(`student/content/topic/one/?topic_id=${this.id}`)
         .then((res) => {
           console.log("res", res);
-          this.file = res.data.results.topic_files;
-          this.video = res.data.results.topic_videos;
+          this.file = res.results.topic_files;
+          this.video = res.results.topic_videos;
           console.log(localStorage.getItem("videoContent"));
           if (
             localStorage.getItem("videoContent") === null ||
             localStorage.getItem("videoContent") === undefined
           ) {
-            this.videoRef = res.data.results.topic_videos[0]?.vide_file;
-            this.title = res.data.results.topic_videos[0]?.name;
+            this.videoRef = res.results.topic_videos[0]?.vide_file;
+            this.title = res.results.topic_videos[0]?.name;
             localStorage.setItem(
               "videoContent",
-              JSON.stringify(res.data.results.topic_videos[0])
+              JSON.stringify(res.results.topic_videos[0])
             );
           }
         })

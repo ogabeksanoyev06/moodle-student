@@ -54,6 +54,7 @@
                   <th scope="col">Tugash</th>
                   <th scope="col">Fayllar</th>
                   <th scope="col">Fayllar yuklash</th>
+                  <th scope="col">Ball</th>
                 </tr>
               </thead>
               <transition name="fade" :duration="2000">
@@ -112,7 +113,10 @@
                       >
                         Fayl yuklash
                       </button>
-                      <div v-show="item.file_status">Fayl yuklangam</div>
+                      <div v-show="item.file_status">Fayl yuklangan</div>
+                    </td>
+                    <td style="text-align: center">
+                      {{item.mark}}
                     </td>
                   </tr>
                 </tbody>
@@ -237,23 +241,23 @@ export default {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(link.href);
     },
-    // getTasks(id) {
-    //   console.log("aa");
-    //   this.$http
-    //     .get(`student/topic/tasks/?topic_id=${this.id}&student_id=${id}`)
-    //     .then((res) => {
-    //       console.log(res);
-    //       this.tasks = res.results;
-    //     });
-    // },
-    // getUser() {
-    //   this.$http
-    //     .get("get/student/" + localStorage.getItem("studentId") + "/")
-    //     .then((res) => {
-    //       this.task.student_id = res.id;
-    //       this.getTasks(res.id);
-    //     });
-    // },
+    getTasks(id) {
+      console.log("aa");
+      this.$http
+        .get(`student/topic/tasks/?topic_id=${this.id}&student_id=${id}`)
+        .then((res) => {
+          console.log(res);
+          this.tasks = res.results;
+        });
+    },
+    getUser() {
+      this.$http
+        .get("get/student/" + localStorage.getItem("studentId") + "/")
+        .then((res) => {
+          this.task.student_id = res.id;
+          this.getTasks(res.id);
+        });
+    },
     // getTasks(id) {
     //   console.log("aa");
     //   this.$http
