@@ -37,7 +37,7 @@
 
                       <button
                           :disabled="!item.is_active || !item.exam.exam_status"
-
+                          v-show="item.is_start && item.is_finish"
                           class="btn btn-success w-100"
                           @click="goToTest(item.exam.id, item.id)"
                       >

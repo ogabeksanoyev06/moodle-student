@@ -54,6 +54,7 @@
                   <th scope="col">Tugash</th>
                   <th scope="col">Fayllar</th>
                   <th scope="col">Fayllar yuklash</th>
+                  <th scope="col">Ball</th>
                 </tr>
               </thead>
               <transition name="fade" :duration="2000">
@@ -112,7 +113,10 @@
                       >
                         Fayl yuklash
                       </button>
-                      <div v-show="item.file_status">Fayl yuklangam</div>
+                      <div v-show="item.file_status">Fayl yuklangan</div>
+                    </td>
+                    <td style="text-align: center">
+                      {{item.mark}}
                     </td>
                   </tr>
                 </tbody>
