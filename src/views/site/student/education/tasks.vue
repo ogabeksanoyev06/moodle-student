@@ -23,13 +23,22 @@
               action="https://jsonplaceholder.typicode.com/posts/"
               :on-change="handleFileChange"
               :auto-upload="false"
-              limit="1"
+              :limit="1"
             >
               <i class="el-icon-upload"></i>
               <div class="el-upload__text">
                 Drop file here or <em>click to upload</em>
               </div>
             </el-upload>
+          </el-form-item>
+          <el-form-item>
+            <el-input
+              type="textarea"
+              :rows="3"
+              placeholder="Xabar yozish"
+              v-model="task.comment"
+            >
+            </el-input>
           </el-form-item>
         </el-form>
         <button
@@ -116,7 +125,7 @@
                       <div v-show="item.file_status">Fayl yuklangan</div>
                     </td>
                     <td style="text-align: center">
-                      {{item.mark}}
+                      {{ item.mark }}
                     </td>
                   </tr>
                 </tbody>
@@ -148,6 +157,7 @@ export default {
         comment: "",
         student_id: "",
         connect_id: "",
+        student_task_fayls: "",
       },
       rules: {
         file: [
@@ -175,13 +185,13 @@ export default {
       console.log(response, file, fileList);
     },
     createTask(formName, e) {
-      console.log("aaa");
       e.preventDefault();
       const formData = new FormData();
       formData.append("student_id", this.task.student_id);
       formData.append("student_file", this.task.file);
       formData.append("tasks_id", this.task.connect_id.tasks_id.id);
       formData.append("student_connect_task_id", this.task.connect_id.id);
+      formData.append("comment", this.task.comment);
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$http
