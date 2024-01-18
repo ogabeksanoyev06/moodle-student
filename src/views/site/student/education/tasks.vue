@@ -49,6 +49,15 @@
         </button>
       </div>
     </Modal>
+    <Modal
+        modal-size="fit-content"
+        :modal="isOpenModalView"
+        @modal-closed="closeModalView"
+    >
+      <div class="main-menu-item">
+
+      </div>
+    </Modal>
 
     <div class="card">
       <div class="card-content">
@@ -64,6 +73,7 @@
                   <th scope="col">Tugash</th>
                   <th scope="col">Fayllar</th>
                   <th scope="col">Fayllar yuklash</th>
+                  <th scope="col">Yuklangan fayllar</th>
                   <th scope="col">Ball</th>
                 </tr>
               </thead>
@@ -124,6 +134,15 @@
                         Fayl yuklash
                       </button>
                       <div v-show="item.file_status">Fayl yuklangan</div>
+                    </td>
+                    <td>
+                      <button
+                          v-show="!item.file_status"
+                          @click="openModalView(item)"
+                          class="btn btn-primary waves-effect waves-light"
+                      >
+                        Fayllarni ko'rish
+                      </button>
                     </td>
 
                     <td style="text-align: center">
@@ -237,6 +256,7 @@ export default {
       id: "",
       tasks: [],
       isOpenModal: false,
+      isOpenModalView: false,
       modal: false,
       fileIndex: 0,
       task: {
@@ -265,12 +285,20 @@ export default {
       this.task.connect_id = id;
       this.isOpenModal = true;
     },
+    openModalView(id) {
+      this.task.connect_id = id;
+      this.isOpenModalView = true;
+    },
     openModalList(index) {
       this.modal = true;
       this.fileIndex = index;
     },
     closeModalS() {
       this.isOpenModal = false;
+      this.modal = false;
+    },
+    closeModalView() {
+      this.isOpenModalView = false;
       this.modal = false;
     },
     handleSuccess(response, file, fileList) {
