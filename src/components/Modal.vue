@@ -63,31 +63,29 @@
 
 <!--<style scoped></style>-->
 
-
-
 <template>
   <div
-      :class="['modal', 'fade', { 'show': modal }]"
-      :id="modalId"
-      tabindex="-1"
-      role="dialog"
-      :aria-labelledby="modalId"
-      style="display: none"
-      aria-modal="true"
+    :class="['modal', 'fade', { show: modal }]"
+    :id="modalId"
+    tabindex="-1"
+    role="dialog"
+    :aria-labelledby="modalId"
+    style="display: none"
+    aria-modal="true"
   >
     <div
-        class="modal-dialog modal-dialog-centered"
-        :class="modalSize"
-        role="document"
+      class="modal-dialog modal-dialog-centered"
+      :style="modalSize"
+      role="document"
     >
       <div class="modal-content p-0" :style="styleProp">
         <div class="modal-header">
           <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-              @click="closeModal"
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            @click="closeModal"
           >
             <span aria-hidden="true">×</span>
           </button>

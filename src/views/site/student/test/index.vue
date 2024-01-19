@@ -617,7 +617,6 @@ export default {
     if(!this.isScreenSharing){
       this.startScreenSharing()
     }
-    await this.startVideo()
     this.focusInterval = setInterval(this.checkPageFocus, 500);
     this.checkPageFocus();
     window.addEventListener('resize', this.handleResize);
@@ -631,6 +630,8 @@ export default {
     await this.getExamTest();
     this.setTimer();
     this.getDefault();
+    await this.startVideo()
+
   },
   created() {
     this.exam_id = this.$route.params.exam_id;
