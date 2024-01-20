@@ -10,6 +10,7 @@
                 <th scope="col">Nomi</th>
                 <th scope="col">Xolat</th>
                 <th scope="col">Kirish</th>
+                <th scope="col">Dars xonaga kirish</th>
               </tr>
               </thead>
               <transition  name="fade" :duration="2000">
@@ -29,6 +30,9 @@
                     >
                       <button class="btn btn-success ">Kirish</button>
                     </router-link>
+                  </td>
+                  <td style="width: 250px">
+                    <button @click = "enterBBB(t.topic_bigbluebutton,t.id)" class="btn btn-success ">Dars xonaga kirish</button>
                   </td>
 
                 </tr>
@@ -52,6 +56,8 @@
 <script>
 
 
+import {mapGetters} from "vuex";
+
 export default {
   name: "Title-list",
 
@@ -63,6 +69,23 @@ export default {
     };
   },
   methods: {
+    enterBBB(id,mid){
+      this.$http.get(`student/topic/bigbluebutton/?bbb_id=${id}&group_id=${this.user.group.id}&topic_id=${mid}`).then(()=>{
+        this.join(id)
+      }).catch(()=>{
+
+      })
+    },
+    join(id){
+      this.$http.post(`bigbluebutton/join/attendee/`, {
+          username: this.user.full_name,
+          id: id
+        }).then((res) => {
+          window.open(res.url)
+        }).catch(() => {
+          this.errorNotification("Dars xona mavjud emas")
+        })
+    },
     getSubjects() {
       this.$http
         .get(
@@ -80,8 +103,13 @@ export default {
         });
     },
   },
+  computed: {
+    ...mapGetters(["user"]),
+  },
   mounted() {
     this.getSubjects();
+    this.getUser();
+
   },
 };
 </script>

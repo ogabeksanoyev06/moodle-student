@@ -226,7 +226,7 @@ export default {
       errorStatus: false,
       loading: false,
       showModal: false,
-      image: "",
+      image: "/images/img.png",
       facesMatched: null,
     };
   },
