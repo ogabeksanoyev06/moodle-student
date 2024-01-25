@@ -305,7 +305,7 @@ export default {
             .then((data) => {
               console.log(data);
               localStorage.setItem("studentId", this.request.login);
-              this.image = data.image.replace("http://", "https://");
+              //this.image = data.image.replace("http://", "https://");
               this.showModalClick();
             })
             .catch((er) => {
